@@ -16,7 +16,7 @@ export default (tag, name, bio, img_small, img_full, img_vert) => {
     img_small, img_full, img_vert,
 
     // dota api - heropediadata - abilitydata
-    Abilities: [], Talents: [],
+    Abilities: [], AbilitiesSpecial: [], Talents: [],
 
     // dotabuff api - npc_heroes
     AttributePrimary: null,
