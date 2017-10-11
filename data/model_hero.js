@@ -1,3 +1,4 @@
+const excludedAbilities = ['monkey_king_primal_spring_early']
 const Ability = ({tag, img, dname, affects, desc, notes, dmg, attrib, cmb, lore}) => {
   return {
     tag, img, affects, desc, notes, dmg, attrib, cmb, lore,
@@ -24,6 +25,7 @@ const generateAbilitiesAndTalents = (hero, npc_hero, abilities_raw, img_abilitie
   .filter(prop => prop.substring(0, 7) === 'Ability' && !isNaN(prop.substring(7)))
   // parse them and check if it's an ability or a talent
   .map((raw_tag, idx) => {
+    // ability tag
     const tag = npc_hero[raw_tag]
     let talentStartsAt
     switch(hero.tag) {
@@ -38,6 +40,7 @@ const generateAbilitiesAndTalents = (hero, npc_hero, abilities_raw, img_abilitie
     }
 
     let ability = abilities_raw[tag]
+    if(excludedAbilities.includes(tag)) return
     if(parseInt(raw_tag.split('Ability')[1]) < talentStartsAt) {
       // ability is spell
       abilities.push(new Ability({ tag, ...ability, 
