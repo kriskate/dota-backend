@@ -18,7 +18,7 @@ const url = {
   npc_itemBuilds: 'https://github.com/dotabuff/d2vpkr/tree/master/dota/itembuilds',
 
   /* lores, tips, items - descriptions */
-  npc_dota_english: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/dota_english.json',
+  npc_dota: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/dota_english.json',
   /* unit - creeps, spirit bear, visage familiars */
   npc_units: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_units.json',
 
@@ -70,7 +70,6 @@ const url = {
 }
 
 
-
 const getRawData = async () => {
   try {
     return {
@@ -78,6 +77,7 @@ const getRawData = async () => {
       npc_heroes_raw: await fetchJSON(url.heroes_long),
       abilities_raw: await fetchJSON(url.abilities),
       items_raw: await fetchJSON(url.items),
+      dota_raw: await fetchJSON(url.npc_dota),
     }
   } catch (e) {
     logger.error('gathering data', e)
@@ -189,6 +189,7 @@ export const gatherData = async () => {
 const updateData = async (data, newDataF) => {
   let heroes = await generateHeroes(data, newDataF)
   let items = await generateItems(data, newDataF)
+  let tips = await generateDotaTips(data, newDataF)
 
   if(!heroes || !items) return null
   else return {heroes, items}
@@ -217,6 +218,30 @@ const generateItems = async (data, newDataF) => {
   }
 }
 
+
+export const generateDotaTips = async (data, newDataF) => {
+  try {
+    let {dota_raw} = data
+    dota_raw = dota_raw.lang.Tokens
+
+    let tips = null
+
+    Object.keys(dota_data).forEach(key => {
+      if(key.substring(0,9) === 'dota_tip_') {
+        let cat = key.split('_')[2]
+
+        if(!tips) tips = {}
+        
+        if(!tips[cat]) tips[cat] = []
+        tips[cat].push(dota_data[key])
+      }
+    })
+
+    if(tips) await createFile('tips', newDataF, tips)
+  } catch(e) {
+    logger.log('could not create tips', e)
+  }
+}
 
 const generateHeroes = async (data, newDataF) => {
   try {
