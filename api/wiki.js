@@ -58,14 +58,14 @@ const url = {
   items: 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english',
 
   /* base for ability image */
-  img_abilities:'http://cdn.dota2.com/apps/dota2/images/abilities/${ID}_hp1.png',
+  img_abilities:'http://cdn.dota2.com/apps/dota2/images/abilities/$ID_hp1.png',
   /* base for item image */
-  img_items: 'http://cdn.dota2.com/apps/dota2/images/items/${ID}_lg.png',
+  img_items: 'http://cdn.dota2.com/apps/dota2/images/items/$ID_lg.png',
   
 
-  img_hero_vert: 'http://cdn.dota2.com/apps/dota2/images/heroes/${ID}_vert.jpg',
-  img_hero_full: 'http://cdn.dota2.com/apps/dota2/images/heroes/${ID}_full.png',
-  img_hero_small: 'http://cdn.dota2.com/apps/dota2/images/heroes/${ID}_hphover.png',
+  img_hero_vert: 'http://cdn.dota2.com/apps/dota2/images/heroes/$ID_vert.jpg',
+  img_hero_full: 'http://cdn.dota2.com/apps/dota2/images/heroes/$ID_full.png',
+  img_hero_small: 'http://cdn.dota2.com/apps/dota2/images/heroes/$ID_hphover.png',
 
 }
 
@@ -205,7 +205,7 @@ const generateItems = async (data, newDataF) => {
     Object.keys(items_raw).forEach(tag => {
       items.push(new model_item({
         tag, ...items_raw[tag],
-        img: url.img_items.replace('${ID}', tag),
+        img: url.img_items.replace('$ID', tag),
       }))
     })
 
@@ -256,9 +256,9 @@ const generateHeroes = async (data, newDataF) => {
       const npc_hero = npc_heroes_raw[`npc_dota_hero_${tag}`]
       const hero = new model_hero(
         tag, hero_raw.name, hero_raw.bio,
-        url.img_hero_small.replace('${ID}', tag),
-        url.img_hero_full.replace('${ID}', tag),
-        url.img_hero_vert.replace('${ID}', tag)
+        url.img_hero_small.replace('$ID', tag),
+        url.img_hero_full.replace('$ID', tag),
+        url.img_hero_vert.replace('$ID', tag)
       )
 
       // extract data for this hero

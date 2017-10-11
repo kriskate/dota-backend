@@ -49,10 +49,10 @@ const generateAbilitiesAndTalents = (hero_tag, npc_hero, abilities_raw, img_abil
       // ability is spell
       if(specialAbilities[hero_tag] && specialAbilities[hero_tag].includes(ability_tag)) {
         abilities_special.push(new Ability({ tag: ability_tag, ...ability, 
-          img: img_abilities.replace('${ID}', ability_tag) }))
+          img: img_abilities.replace('$ID', ability_tag) }))
       } else {
         abilities.push(new Ability({ tag: ability_tag, ...ability, 
-          img: img_abilities.replace('${ID}', ability_tag) }))
+          img: img_abilities.replace('$ID', ability_tag) }))
       }
     } else {
       // ability is talent

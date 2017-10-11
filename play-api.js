@@ -8,8 +8,8 @@ const url_abilities = 'http://www.dota2.com/jsfeed/heropediadata?feeds=abilityda
 const url_items = 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english'
 const url_stats = 'http://www.dota2.com/jsfeed/heropediadata?feeds=herodata&l=english'
 
-const url_base_img_abilities = 'http://cdn.dota2.com/apps/dota2/images/abilities/${ID}_hp1.png'
-const url_base_img_items = 'http://cdn.dota2.com/apps/dota2/images/items/${ID}_lg.png'
+const url_base_img_abilities = 'http://cdn.dota2.com/apps/dota2/images/abilities/$ID_hp1.png'
+const url_base_img_items = 'http://cdn.dota2.com/apps/dota2/images/items/$ID_lg.png'
 
 
 const test = async () => {
