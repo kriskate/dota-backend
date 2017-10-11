@@ -208,7 +208,7 @@ const generateItems = async (data, newDataF) => {
     })
 
     logger.info(`creating parsed items data, ${newDataF}/items.json`)
-    createFile('items', newDataF, items)
+    await createFile('items', newDataF, items)
 
     return items
   } catch(e) {
@@ -240,7 +240,7 @@ const generateHeroes = async (data, newDataF) => {
     })
 
     logger.info(`creating parsed hero data, ${newDataF}/heroes.json`)
-    createFile('heroes', newDataF, heroes)
+    await createFile('heroes', newDataF, heroes)
     return heroes
   } catch(e) {
     logger.error('error: while generating heroes.json', e)
