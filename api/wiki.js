@@ -198,12 +198,13 @@ const updateData = async (data, newDataF) => {
 
 const generateItems = async (data, newDataF) => {
   try {
-    const {items_raw} = data
+    let {items_raw} = data
+    items_raw = items_raw.itemdata
     const items = []
 
-    Object.keys(items_raw.itemdata).forEach(tag => {
+    Object.keys(items_raw).forEach(tag => {
       items.push(new model_item({
-        tag, ...items_raw.itemdata[tag],
+        tag, ...items_raw[tag],
         img: url.img_items.replace('${ID}', tag),
       }))
     })
@@ -245,12 +246,14 @@ export const generateDotaTips = async (data, newDataF) => {
 
 const generateHeroes = async (data, newDataF) => {
   try {
-    const {heroes_raw, npc_heroes_raw, abilities_raw, items_raw} = data
+    let {heroes_raw, npc_heroes_raw, abilities_raw} = data
+    npc_heroes_raw = npc_heroes_raw.DOTAHeroes
+    abilities_raw = abilities_raw.abilitydata
 
     const heroes = []
     Object.keys(heroes_raw).forEach(tag => {
       const hero_raw = heroes_raw[tag]
-      const npc_hero = npc_heroes_raw.DOTAHeroes[`npc_dota_hero_${tag}`]
+      const npc_hero = npc_heroes_raw[`npc_dota_hero_${tag}`]
       const hero = new model_hero(
         tag, hero_raw.name, hero_raw.bio,
         url.img_hero_small.replace('${ID}', tag),
@@ -259,7 +262,7 @@ const generateHeroes = async (data, newDataF) => {
       )
 
       // extract data for this hero
-      extractHeroData(hero, npc_hero, abilities_raw.abilitydata, url.img_abilities)
+      extractHeroData(hero, npc_hero, abilities_raw, url.img_abilities)
 
       heroes.push(hero)
     })
