@@ -4,15 +4,13 @@
 import {fs, logger} from '../utils/utils'
 
 export const VERSIONF_BASE = 'versioned_data'
-export const VERSIONF_PREFIX = 'v-'
+export const VERSIONF_PREFIX = 'v_'
 
 export let currentWikiVersion = 0
-export let currentWikiVersionDataFolder = ''
-export let currentWikiVersionDate = ''
+export let currentWikiVersionDate = new Date(0)
 
 export const incrementWikiVersion = (newDataF, versionDate) => { 
   currentWikiVersion++
-  currentWikiVersionDataFolder = newDataF
   currentWikiVersionDate = versionDate
   logger.info(`incremented WIKI version to: ${currentWikiVersion}`)
  }
@@ -38,11 +36,12 @@ export const initializeVersionSystem = async () => {
 
   // after all directories' names have been read, check which version is the highest
   folders.forEach(folder => {
-    const v = parseInt(folder.split('-')[0])
-    if(v !== NaN && v > currentWikiVersion) {
+    const v = parseInt(folder.split('_')[1])
+    const d = new Date(folder.split('_')[2])
+    if(v !== NaN && v > currentWikiVersion || (d && d > currentWikiVersionDate)) {
       currentWikiVersion = v
-      currentWikiVersionDataFolder = folder
-      currentWikiVersionDate = folder.substring(4)
+      currentWikiVersionDate = d.toISOString()
+
     }
   })
 

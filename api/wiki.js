@@ -1,7 +1,7 @@
 
 
 import {fs, logger, fetchJSON, rimraf, timestamp} from '../utils/utils'
-import {VERSIONF_BASE, VERSIONF_PREFIX, currentWikiVersion, incrementWikiVersion, currentWikiVersionDataFolder} from './wiki-versioning'
+import {VERSIONF_BASE, VERSIONF_PREFIX, currentWikiVersion, currentWikiVersionDate, incrementWikiVersion} from './wiki-versioning'
 
 import model_hero from '../data/model_hero'
 import {extractHeroData} from '../data/hero_utils'
@@ -127,8 +127,8 @@ export const gatherData = async () => {
   if(!allData) return null
 
   const versionDate = timestamp()
-  const oldDataF = `${VERSIONF_BASE}/${currentWikiVersionDataFolder}`
-  const newDataF = `${VERSIONF_BASE}/${VERSIONF_PREFIX}${currentWikiVersion+1}-${versionDate}`
+  const oldDataF = `${VERSIONF_BASE}/${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
+  const newDataF = `${VERSIONF_BASE}/${VERSIONF_PREFIX}${currentWikiVersion+1}_${versionDate}`
 
 
   /// create temp folder and store new data in it

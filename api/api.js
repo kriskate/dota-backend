@@ -67,7 +67,7 @@ import {logger, delay, accessLogger} from '../utils/utils'
   app.get('/currentWikiVersion', (req, res) => {
     accessLogger.info('currentWikiVersion accessed')
     
-    res.send({currentWikiVersion, currentWikiVersionDataFolder, currentWikiVersionDate})
+    res.send({currentWikiVersion, currentWikiVersionDate})
   })
 
   app.get('/wiki', (req, res) => {
