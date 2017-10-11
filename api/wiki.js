@@ -92,9 +92,9 @@ export const gatherData = async () => {
   allData = await getRawData()
   if(!allData) return null
 
-
+  const versionDate = timestamp()
   const oldDataF = `${VERSIONF_BASE}/${currentWikiVersionDataFolder}`
-  const newDataF = `${VERSIONF_BASE}/${VERSIONF_PREFIX}${currentWikiVersion+1}-${timestamp()}`
+  const newDataF = `${VERSIONF_BASE}/${VERSIONF_PREFIX}${currentWikiVersion+1}-${versionDate}`
 
 
   /// create temp folder and store new data in it
@@ -144,7 +144,7 @@ export const gatherData = async () => {
       return null
     } else {
       logger.info(`new version data stays because: ${arr_diff}`)
-      incrementWikiVersion()
+      incrementWikiVersion(newDataF, versionDate)
       return parsedData
     }
   } 

@@ -5,7 +5,7 @@ import * as DB from './DB'
 import * as wiki from './wiki'
 import * as userParser from './user'
 
-import {initializeVersionSystem, currentWikiVersion, currentWikiVersionDataFolder} from './wiki-versioning'
+import {initializeVersionSystem, currentWikiVersion, currentWikiVersionDataFolder, currentWikiVersionDate} from './wiki-versioning'
 
 import {logger, delay, accessLogger} from '../utils/utils'
 
@@ -67,7 +67,7 @@ import {logger, delay, accessLogger} from '../utils/utils'
   app.get('/currentWikiVersion', (req, res) => {
     accessLogger.info('currentWikiVersion accessed')
     
-    res.send({currentWikiVersion, currentWikiVersionDataFolder})
+    res.send({currentWikiVersion, currentWikiVersionDataFolder, currentWikiVersionDate})
   })
 
   app.get('/wiki', (req, res) => {
