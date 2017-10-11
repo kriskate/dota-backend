@@ -6,6 +6,38 @@ import model_hero, {extractHeroData} from '../data/model_hero'
 import model_item from '../data/model_item'
 
 const url = {
+/* game files*/
+  /* heroes - just tags */
+  npc_activeHeroes: 'https://github.com/dotabuff/d2vpkr/blob/master/dota/scripts/npc/activelist.json',
+  /* heroes - functionality */
+  npc_heroes: 'https://github.com/dotabuff/d2vpkr/blob/master/dota/scripts/npc/npc_heroes.json',
+  /* hero abilities - functionality */
+  npc_abilities: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_abilities.json',
+  npc_itemBuilds: 'https://github.com/dotabuff/d2vpkr/tree/master/dota/itembuilds',
+
+  /* lores, tips, items - descriptions */
+  npc_dota_english: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/dota_english.json',
+  /* unit - creeps, spirit bear, visage familiars */
+  npc_units: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_units.json',
+
+  /* items - functional */
+  npc_items: 'https://github.com/dotabuff/d2vpkr/blob/master/dota/scripts/npc/items.json',
+
+  /* images: hero + tower + roshan + default */
+  npc_img: 'https://github.com/dotabuff/d2vpkr/tree/master/dota/resource/flash3/images',
+  /* images: hero + misc */
+  npc_img_hero: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/heroes/$ID.png',
+  npc_img_hero_vert: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/heroes/selection/npc_dota_hero_$ID.png',
+  npc_img_hero_mini: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/miniheroes/$ID.png',
+  /* abilities */
+  npc_img_ability: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/spellicons/$ID.png',
+  /* agi int str / baby cary dire disa escape gank init jung push radiant roam tank */
+  npc_img_pip: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/heroes/selection/pip_$ID.png',
+  /* items */
+  npc_img_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/items/$ID.png',
+  
+
+
   /* dota API - heroes
   - looks up: tag, name, bio
   */
