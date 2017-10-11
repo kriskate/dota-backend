@@ -2,7 +2,9 @@
 
 import {fs, logger, fetchJSON, rimraf, timestamp} from '../utils/utils'
 import {VERSIONF_BASE, VERSIONF_PREFIX, currentWikiVersion, incrementWikiVersion, currentWikiVersionDataFolder} from './wiki-versioning'
-import model_hero, {extractHeroData} from '../data/model_hero'
+
+import model_hero from '../data/model_hero'
+import {extractHeroData} from '../data/hero_utils'
 import model_item from '../data/model_item'
 
 const url = {

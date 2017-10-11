@@ -1,0 +1,5 @@
+const ATTRIBUTES = {
+  strength: 'DOTA_ATTRIBUTE_STRENGTH',
+  agility: 'DOTA_ATTRIBUTE_AGILITY',
+  intelligence: 'DOTA_ATTRIBUTE_INTELLECT',
+}
