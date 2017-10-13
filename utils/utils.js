@@ -7,17 +7,37 @@ import fs_i from 'fs'
 import rimraf_i from 'rimraf'
 
 
-let fs_wants = 'readdir stat access writeFile unlink mkdir rmdir'.split(' ')
-export const fs = Promise.promisifyAll(fs_i, {
-  filter: (name) => fs_wants.includes(name)
-})
-export const rimraf = Promise.promisify(rimraf_i)
 
+
+/* --- PROMISES --- */
+
+const fs_needed = 'readdir stat access writeFile unlink mkdir rmdir'.split(' ')
+export const fs = Promise.promisifyAll(fs_i, {
+  filter: (name) => fs_needed.includes(name)
+})
+
+export const rimraf = Promise.promisify(rimraf_i)
 
 export const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
 
+export const fetchJSON = (url) => fetch(url).then(res => res.json()).then(res => res)
 
+/* --- end PROMISES --- */
+
+
+
+
+/* --- MISC --- */
+
+export const timestamp = () => new Date().toISOString()
+
+/* --- end MISC --- */
+
+
+
+
+/* --- LOGGERS --- */
 
 export const logger = new (winston.Logger)({
   transports: [
@@ -35,7 +55,4 @@ export const accessLogger = new (winston.Logger)({
   ]
 })
 
-
-export const fetchJSON = (url) => fetch(url).then(res => res.json()).then(res => res)
-
-export const timestamp = () => new Date().toISOString()
+/* --- end LOGGERS --- */
