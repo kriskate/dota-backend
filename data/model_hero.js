@@ -1,10 +1,10 @@
-export const Ability = ({tag, img, dname, affects, desc, notes, dmg, attrib, cmb, lore}) => {
+export const Ability = ({ tag, img, name, affects, description, notes, attrib, cmb, lore, IsGrantedByScepter, HasScepterUpgrade }) => {
   return {
-    tag, img, affects, desc, notes, dmg, attrib, cmb, lore,
+    tag, name, img, affects, description, notes, attrib, cmb, lore, IsGrantedByScepter, HasScepterUpgrade,
   }
 }
-export const Talent = ({tag, position, text, affects, desc}) => ({ 
-  tag, affects, desc, position, text,  
+export const Talent = ({tag, name, description, position }) => ({ 
+  tag, name, description, position,
 })
 
 
@@ -16,29 +16,45 @@ export default (tag, name, bio, img_small, img_full, img_vert) => {
     img_small, img_full, img_vert,
 
     // dota api - heropediadata - abilitydata
-    Abilities: [], AbilitiesSpecial: [], Talents: [],
+    Abilities: [], /*AbilitiesSpecial: [], AbilitiesHidden: [], AbilitiesAghs: [],*/ Talents: [],
 
-    // dotabuff api - npc_heroes
-    AttributePrimary: null,
-    AttributeBaseAgility: null, AttributeAgilityGain: null,
-    AttributeBaseStrength: null, AttributeStrengthGain: null,
-    AttributeBaseIntelligence: null, AttributeIntelligenceGain: null,
+    // game files - npc_heroes - the default values are taken from npc_dota_hero_base
+    AttributePrimary: "DOTA_ATTRIBUTE_STRENGTH",
+    AttributeBaseAgility:  "0", AttributeAgilityGain:  "0",
+    AttributeBaseStrength: "0", AttributeStrengthGain: "0",
+    AttributeBaseIntelligence: "0", AttributeIntelligenceGain: "0",
 
     // base
-    ArmorPhysical: null,
-    StatusHealthRegen: null,
-    MovementSpeed: null,
-    MovementTurnRate: null,
+    ArmorPhysical: "-1",
+    MagicalResistance: "25",
 
+    StatusHealth: "200",
+    StatusHealthRegen: "1.5000",
+    StatusMana: "75",
+    StatusManaRegen: "0.9",
+    
+    MovementSpeed: "300",
+    MovementTurnRate: "0.500000",
+    
+    VisionDaytimeRange: "1800",
+    VisionNighttimeRange: "800",
+    
     // attack
-    AttackCapabilities: null,
-    AttackDamageMin: null,
-    AttackDamageMax: null,
-    AttackRate: null,
-    AttackRange: null,
-    ProjectileSpeed: null,
-
+    AttackCapabilities: "DOTA_UNIT_CAP_RANGED_ATTACK",
+    AttackDamageMin: "1",
+    AttackDamageMax: "1",
+    AttackRate: "1.700000",
+    AttackAnimationPoint: "0.750000",
+    AttackAcquisitionRange: "800",
+    AttackRange: "600",
+    ProjectileSpeed: "900",
+    
     // playStyle
     Role: null, Rolelevels: null, Complexity: null,
+    
+    // other
+    Team: null,
+    HeroID: null,
+    AbilityTalentStart: "10",
   }
 }

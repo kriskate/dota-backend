@@ -10,15 +10,13 @@ import {initializeVersionSystem, currentWikiVersion, currentWikiVersionDataFolde
 import {logger, delay, accessLogger} from '../utils/utils'
 
 
-
-
 // setup - async because we want all the engines running before we start the express server
 (async () => {
-
 
   /* --- INIT --- */
 
   try {
+    logger.info('-------                                                                               -------')
     logger.info('------- initializing versioning system - if the service restarts, get the latest data version')
     await initializeVersionSystem()
   } catch(e) {
@@ -78,7 +76,8 @@ import {logger, delay, accessLogger} from '../utils/utils'
     console.log(key, req.query.key)
 
     if(req.query.key == key)
-      res.send(wiki.currentData)
+      res.send(currentWikiVersionDate)
+    //res.send(wiki.currentData)
     else
       res.send('not authorised')
   })

@@ -1,9 +1,9 @@
 {
-  "name": "firebase-database-quickstart",
+  "name": "dota-backend",
   "version": "1.0.0",
-  "description": "Firebase Node.js Database Quickstart Sample",
+  "description": "Dota heroes and items as JSON data",
   "main": "index.js",
-  "author": "nivco@google.com",
+  "author": "kristi.stanescu@gmail.com",
   "license": "Apache License Version 2.0",
   "dependencies": {
     "babel-cli": "^6.26.0",

@@ -1,0 +1,56 @@
+legend:
+  aghs - needs Aghanim's Scepter to unlock
+  out - removed by force because of incomplete data
+  needs - the ability is not present in the hero's ability list
+  hidden - the ability is hidden
+
+--- aghs ---
+zuus - aghs: zuus_cloud
+treant - aghs: treant_eyes_in_the_forest
+ogre_magi - aghs: ogre_magi_unrefined_fireblast
+earth_spirit - aghs: earth_spirit_petrify
+nyx_assasin - aghs: nyx_assassin_burrow
+            - hidden: nyx_assassin_unburrow
+life_stealer - aghs: life_stealer_assimilate
+             - hidden: life_stealer_control, life_stealer_consume, life_stealer_assimilate_eject
+shredder - aghs: shredder_chakram_2
+         - hidden: shredder_return_chakram, shredder_return_chakram2
+tusk - aghs: tusk_walrus_kick
+     - hidden: tusk_launch_snowball
+morphling - aghs, needs: morphling_hybrid
+          - hidden: morphling_morph_replicate
+          - out: morphling_morph
+
+--- hidden ---
+tiny - hidden tiny_toss_tree
+kunnka - hidden kunkka_return
+pangolier - hidden: pangolier_gyroshell_stop
+abyssal_underlord - hidden: abyssal_underlord_cancel_dark_rift
+elder_titan - hidden: elder_titan_return_spirit
+naga_siren - hidden: naga_siren_song_of_the_siren_cancel
+ancient_aparition - hidden: ancient_apparition_ice_blast_release
+alchemist - hidden: alchemist_unstable_concoction_throw
+keeper_of_the_light - hidden: keeper_of_the_light_illuminate_end, keeper_of_the_light_spirit_form_illuminate, keeper_of_the_light_spirit_form_illuminate_end
+wisp - hidden: wisp_tether_break, wisp_spirits_in
+
+rubik - hidden: rubick_telekinesis_land
+      - out: rubick_hidden1, rubick_hidden2, rubick_hidden3
+monkey_king - hidden: monkey_king_untransform
+            - out: monkey_king_primal_spring_early
+phoenix - hidden, needs: phoenix_sun_ray_toggle_move
+        - hidden: phoenix_launch_fire_spirit, phoenix_icarus_dive_stop, phoenix_sun_ray_stop
+
+--- needs ---
+brewmaster - brewlings - earth - needs: brewmaster_earth_hurl_boulder, brewmaster_earth_spell_immunity, brewmaster_earth_pulverize
+                       - storm - needs: brewmaster_storm_dispel_magic, brewmaster_storm_cyclone, brewmaster_storm_wind_walk
+                       - fire  - needs: brewmaster_fire_permanent_immolation
+
+
+lone druid - hidden: lone_druid_true_form_battle_cry, lone_druid_true_form_druid
+           - custom: lone_druid_true_form_druid contains aghs description
+           - bear - hidden, needs: lone_druid_spirit_bear_return, lone_druid_spirit_bear_entangle, lone_druid_spirit_bear_demolish
+
+--- other ---
+invoker - invoked abilities are passed as regular abilities
+spirit_breaker - spirit_breaker_empowering_haste.AbilitySpecial data inconsistency (Object instead of expected Array)
+visage - custom: needs visage_summon_familiars_stone_form, but it's description is the same as for visage_stone_form_self_cast, which should have a different description, one which explains that the closest familiar turns to stone
