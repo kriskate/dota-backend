@@ -10,7 +10,7 @@ const excludedAbilities = [
   'morphling_morph',
   'rubick_hidden1', 'rubick_hidden2', 'rubick_hidden3'
 ]
-// special activities are non-standard abilities
+// special abilities are non-standard abilities
 const specialAbilities = {
   brewmaster: {
     earth: ['brewmaster_earth_hurl_boulder', 'brewmaster_earth_spell_immunity', 'brewmaster_earth_pulverize'], 
@@ -32,6 +32,8 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
 
   const abilities = [], abilities_aghs = [], abilities_special = [], abilities_hidden = [], talents = []
 
+  const talentStartsAt = npc_hero.AbilityTalentStart || 10
+
   Object.keys(npc_hero)
     // get all props named 'Ability#'
     .filter(prop => prop.substring(0, 7) === 'Ability' && !isNaN(prop.substring(7)))
@@ -40,18 +42,7 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
     .map((raw_tag, idx) => {
       // ability tag - antimage_blink
       const ability_tag = npc_hero[raw_tag]
-
-      let talentStartsAt
-      switch (hero_tag) {
-        case 'rubick':
-          talentStartsAt = 11
-          break
-        case 'invoker':
-          talentStartsAt = 17
-          break
-        default:
-          talentStartsAt = 10
-      }
+      
       
       if (excludedAbilities.includes(ability_tag)) return
       

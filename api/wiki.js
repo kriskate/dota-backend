@@ -11,7 +11,7 @@ import { getRawData, createFile, checkSize } from './wiki_utils'
 /* creates a new folder containing the data gathered from the APIs 
  * and keeps it while updating the current version if ** conditions are met
 */
-export const gatherData = async () => {
+export const checkIfDataNeedsUpdate = async () => {
   let allData = null
   
   /// gather raw data
@@ -58,7 +58,7 @@ export const gatherData = async () => {
     return false
   } else {
     // generate the new data files and finally increment the wiki version
-    const parsedData = await updateData(allData, newDataF)
+    const parsedData = await gatherData(allData, newDataF)
     
     if(!parsedData) {
       logger.info(`discarding new version folder ${newDataF} because new data could not be generated`)
@@ -77,8 +77,9 @@ export const gatherData = async () => {
   
 }
 
+
 /* data formatted as needed in the React Native APP */
-const updateData = async (data, newDataF) => {
+const gatherData = async (data, newDataF) => {
   let heroes = await getHeroes(data, newDataF)
   let items = await getItems(data, newDataF)
   let tips = await getDotatips(data, newDataF)
@@ -126,9 +127,7 @@ const getDotatips = async (data, newDataF) => {
 
     return tips
   } catch(e) {
-    logger.error('error: could not create tips', e)
+    logger.error('error: could not gather tips', e)
     return null
   }
 }
-
-/* --- end EXPORTED METHODS --- */

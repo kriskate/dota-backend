@@ -5,44 +5,42 @@ import model_hero from '../data/model_hero'
 
 export const generateHeroes = ({ heroes_raw, npc_heroes, npc_abilities, npc_dota }) => {
   npc_heroes = npc_heroes.DOTAHeroes
+  npc_dota = npc_dota.lang.Tokens
+  npc_abilities = npc_abilities.DOTAAbilities
 
   const heroes = []
-  Object.keys(heroes_raw).forEach(tag => {
-    const hero_raw = heroes_raw[tag]
-    const npc_hero = npc_heroes[`npc_dota_hero_${tag}`]
-    const hero = new model_hero(
-      tag, hero_raw.name, hero_raw.bio,
-      images.base_hero_small.replace('$ID', tag),
-      images.base_hero_full.replace('$ID', tag),
-      images.base_hero_vert.replace('$ID', tag)
-    )
 
-    // extract data for this hero
-    extractHeroData(hero, npc_hero, npc_abilities.DOTAAbilities, npc_dota.lang.Tokens)
+  Object.keys(npc_heroes).forEach(tag => {
+    // there are some keys that are not actual heroes
+    if(['Version', 'npc_dota_hero_base', 'npc_dota_hero_target_dummy'].includes(tag)) return
+
+    const npc_hero = npc_heroes[tag]
+    const hero_tag = tag.replace('npc_dota_hero_', '')
+    
+    
+    const hero = new model_hero({
+      tag: hero_tag,
+      name: npc_dota[tag],
+      bio: npc_dota[`${tag}_bio`],
+      hype: npc_dota[`${tag}_hype`],
+      img_small: images.base_hero_small.replace('$ID', tag),
+      img_full: images.base_hero_full.replace('$ID', tag),
+      img_vert: images.base_hero_vert.replace('$ID', tag),
+    })
+
+    hero.AttributePrimary = HeroConstants[hero.AttributePrimary]
+    hero.AttackCapabilities = HeroConstants[hero.AttackCapabilities]
+
+    Object.keys(hero.attributes).forEach(attribute => hero.attributes[attribute] = npc_hero[attribute] || hero.attributes[attribute])
+    // get abilities and talents
+    const abilities = generateAbilitiesAndTalents(hero.tag, npc_hero, npc_abilities, npc_dota)
+    Object.keys(abilities).forEach(ability => {
+      if(ability.length > 0) hero[ability] = abilities[ability]
+    })
+
 
     heroes.push(hero)
   })
 
   return heroes
-}
-
-
-const extractHeroData = (hero, npc_hero, npc_abilities, npc_dota) => {
-
-  // generate hero.Abilities and hero.Talents
-  const { abilities, abilities_special, abilities_aghs, abilities_hidden, talents } = generateAbilitiesAndTalents(hero.tag, npc_hero, npc_abilities, npc_dota)
-
-  if(abilities_special.length > 0) hero.AbilitiesSpecial = abilities_special
-  if(abilities_hidden.length > 0) hero.AbilitiesHidden = abilities_hidden
-  if(abilities_aghs.length > 0) hero.AbilitiesAghs = abilities_aghs
-
-  hero.Abilities = abilities
-  hero.Talents = talents
-
-  // dump the remaining props from npc_heroes
-  Object.keys(hero).forEach(prop => {
-    if (!hero[prop]) hero[prop] = npc_hero[prop]
-  })
-  hero.AttributePrimary = HeroConstants[hero.AttributePrimary]
-  hero.AttackCapabilities = HeroConstants[hero.AttackCapabilities]
 }
