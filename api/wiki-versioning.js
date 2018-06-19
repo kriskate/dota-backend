@@ -9,7 +9,7 @@ export const VERSIONF_PREFIX = 'v_'
 export let currentWikiVersion = 0
 export let currentWikiVersionDate = new Date(0)
 
-export const incrementWikiVersion = (newDataF, versionDate) => { 
+export const incrementWikiVersion = (versionDate) => { 
   currentWikiVersion++
   currentWikiVersionDate = versionDate
   logger.info(`incremented WIKI version to: ${currentWikiVersion}`)

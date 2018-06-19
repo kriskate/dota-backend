@@ -1,13 +1,15 @@
+import path from 'path'
 import express from 'express'
 import schedule from 'node-schedule'
 
 import * as DB from './DB'
-import * as wiki from './wiki'
+import { checkIfDataNeedsUpdate } from './wiki'
 import * as userParser from './user'
 
-import {initializeVersionSystem, currentWikiVersion, currentWikiVersionDataFolder, currentWikiVersionDate} from './wiki-versioning'
+import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, VERSIONF_BASE, VERSIONF_PREFIX } from './wiki-versioning'
 
-import {logger, delay, accessLogger} from '../utils/utils'
+import { logger, delay, accessLogger } from '../utils/utils'
+
 
 
 // setup - async because we want all the engines running before we start the express server
@@ -68,19 +70,33 @@ import {logger, delay, accessLogger} from '../utils/utils'
     res.send({currentWikiVersion, currentWikiVersionDate})
   })
 
-  app.get('/wiki', (req, res) => {
+  /* get generated files */
+  app.get('/wiki', async (req, res) => {
+    const data = req.query ? req.query.data : null
+
+    // to-do implement authorisation
+
     // in order to not pass this whole key to the request (url)
     // we'll only send half of it
-    let key = serviceAccount.private_key_id
-    key = key.substring(0,key.length/2)
-    console.log(key, req.query.key)
+    // let key = serviceAccount.private_key_id
+    // key = key.substring(0,key.length/2)
 
-    if(req.query.key == key)
-      res.send(currentWikiVersionDate)
-    //res.send(wiki.currentData)
-    else
-      res.send('not authorised')
+    if(['heroes', 'items', 'tips'].includes(data)) {
+      const cf = `${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
+
+      console.log(req.query, currentWikiVersion, currentWikiVersionDate, VERSIONF_BASE, cf)
+
+      // var file = promises.readFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`), 'binary')
+
+      // res.setHeader('Content-Length', file.length);
+      // res.write(file, 'binary');
+      // res.end();    
+      res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
+    }
+    
   })
+
+
 
   /* watch express API server */
   app.listen(port, () => {

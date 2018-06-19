@@ -70,7 +70,7 @@ export const checkIfDataNeedsUpdate = async () => {
       return null
     } else {
       logger.info(`new version data stays because: ${arr_diff}`)
-      incrementWikiVersion(newDataF, versionDate)
+      incrementWikiVersion(versionDate)
       return parsedData
     }
   } 
