@@ -9,8 +9,6 @@ export const getRawData = async () => {
       npc_items: await fetchJSON(data_url.npc_items),
       npc_dota: await fetchJSON(data_url.npc_dota),
 
-      heroes_raw: await fetchJSON(data_url.heroes),
-      abilities_raw: await fetchJSON(data_url.abilities),
       items_raw: await fetchJSON(data_url.items),
     }
   } catch (e) {

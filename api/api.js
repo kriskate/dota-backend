@@ -36,7 +36,7 @@ import {logger, delay, accessLogger} from '../utils/utils'
   const updater = async () => {
     let data = null
     try{
-      data = await wiki.checkIfDataNeedsUpdate()
+      data = await checkIfDataNeedsUpdate()
       if(data) {
         await DB.updateDB(data)
         logger.info('DB updated')

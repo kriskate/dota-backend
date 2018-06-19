@@ -10,17 +10,20 @@ const excludedAbilities = [
   'morphling_morph',
   'rubick_hidden1', 'rubick_hidden2', 'rubick_hidden3'
 ]
+
 // special abilities are non-standard abilities
 const specialAbilities = {
-  brewmaster: {
-    earth: ['brewmaster_earth_hurl_boulder', 'brewmaster_earth_spell_immunity', 'brewmaster_earth_pulverize'], 
-    storm: ['brewmaster_storm_dispel_magic', 'brewmaster_storm_cyclone', 'brewmaster_storm_wind_walk'], 
-    fire: ['brewmaster_fire_permanent_immolation'] 
-  },
-  phoenix: ['phoenix_sun_ray_toggle_move'],
+  morphling: 'morphling_hybrid',
+  brewmaster: [
+    'brewmaster_earth_hurl_boulder', 'brewmaster_earth_spell_immunity', 'brewmaster_earth_pulverize',
+    'brewmaster_storm_dispel_magic', 'brewmaster_storm_cyclone', 'brewmaster_storm_wind_walk',
+    'brewmaster_fire_permanent_immolation'
+  ],
+  phoenix: 'phoenix_sun_ray_toggle_move',
   invoker: ['invoker_cold_snap', 'invoker_ghost_walk', 'invoker_tornado', 'invoker_emp', 'invoker_alacrity', 'invoker_chaos_meteor', 'invoker_sun_strike', 'invoker_forge_spirit', 'invoker_ice_wall', 'invoker_deafening_blast'],
   lone_druid: {
-    bear: ['lone_druid_spirit_bear_return', 'lone_druid_spirit_bear_entangle', 'lone_druid_spirit_bear_demolish', ],
+    bear: ['lone_druid_spirit_bear_return', 'lone_druid_spirit_bear_entangle', 'lone_druid_spirit_bear_demolish'],
+    aghsFor: 'lone_druid_true_form',
     aghsIn: 'lone_druid_true_form_druid',
   },
   spirit_breaker: 'spirit_breaker_empowering_haste',
@@ -43,55 +46,13 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
       // ability tag - antimage_blink
       const ability_tag = npc_hero[raw_tag]
       
-      
       if (excludedAbilities.includes(ability_tag)) return
       
       if (parseInt(raw_tag.split('Ability')[1]) < talentStartsAt) {
-        // ability is spell
         const npc_ability = npc_abilities[ability_tag]
-        
-        let new_ability = new Ability({
-          tag: ability_tag,
-          img: images.base_abilities.replace('$ID', ability_tag)
-        })
 
+        const new_ability = getAbilityData(ability_tag, npc_abilities, npc_dota)
 
-        const abilityKeys = getAbilityKeys(ability_tag, npc_ability, npc_dota)
-
-        new_ability.name = abilityKeys.name
-        new_ability.description = `
-        ${abilityKeys.description}<br/><br/>
-        ${!abilityKeys.aghanim ? '' : addColor(`Aghanim's Scepter Upgrade: ${abilityKeys.aghanim}`, colors.aghs)}
-        `.replace(/\s+/g, ' ')
-        
-        const abillityAffects = getAbilityAffects(npc_ability)
-        new_ability.affects = `
-          ${!npc_ability.IsGrantedByScepter ? '' : addColor(`Requires Aghanim's Scepter to unlock.`)}
-          ABILITY: ${getAbilityBehavior(npc_ability)}<br />
-          ${!abillityAffects ? '' 
-            : `AFFECTS: ${abillityAffects}<br />`}
-          ${!npc_ability.AbilityUnitDamageType || !AbilityConstants.damageType[npc_ability.AbilityUnitDamageType] ? '' 
-            : `DAMAGE TYPE: ${AbilityConstants.damageType[npc_ability.AbilityUnitDamageType]}<br />`}
-          ${!npc_ability.SpellImmunityType ? '' 
-            : `PIERCES SPELL IMMUNITY: ${AbilityConstants[npc_ability.SpellImmunityType]}<br />`}
-          ${!npc_ability.SpellDispellableType ? '' 
-            : `DISPELLABLE: ${AbilityConstants[npc_ability.SpellDispellableType]}`}
-        `.replace(/\s+/g, ' ')
-
-        new_ability.notes = abilityKeys.notes.join('<br/>')
-
-        new_ability.attrib = abilityKeys.special.join('<br/>')
-        new_ability.cmb = `
-          ${!npc_ability.AbilityManaCost ? '' : `<img src=${images.mana} width=\"16\" height=\"16\" border=\"0\" /> ${npc_ability.AbilityManaCost} <br/>`}
-          ${!npc_ability.AbilityCooldown ? '' : `<img src=${images.cooldown} width=\"16\" height=\"16\" border=\"0\" />${npc_ability.AbilityCooldown}<br/>`}
-        `.replace(/\s+/g, ' ')
-
-        new_ability.lore = abilityKeys.lore
-
-        new_ability.HasScepterUpgrade = npc_ability.HasScepterUpgrade
-        new_ability.IsGrantedByScepter = npc_ability.IsGrantedByScepter
-
-        // some abilities are special, like invoker's invoked spells
         if (hero_tag == 'invoker' && specialAbilities[hero_tag].includes(ability_tag))
           abilities_special.push(new_ability)
         else if(npc_ability.AbilityBehavior && npc_ability.AbilityBehavior.includes('DOTA_ABILITY_BEHAVIOR_HIDDEN')){
@@ -100,43 +61,125 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
             : abilities_hidden.push(new_ability)
         } else
           abilities.push(new_ability)
-
       } else {
         // ability is talent
 
         let talent = new Talent({
           tag: ability_tag,
-          name: npc_dota[`DOTA_Tooltip_ability_${ability_tag}`],
+          name: npc_dota[`${AbilityConstants.DOTA_PREFIX}${ability_tag}`],
           position: idx % 2 !== 0 ? 'left' : 'right',
-          description: npc_dota[`DOTA_Tooltip_ability_${ability_tag}_Description`] || '',
+          description: npc_dota[`${AbilityConstants.DOTA_PREFIX}${ability_tag}_Description`] || '',
         })
         talents.push(talent)
       }
     })
+
+  switch (hero_tag) {
+    case 'phoenix':
+      abilities_hidden.push(getAbilityData(specialAbilities.phoenix, npc_abilities, npc_dota))
+    break;
+    case 'morphling':
+      abilities_special.push(getAbilityData(specialAbilities.morphling, npc_abilities, npc_dota))
+    break;
+    case 'brewmaster':
+      specialAbilities.brewmaster.forEach(ability => {
+        abilities_special.push(getAbilityData(ability, npc_abilities, npc_dota))
+      })
+    break;
+    case 'lone_druid':
+      specialAbilities.lone_druid.bear.forEach(ability => {
+        abilities_special.push(getAbilityData(ability, npc_abilities, npc_dota))
+      })
+    break;
+  }
 
   return { abilities, abilities_aghs, abilities_special, abilities_hidden, talents }
 }
 
 
 
-export const getAbilityKeys = (ability_tag, npc_ability, npc_dota) => {
+const getAbilityData = (ability_tag, npc_abilities, npc_dota) => {
+    // ability is spell
+    const npc_ability = npc_abilities[ability_tag]
+    
+    let new_ability = new Ability({
+      tag: ability_tag,
+      img: images.base_abilities.replace('$ID', ability_tag)
+    })
+
+
+    const abilityKeys = getAbilityKeys(ability_tag, npc_ability, npc_dota)
+
+    // name
+    new_ability.name = abilityKeys.name
+
+    // description
+    new_ability.description = `
+      ${abilityKeys.description}<br/><br/>
+      ${!abilityKeys.aghanim ? '' : addColor(`Aghanim's Scepter Upgrade: ${abilityKeys.aghanim}`, colors.aghs)}
+    `.replace(/\s+/g, ' ')
+    
+    // affects
+    const abillityAffects = getAbilityAffects(npc_ability)
+    new_ability.affects = `
+      ${!npc_ability.IsGrantedByScepter ? '' : addColor(`Requires Aghanim's Scepter to unlock.`)}
+      ABILITY: ${getAbilityBehavior(npc_ability)}<br />
+      ${!abillityAffects ? '' 
+        : `AFFECTS: ${abillityAffects}<br />`}
+      ${!npc_ability.AbilityUnitDamageType || !AbilityConstants.damageType[npc_ability.AbilityUnitDamageType] ? '' 
+        : `DAMAGE TYPE: ${AbilityConstants.damageType[npc_ability.AbilityUnitDamageType]}<br />`}
+      ${!npc_ability.SpellImmunityType ? '' 
+        : `PIERCES SPELL IMMUNITY: ${AbilityConstants[npc_ability.SpellImmunityType]}<br />`}
+      ${!npc_ability.SpellDispellableType ? '' 
+        : `DISPELLABLE: ${AbilityConstants[npc_ability.SpellDispellableType]}`}
+    `.replace(/\s+/g, ' ')
+
+    // notes
+    new_ability.notes = abilityKeys.notes.join('<br/>')
+
+    // attrib
+    new_ability.attrib = abilityKeys.special.join('<br/>')
+
+    // cooldown and manacost
+    new_ability.cmb = `
+      ${!npc_ability.AbilityManaCost ? '' : `<img src=${images.mana} width=\"16\" height=\"16\" border=\"0\" /> ${npc_ability.AbilityManaCost} <br/>`}
+      ${!npc_ability.AbilityCooldown ? '' : `<img src=${images.cooldown} width=\"16\" height=\"16\" border=\"0\" />${npc_ability.AbilityCooldown}<br/>`}
+    `.replace(/\s+/g, ' ')
+
+    // lore
+    new_ability.lore = abilityKeys.lore
+
+    // aghs
+    new_ability.HasScepterUpgrade = npc_ability.HasScepterUpgrade
+    new_ability.IsGrantedByScepter = npc_ability.IsGrantedByScepter
+
+    return new_ability
+}
+
+// to-do: refactor this to take properties from within the ability (npc_abilities)
+// instead of parsing npc_dota for each ability
+const getAbilityKeys = (ability_tag, npc_ability, npc_dota) => {
   let name, description, aghanim, lore, notes = [], special = []
 
+  if(ability_tag == specialAbilities.lone_druid.aghsFor)
+    aghanim = npc_dota[`${AbilityConstants.DOTA_PREFIX}${specialAbilities.lone_druid.aghsIn}_aghanim_description`]
+
   Object.keys(npc_dota).forEach(key => {
-    const isKeyForAbility = new RegExp(`DOTA_Tooltip_ability_${ability_tag}`).test(key)
+    const isKeyForAbility = new RegExp(`${AbilityConstants.DOTA_PREFIX}${ability_tag}`).test(key)
     if (!isKeyForAbility) return
 
     // name
-    if (key == `DOTA_Tooltip_ability_${ability_tag}`) name = npc_dota[key]
+    if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}`) name = npc_dota[key]
     // notes
-    else if (key.includes(`DOTA_Tooltip_ability_${ability_tag}_Note`)) notes.push(npc_dota[key])
+    else if (key.includes(`${AbilityConstants.DOTA_PREFIX}${ability_tag}_Note`)) notes.push(npc_dota[key])
     // lore
-    else if (key == `DOTA_Tooltip_ability_${ability_tag}_Lore`) lore = npc_dota[key]
+    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_Lore`) lore = npc_dota[key]
+    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_lore`) lore = npc_dota[key]
     // aghs
-    else if (key == `DOTA_Tooltip_ability_${ability_tag}_aghanim_description`) 
+    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_aghanim_description`) 
       aghanim = replaceWithAbilitySpecial(npc_dota[key], npc_ability, ability_tag)
     // description
-    else if (key == `DOTA_Tooltip_ability_${ability_tag}_Description`) 
+    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_Description`) 
       description = replaceWithAbilitySpecial(npc_dota[key], npc_ability, ability_tag)
     // special
     else {
@@ -147,7 +190,7 @@ export const getAbilityKeys = (ability_tag, npc_ability, npc_dota) => {
   return { name, description, aghanim, lore, notes, special }
 }
 
-const getAbilitySpecialValue = (npc_ability, ability_tag, ability_key, cns) => {
+const getAbilitySpecialValue = (npc_ability, ability_tag, ability_key) => {
   if(!npc_ability.AbilitySpecial) return null
   
   let toR = null
@@ -155,7 +198,7 @@ const getAbilitySpecialValue = (npc_ability, ability_tag, ability_key, cns) => {
   const broken_arr = ability_tag == specialAbilities.spirit_breaker
   const ability_special_arr = broken_arr ? Object.keys(npc_ability.AbilitySpecial) : npc_ability.AbilitySpecial
 
-  const tkey = ability_key.replace(`DOTA_Tooltip_ability_${ability_tag}_`, '')
+  const tkey = ability_key.replace(`${AbilityConstants.DOTA_PREFIX}${ability_tag}_`, '')
   ability_special_arr.forEach(a_s => {
     if(broken_arr) a_s = npc_ability.AbilitySpecial[a_s]
 
@@ -187,7 +230,7 @@ const replaceWithAbilitySpecial = (str, npc_ability, ability_tag) => {
     const parsedProp = prop.replace(/%/g, '')
     if(!parsedProp) return
 
-    const ability_special_value = getAbilitySpecialValue(npc_ability, ability_tag, parsedProp, true)
+    const ability_special_value = getAbilitySpecialValue(npc_ability, ability_tag, parsedProp)
     if(ability_special_value !== null) toR = toR.replace(prop, ability_special_value)
   })
 
@@ -196,7 +239,7 @@ const replaceWithAbilitySpecial = (str, npc_ability, ability_tag) => {
 
 
 
-export const getAbilityBehavior = (npc_ability) => Object.keys(AbilityConstants.behavior).reduce((behaviors, behavior, idx) => {
+const getAbilityBehavior = (npc_ability) => Object.keys(AbilityConstants.behavior).reduce((behaviors, behavior, idx) => {
   // abilities always have behaviors
   const comma = !behaviors ? '' : ', '
   const addBehavior = npc_ability.AbilityBehavior.includes(behavior) ? comma + AbilityConstants.behavior[behavior] : ''
@@ -205,7 +248,7 @@ export const getAbilityBehavior = (npc_ability) => Object.keys(AbilityConstants.
 
 
 
-export const getAbilityAffects = (npc_ability) => {
+const getAbilityAffects = (npc_ability) => {
   let affected = ''
 
   const unit = (team) => {

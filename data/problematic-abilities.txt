@@ -17,13 +17,10 @@ shredder - aghs: shredder_chakram_2
          - hidden: shredder_return_chakram, shredder_return_chakram2
 tusk - aghs: tusk_walrus_kick
      - hidden: tusk_launch_snowball
-morphling - aghs, needs: morphling_hybrid
-          - hidden: morphling_morph_replicate
-          - out: morphling_morph
 
 --- hidden ---
-tiny - hidden tiny_toss_tree
-kunnka - hidden kunkka_return
+tiny - hidden: tiny_toss_tree
+kunnka - hidden: kunkka_return
 pangolier - hidden: pangolier_gyroshell_stop
 abyssal_underlord - hidden: abyssal_underlord_cancel_dark_rift
 elder_titan - hidden: elder_titan_return_spirit
@@ -37,10 +34,13 @@ rubik - hidden: rubick_telekinesis_land
       - out: rubick_hidden1, rubick_hidden2, rubick_hidden3
 monkey_king - hidden: monkey_king_untransform
             - out: monkey_king_primal_spring_early
+
+--- custom/ needs ---
 phoenix - hidden, needs: phoenix_sun_ray_toggle_move
         - hidden: phoenix_launch_fire_spirit, phoenix_icarus_dive_stop, phoenix_sun_ray_stop
-
---- needs ---
+morphling - aghs, needs: morphling_hybrid
+          - hidden: morphling_morph_replicate
+          - out: morphling_morph
 brewmaster - brewlings - earth - needs: brewmaster_earth_hurl_boulder, brewmaster_earth_spell_immunity, brewmaster_earth_pulverize
                        - storm - needs: brewmaster_storm_dispel_magic, brewmaster_storm_cyclone, brewmaster_storm_wind_walk
                        - fire  - needs: brewmaster_fire_permanent_immolation

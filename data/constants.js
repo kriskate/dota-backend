@@ -81,6 +81,9 @@ export const data_url = {
 
 // https://flatuicolors.com/palette/defo
 export const colors = {
+  open_dota_background: '#2E2D45',
+  open_dota_background_gradient: 'background-color: rgb(25, 32, 35); background-image: linear-gradient(135deg, rgb(46, 45, 69), rgb(28, 33, 39));',
+  
   physical: '#e74c3c',
   magical: '#3498db',
   pure: '#9b59b6',
@@ -103,6 +106,8 @@ export const HeroConstants = {
   DOTA_UNIT_CAP_RANGED_ATTACK: 'Ranged',
 }
 export const AbilityConstants = {
+  DOTA_PREFIX: 'DOTA_Tooltip_ability_',
+
   SPELL_IMMUNITY_ALLIES_NO: addColor('No', colors.piercesNo),
   SPELL_IMMUNITY_ALLIES_YES: addColor('Yes', colors.pierces),
   SPELL_IMMUNITY_ENEMIES_NO: addColor('No', colors.piercesNo),
@@ -154,4 +159,10 @@ export const AbilityConstants = {
     DOTA_ABILITY_BEHAVIOR_AOE: 'AOE',
     DOTA_ABILITY_BEHAVIOR_DIRECTIONAL: 'Directional',
   }
+}
+
+export const ItemConstants = {
+  DOTA_PREFIX: 'item_',
+  DOTA_ITEM_DISASSEMBLE_ALWAYS: "Yes",
+  DOTA_ITEM_DISASSEMBLE_NEVER: "No",
 }
