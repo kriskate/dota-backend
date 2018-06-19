@@ -15,6 +15,10 @@ export default (
   lore,
   components,
   created,
+  
+  AbilityCastRange,
+  ItemDisassembleRule,
+
 ) => ({
   tag,
   
@@ -31,5 +35,8 @@ export default (
   lore,
   components,
   created,
+
+  AbilityCastRange,
+  ItemDisassembleRule,
   
 })
