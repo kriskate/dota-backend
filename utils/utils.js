@@ -1,11 +1,13 @@
 import fetch from 'isomorphic-fetch'
-import winston from 'winston'
+import Winston from 'winston'
+import { LoggingWinston } from'@google-cloud/logging-winston'
 import 'winston-daily-rotate-file'
 
 import Promise from 'bluebird'
 import fs_i from 'fs'
 import rimraf_i from 'rimraf'
 
+import { version } from '../package.json'
 
 
 
@@ -39,17 +41,27 @@ export const timestamp = () => new Date().toISOString()
 
 /* --- LOGGERS --- */
 
-export const logger = new (winston.Logger)({
-  transports: [
-    new (winston.transports.DailyRotateFile)({
-      filename: './logs/json', prepend: true,
-    })
-   ] 
-})
+export const logger = new Winston.Logger()
 
-export const accessLogger = new (winston.Logger)({
+
+if(process.env.NODE_ENV == 'development')
+  logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
+else {
+  logger.add(LoggingWinston, {
+    keyFilename: '../secrets/pocket-dota-logging.json',
+    logName: 'dota-data-log',
+    labels: {
+      app: 'dota-data',
+      version,
+    }
+  })
+}
+
+
+
+export const accessLogger = new (Winston.Logger)({
   transports: [
-    new (winston.transports.DailyRotateFile)({
+    new (Winston.transports.DailyRotateFile)({
       filename: './logs-access/json', prepend: true,
     })
   ]
