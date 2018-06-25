@@ -67,4 +67,11 @@ export const accessLogger = new (Winston.Logger)({
   ]
 })
 
+
+/* - console override - just making sure everything's covered - */
+if(process.env.NODE_ENV == 'production') {
+  ['info', 'warn', 'error'].forEach(key => {
+    console[key] = () => logger[key].apply(logger, arguments)
+  })
+}
 /* --- end LOGGERS --- */
