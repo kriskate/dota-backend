@@ -38,15 +38,15 @@ export const timestamp = () => new Date().toISOString()
 
 
 
+export const prod = process.env.NODE_ENV == 'production'
 
 /* --- LOGGERS --- */
+export const logger = new Winston.Logger({
+  level: prod ? 'info' : 'debug'
+})
 
-export const logger = new Winston.Logger()
 
-
-if(process.env.NODE_ENV == 'development')
-  logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
-else {
+if(prod) {
   logger.add(LoggingWinston, {
     keyFilename: '../secrets/pocket-dota-logging.json',
     logName: 'dota-data-log',
@@ -55,7 +55,7 @@ else {
       version,
     }
   })
-}
+} else logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
 
 
 
@@ -69,9 +69,11 @@ export const accessLogger = new (Winston.Logger)({
 
 
 /* - console override - just making sure everything's covered - */
-if(process.env.NODE_ENV == 'production') {
+if(prod) {
   ['info', 'warn', 'error'].forEach(key => {
     console[key] = () => logger[key].apply(logger, arguments)
   })
+} else {
+  logger.add(Winston.transports.Console);
 }
 /* --- end LOGGERS --- */
