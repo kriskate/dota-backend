@@ -37,6 +37,7 @@ export const images = {
 }
 
 export const data_url = {
+  // game version and patch notes
   odota_gameversion: 'https://github.com/odota/dotaconstants/blob/master/json/patch.json',
   patch_notes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/panorama/localization/patchnotes/patchnotes_english.txt',
   /* game files*/
@@ -65,15 +66,6 @@ export const data_url = {
   npc_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/items.json',
   
 
-  /* dota API - heroes
-  - looks up: tag, name, bio
-  */
-  heroes: 'http://www.dota2.com/jsfeed/heropickerdata?&l=english',
-  
-  /* dota API - hero abilities
-  - looks up: description
-  */
-  abilities: 'http://www.dota2.com/jsfeed/heropediadata?feeds=abilitydata&l=english',
   /* dota API - items
   - looks up: description, name, properties
   */
