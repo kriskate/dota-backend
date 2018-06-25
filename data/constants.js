@@ -30,13 +30,15 @@ export const images = {
   npc_img_hero_mini: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/miniheroes/$ID.png',
   /* abilities */
   npc_img_ability: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/spellicons/$ID.png',
-  /* agi int str / baby cary dire disa escape gank init jung push radiant roam tank */
+  /* attributes: agi int str || roles: baby cary dire disa escape gank init jung push radiant roam tank */
   npc_img_pip: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/heroes/selection/pip_$ID.png',
   /* items */
   npc_img_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/items/$ID.png',
 }
 
 export const data_url = {
+  odota_gameversion: 'https://github.com/odota/dotaconstants/blob/master/json/patch.json',
+  patch_notes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/panorama/localization/patchnotes/patchnotes_english.txt',
   /* game files*/
   /* heroes - just tags */
   npc_activeHeroes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/activelist.json',
