@@ -6,16 +6,19 @@ import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 import * as userParser from './user'
 
-import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, VERSIONF_BASE, VERSIONF_PREFIX } from './wiki-versioning'
+import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
 
 import { logger, delay, accessLogger } from '../utils/utils'
-
-
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
 
   /* --- INIT --- */
+
+  // create VERSIONF_BASE folder and dump git data into it
+  logger.info(`--- initializing git data folder: ${VERSIONF_BASE}`)
+  await DB.initDB()
+
 
   try {
     logger.info('-------                                                                               -------')
@@ -30,8 +33,6 @@ import { logger, delay, accessLogger } from '../utils/utils'
 
   /* --- end INIT --- */
 
-
-
   /* --- DATABASE --- */
 
   /* updates db if new data */
@@ -40,7 +41,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
     try{
       data = await checkIfDataNeedsUpdate()
       if(data) {
-        await DB.updateDB(data)
+        await DB.updateDB()
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
     } catch(e) {
@@ -48,17 +49,24 @@ import { logger, delay, accessLogger } from '../utils/utils'
     }
   }
   
-  logger.info('setting cron job for data updates - everyday at 00:00')
-  const rule = new schedule.RecurrenceRule()
-  rule.hour = 0
-  rule.minute = 0
-  const runner = schedule.scheduleJob(rule, updater)
-  await updater()
 
+  if(prod) {
+    logger.info('setting cron job for data updates - everyday at 00:00')
+    try {
+      const rule = new schedule.RecurrenceRule()
+      rule.hour = 0
+      rule.minute = 0
+      const runner = schedule.scheduleJob(rule, updater)
+      await updater()
+    } catch(e) {
+      logger.error('failed to set cronjob', e)
+    }
+  }
+  
   /* --- end DATABASE --- */
-
-
-
+  
+  
+  
   /* --- API server --- */
   const port = 8080
   const app = new express()

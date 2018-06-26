@@ -1,13 +1,16 @@
 //import promisifyAll from 'util-promisifyAll'
 //const fs = promisifyAll(require('fs'))
 
-import {fs, logger} from '../utils/utils'
+import { fs, logger, timestamp } from '../utils/utils'
+
 
 export const VERSIONF_BASE = 'versioned_data'
+export const VERSIONF_BASE_RAW = 'raw'
 export const VERSIONF_PREFIX = 'v_'
 
 export let currentWikiVersion = 0
-export let currentWikiVersionDate = new Date(0)
+export let currentWikiVersionDate = timestamp()
+export let currentDotaVersion = 0
 
 export const incrementWikiVersion = (versionDate) => { 
   currentWikiVersion++
@@ -20,7 +23,6 @@ export const incrementWikiVersion = (versionDate) => {
  * might change if the server will git push version folders
  */
 export const initializeVersionSystem = async () => {
-
   // ASYNC iterate through all version folders and see latest
   let files = await fs.readdirAsync(VERSIONF_BASE)
 
