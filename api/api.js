@@ -12,6 +12,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
+  logger.info('-------        APP INIT        -------')
 
   /* --- INIT --- */
 
@@ -21,8 +22,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
 
 
   try {
-    logger.info('-------                                                                               -------')
-    logger.info('------- initializing versioning system - if the service restarts, get the latest data version')
+    logger.info('--- initializing versioning system - if the service restarts, get the latest data version')
     await initializeVersionSystem()
   } catch(e) {
     logger.error('an error occured while trying to start the versioning system... exiting', e)
@@ -35,12 +35,14 @@ import { logger, delay, accessLogger } from '../utils/utils'
 
   /* --- DATABASE --- */
 
-  /* updates db if new data */
+  /* get new data and update if required */
   const updater = async () => {
+    logger.info('... checking if database needs update')
     let data = null
     try{
       data = await checkIfDataNeedsUpdate()
       if(data) {
+        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, dota version ${currentDotaVersion}`)
         await DB.updateDB()
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
@@ -68,6 +70,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
   
   
   /* --- API server --- */
+  logger.info('setting up express server')
   const port = 8080
   const app = new express()
 
@@ -92,15 +95,10 @@ import { logger, delay, accessLogger } from '../utils/utils'
     if(['heroes', 'items', 'tips'].includes(data)) {
       const cf = `${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
 
-      console.log(req.query, currentWikiVersion, currentWikiVersionDate, VERSIONF_BASE, cf)
-
-      // var file = promises.readFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`), 'binary')
-
-      // res.setHeader('Content-Length', file.length);
-      // res.write(file, 'binary');
-      // res.end();    
       res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
     }
+    
+    res.send('Refine your query terms')
     
   })
 
@@ -110,7 +108,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
   app.listen(port, () => {
     console.log('Listening on port ' + port)
   })
-  logger.info('------- service succesfully started')
+  logger.info('------- service succesfully STARTED -------')
   
   /* --- end API server --- */
 

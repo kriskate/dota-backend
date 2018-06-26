@@ -26,7 +26,7 @@ export const checkIfDataNeedsUpdate = async () => {
 
   /// create temp folder and store new data in it
   if(!fs.existsSync(newDataF)) {
-    logger.info(`creating new version folder: ${newDataF}`)
+    logger.log('debug', `creating new version folder: ${newDataF}`)
     await fs.mkdirAsync(newDataF)
   }
   
@@ -54,7 +54,7 @@ export const checkIfDataNeedsUpdate = async () => {
 
   if(!arr_diff.length > 0) {
     // remove the new data because a ** condition has been met
-    logger.info(`discarding new version folder ${newDataF}`)
+    logger.log('debug', `discarding new version folder ${newDataF}. Everything is the same.`)
     try {
       await rimraf(newDataF)
     } catch(e) {
@@ -66,11 +66,11 @@ export const checkIfDataNeedsUpdate = async () => {
     const parsedData = await gatherData(allData, newDataF)
     
     if(!parsedData) {
-      logger.info(`discarding new version folder ${newDataF} because new data could not be generated`)
+      logger.warn(`discarding new version folder ${newDataF} because new data could not be generated`)
       try {
         await rimraf(newDataF)
       } catch(e) {
-        logger.error(`error (2) while removing folder ${newDataF}. Next version number might be affected.`, e)
+        logger.error(`error while removing folder ${newDataF}. Next version number might be affected.`, e)
       }
       return null
     } else {
@@ -85,6 +85,7 @@ export const checkIfDataNeedsUpdate = async () => {
 
 /* data formatted as needed in the React Native APP */
 const gatherData = async (data, newDataF) => {
+  logger.info('--- generating data files')
   let heroes = await getHeroes(data, newDataF)
   let items = await getItems(data, newDataF)
   let tips = await getDotatips(data, newDataF)
@@ -98,8 +99,6 @@ const gatherData = async (data, newDataF) => {
 const getHeroes = async (data, newDataF) => {
   try {
     const heroes = generateHeroes(data)
-
-    logger.info(`creating parsed hero data, ${newDataF}/heroes.json`)
     await createFile('heroes', newDataF, heroes)
 
     return heroes
@@ -112,8 +111,6 @@ const getHeroes = async (data, newDataF) => {
 const getItems = async (data, newDataF) => {
   try {
     const items = generateItems(data)
-
-    logger.info(`creating parsed items data, ${newDataF}/items.json`)
     await createFile('items', newDataF, items)
 
     return items
