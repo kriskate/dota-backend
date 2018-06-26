@@ -1,15 +1,21 @@
-import { logger, fetchJSON, fs } from "../utils/utils"
+import { logger, fetchJSON, fs, fetchTXT } from "../utils/utils"
 import { data_url } from "../data/constants"
 
 export const getRawData = async () => {
   try {
     return {
+      odota_gameversion: await fetchJSON(data_url.odota_gameversion),
+      npc_patch_notes: await fetchTXT(data_url.npc_patch_notes),
+
+      npc_activeHeroes: await fetchJSON(data_url.npc_activeHeroes),
+
       npc_heroes: await fetchJSON(data_url.npc_heroes),
       npc_abilities: await fetchJSON(data_url.npc_abilities),
+      npc_popular_items: await fetchTXT(data_url.npc_popular_items),
       npc_items: await fetchJSON(data_url.npc_items),
       npc_dota: await fetchJSON(data_url.npc_dota),
-
-      items_raw: await fetchJSON(data_url.items),
+      
+      dota2com_items: await fetchJSON(data_url.dota2com_items),
     }
   } catch (e) {
     logger.error('error while gathering data', e)

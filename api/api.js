@@ -8,7 +8,7 @@ import * as userParser from './user'
 
 import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
 
-import { logger, delay, accessLogger } from '../utils/utils'
+import { prod, logger, delay, accessLogger } from '../utils/utils'
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
@@ -59,11 +59,12 @@ import { logger, delay, accessLogger } from '../utils/utils'
       rule.hour = 0
       rule.minute = 0
       const runner = schedule.scheduleJob(rule, updater)
-      await updater()
     } catch(e) {
       logger.error('failed to set cronjob', e)
     }
   }
+  
+  await updater()
   
   /* --- end DATABASE --- */
   

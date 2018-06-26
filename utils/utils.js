@@ -6,6 +6,7 @@ import 'winston-daily-rotate-file'
 import Promise from 'bluebird'
 import fs_i from 'fs'
 import rimraf_i from 'rimraf'
+import simplevdf from 'simple-vdf'
 
 import { version } from '../package.json'
 
@@ -24,6 +25,7 @@ export const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
 
 export const fetchJSON = (url) => fetch(url).then(res => res.json()).then(res => res)
+export const fetchTXT = (url) => fetch(url).then(res => res.text()).then(res => simplevdf.parse(res))
 
 /* --- end PROMISES --- */
 

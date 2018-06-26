@@ -37,39 +37,27 @@ export const images = {
 }
 
 export const data_url = {
-  // game version and patch notes
-  odota_gameversion: 'https://github.com/odota/dotaconstants/blob/master/json/patch.json',
-  patch_notes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/panorama/localization/patchnotes/patchnotes_english.txt',
-  /* game files*/
-  /* heroes - just tags */
+  // game version and release dates
+  odota_gameversion: 'https://raw.githubusercontent.com/odota/dotaconstants/master/json/patch.json',
+  npc_patch_notes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/panorama/localization/patchnotes/patchnotes_english.txt',
+  
+  /* dotabuff API - game files */
   npc_activeHeroes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/activelist.json',
-  //npc_activeHeroes: 'https://github.com/dotabuff/d2vpkr/blob/master/dota/scripts/npc/activelist.json',
 
-  /* heroes - functionality */
-  /* dotabuff API - heroes
-  - looks up: ability names, hero stats
-  */
   npc_heroes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_heroes.json',
-  //npc_heroes: 'https://github.com/dotabuff/d2vpkr/blob/master/dota/scripts/npc/npc_heroes.json',
-  /* hero abilities - functionality */
   npc_abilities: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_abilities.json',
-  //npc_itemBuilds: 'https://github.com/dotabuff/d2vpkr/tree/master/dota/itembuilds',
-  npc_itemBuilds: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/itembuilds.json',
-
-  /* lores, tips, items - descriptions */
-  npc_dota: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/dota_english.json',
-  /* unit - creeps, spirit bear, visage familiars */
-  npc_units: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_units.json',
-  
-  /* items - functional */
-  //npc_items: 'https://github.com/dotabuff/d2vpkr/blob/master/dota/scripts/npc/items.json',
+  npc_popular_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_popular_items.txt',
   npc_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/items.json',
+  npc_dota: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/dota_english.json',
   
 
-  /* dota API - items
-  - looks up: description, name, properties
-  */
-  items: 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english',
+  
+  
+  // to-do: npc_itemBuilds: 'https://github.com/dotabuff/d2vpkr/tree/master/dota/itembuilds',
+  // npc_units: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_units.json',
+
+  /* dota2.com API - items */
+  dota2com_items: 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english',
 }
 
 
