@@ -8,6 +8,7 @@ import fs_i from 'fs'
 import rimraf_i from 'rimraf'
 import simplevdf from 'simple-vdf'
 
+import { prod, localAPI } from './runtime-vars'
 import { version } from '../package.json'
 
 
@@ -40,7 +41,6 @@ export const timestamp = () => new Date().toISOString()
 
 
 
-export const prod = process.env.NODE_ENV == 'production'
 
 /* --- LOGGERS --- */
 export const logger = new Winston.Logger({

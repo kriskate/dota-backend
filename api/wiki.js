@@ -1,3 +1,4 @@
+import { skip } from '../utils/runtime-vars'
 import { fs, logger, rimraf, timestamp } from '../utils/utils'
 import { VERSIONF_BASE, VERSIONF_PREFIX, VERSIONF_BASE_RAW, currentWikiVersion, currentWikiVersionDate, incrementWikiVersion } from './wiki-versioning'
 
@@ -99,6 +100,8 @@ const gatherData = async (data, newDataF) => {
 }
 
 async function generateData (generator, filename, data, newDataF) {
+  // debug individual assets -- reduces compile times
+  if(skip && skip.includes(filename)) return {}
 
   try {
     const generatedData = generator(data)

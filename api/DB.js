@@ -3,7 +3,8 @@ import * as admin from "firebase-admin"
 // will use the same token file for both front and back ends
 import * as serviceAccount from '../..//secrets/service-account.json'
 import { user, pass, repo, reponame } from '../../secrets/dota-bot-git-credentials.json'
-import { logger, fs, rimraf, prod } from '../utils/utils'
+import { prod } from '../utils/runtime-vars'
+import { logger, fs, rimraf } from '../utils/utils'
 import { currentWikiVersion, VERSIONF_BASE, currentDotaVersion } from './wiki-versioning'
 
 import gitP from 'simple-git/promise'
@@ -11,6 +12,7 @@ import gitP from 'simple-git/promise'
 
 const remote = `https://${repo}`
 const pushRemote = `https://${user}:${pass}@${repo}`
+
 // set only once, in initDB
 let git
 let tried_pull = false

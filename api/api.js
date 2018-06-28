@@ -7,8 +7,8 @@ import { checkIfDataNeedsUpdate } from './wiki'
 import * as userParser from './user'
 
 import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
-
-import { prod, logger, delay, accessLogger } from '../utils/utils'
+import { prod } from '../utils/runtime-vars'
+import { logger, delay, accessLogger } from '../utils/utils'
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
