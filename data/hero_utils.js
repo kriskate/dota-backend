@@ -3,10 +3,11 @@ import { generateAbilitiesAndTalents } from './ability_utils'
 import model_hero from '../data/model_hero'
 
 
-export const generateHeroes = ({ npc_heroes, npc_abilities, npc_dota }) => {
+export const generateHeroes = ({ npc_heroes, npc_abilities, npc_dota, npc_popular_items }) => {
   npc_heroes = npc_heroes.DOTAHeroes
   npc_dota = npc_dota.lang.Tokens
   npc_abilities = npc_abilities.DOTAAbilities
+  npc_popular_items = npc_popular_items.DOTAHeroes
 
   const heroes = []
 
@@ -23,6 +24,7 @@ export const generateHeroes = ({ npc_heroes, npc_abilities, npc_dota }) => {
       name: npc_dota[npc_tag],
       bio: npc_dota[`${npc_tag}_bio`],
       hype: npc_dota[`${npc_tag}_hype`],
+      popular_items: getPopularItems(npc_popular_items, npc_tag),
       img_small: images.base_hero_small.replace('$ID', tag),
       img_full: images.base_hero_full.replace('$ID', tag),
       img_vert: images.base_hero_vert.replace('$ID', tag),
@@ -43,4 +45,13 @@ export const generateHeroes = ({ npc_heroes, npc_abilities, npc_dota }) => {
   })
 
   return heroes
+}
+
+const getPopularItems = (npc_popular_items, npc_tag) => {
+  try {
+    return Object.keys(npc_popular_items[npc_tag].popular_items).map(item => item)
+  } catch(e) {
+    logger.warn(`getting current items for hero ${npc_tag} failed`, e)
+    return []
+  }
 }

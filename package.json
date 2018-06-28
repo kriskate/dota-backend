@@ -6,7 +6,7 @@
   "author": "kristi.stanescu@gmail.com",
   "license": "Apache License Version 2.0",
   "scripts": {
-    "debug-skip": "SKIP=heroes,items,tips npm start",
+    "debug-skip": "SKIP=heroes,items,tips,patch_notes npm start",
     "test-api": "TEST_API=true npm start",
     "start-prod": "NODE_ENV=production node server",
     "start": "NODE_ENV=development node server"
