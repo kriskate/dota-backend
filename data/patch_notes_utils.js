@@ -44,25 +44,25 @@ export const generatePatchNotes = ({ npc_patch_notes, odota_gameversion, npc_act
       } else {
         // ability - the key is an ability. it might contain trailing "_#"s
         let ability_name = cname.replace(hero_name, '').substring(1)
-        if(nrx('').test(ability_name)) ability_name = ability_name.split('_').slice(-1).join('_')
+        if(nrx('').test(ability_name)) {
+          ability_name = pop(ability_name)
+        }
         
         // right now, both abilities and items look the same: "name": ["description1", "description2"]
-        const ability = !patch_key.heroes[hero_name]
-          ? new _modelItem(ability_name, change)
-          : pushItem(patch_key.heroes[hero_name].abilities, ability_name, change)
-        pushHero(patch_key.heroes, hero_name, 'abilities', ability)
+        let hero = patch_key.heroes.find(k => k.name == hero_name)
+        if(hero)
+          pushItem(hero.abilities, ability_name, change)
+        else 
+          pushHero(patch_key.heroes, hero_name, 'abilities', new _modelItem(ability_name, change) )
       }
     } else {
       let item_name = which(npc_items, cname, 'item')
 
       if(item_name && (item_name == cname || nrx(item_name).test(cname)) ) {
-        const items_fixed = ['item_necronomicon_2'], br = "<br>"
         // -item
-        if(
-          nrx('').test(item_name) &&
-          !(version == '7.07d' && item_name == 'item_necronomicon_2')
-        )
-        item_name = item_name.split('_').slice(-1).join('_')
+        if(nrx('').test(item_name)) {
+          item_name = pop(item_name)
+        }
         
         pushItem(patch_key.items, item_name, change)
       } else {
@@ -70,8 +70,8 @@ export const generatePatchNotes = ({ npc_patch_notes, odota_gameversion, npc_act
         
         // ['General']
         // ['General_8_info']
-        const info = cname.includes('info') || false
-        patch_key.general.push(new _modelG(cname, change, info))
+        const _change = cname.includes('info') ? change : addColor(change, colors.info)
+        patch_key.general.push(new _modelG(cname, _change))
       }
     }
   })
@@ -85,7 +85,13 @@ const nrx = (name) => new RegExp(`${name}_[0-9]+`)
 const _modelPatch = (version_date) => ({ version_date, heroes: [], items: [], general: [], })
 const _modelHero = (name) => ({ name, stats: [], abilities: [], talents: [] })
 const _modelItem = (name, description) => ({ name, description: description ? [description] : [] })
-const _modelG = (name, description, info) => ({ name, description: !info ? description : addColor(description, colors.info) })
+const _modelG = (name, description ) => ({ name, description })
+
+const pop = (str) => {
+  let a = str.split('_')
+  a.pop()
+  return a.join('_')
+}
 
 const pushItem = (arr, name, change) => {
   let item = arr.find(_item => _item.name == name)
