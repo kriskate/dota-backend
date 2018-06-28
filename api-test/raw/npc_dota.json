@@ -1,6 +1,9 @@
 {
   "lang": {
     "Tokens": {
+
+      "dota_tip_advanced_1": "Reliable Gold is earned from killing Heroes, Roshan, and Couriers, from the destruction of enemy Towers, or from using Hand of Midas. All other earnings are Unreliable Gold, which can be lost upon death.",
+
       "npc_dota_hero_ancient_apparition": "Ancient Apparition",
 
       "npc_dota_hero_ancient_apparition_hype": "Able to launch a powerful blast of damaging ice across the battlefield, Ancient Apparition threatens to shatter weakened enemies wherever they are. Slowing enemies as he enhances his allies' effectiveness in battle, he is a constant threat to his foes.",
