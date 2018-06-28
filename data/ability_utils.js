@@ -77,20 +77,20 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
   switch (hero_tag) {
     case 'phoenix':
       abilities_hidden.push(getAbilityData(specialAbilities.phoenix, npc_abilities, npc_dota))
-    break;
+    break
     case 'morphling':
       abilities_special.push(getAbilityData(specialAbilities.morphling, npc_abilities, npc_dota))
-    break;
+    break
     case 'brewmaster':
       specialAbilities.brewmaster.forEach(ability => {
         abilities_special.push(getAbilityData(ability, npc_abilities, npc_dota))
       })
-    break;
+    break
     case 'lone_druid':
       specialAbilities.lone_druid.bear.forEach(ability => {
         abilities_special.push(getAbilityData(ability, npc_abilities, npc_dota))
       })
-    break;
+    break
   }
 
   return { abilities, abilities_aghs, abilities_special, abilities_hidden, talents }

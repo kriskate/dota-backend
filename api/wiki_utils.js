@@ -29,7 +29,7 @@ export const createFile = async (fileName, folder, data) => {
 
     logger.log('silly', `created file: ${fileName}.json`)
   } catch(e) {
-    logger.error(`error while creating file: ${fileName}.json;`, e)
+    logger.error(`error while creating file: ${fileName}.json`, e)
   }
 }
 

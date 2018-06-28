@@ -80,6 +80,6 @@ if(prod) {
     console[key] = () => logger[key].apply(logger, arguments)
   })
 } else {
-  logger.add(Winston.transports.Console);
+  logger.add(Winston.transports.Console)
 }
 /* --- end LOGGERS --- */

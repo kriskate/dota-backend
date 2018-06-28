@@ -42,7 +42,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
     try{
       data = await checkIfDataNeedsUpdate()
       if(data) {
-        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, dota version ${currentDotaVersion}`)
+        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, current wiki version date ${currentWikiVersionDate}, dota version: ${currentDotaVersion}`)
         await DB.updateDB()
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
@@ -79,7 +79,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
   app.get('/currentWikiVersion', (req, res) => {
     accessLogger.info('currentWikiVersion accessed')
     
-    res.send({currentWikiVersion, currentWikiVersionDate})
+    res.send({currentWikiVersion, currentWikiVersionDate, currentDotaVersion})
   })
 
   /* get generated files */

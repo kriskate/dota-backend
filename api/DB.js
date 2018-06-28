@@ -66,7 +66,7 @@ const gitPullClone = async () => {
 const gitStatus = async () => {
   let status = null
   try { 
-    status = await git.status();
+    status = await git.status()
   } catch (e) {
     logger.error('git status failed, cannot push to git', e)
   }
@@ -79,8 +79,8 @@ const pushToGit = async () => {
 
   try {
     await git.add('./*')
-    await git.commit(`Pushing new data ${currentWikiVersion} for ${currentDotaVersion}`)
-    await git.push('origin', 'master');
+    await git.commit(`Pushing new data: wiki v${currentWikiVersion} for dota patch v${currentDotaVersion}`, , { '--author': user })
+    await git.push([pushRemote, 'origin', 'master'])
 
     logger.log('silly', 'git push succeeded')
   } catch(e) {
