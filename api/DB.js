@@ -36,7 +36,7 @@ const gitPullClone = async () => {
       await gitP().silent(true).clone(pushRemote, VERSIONF_BASE)
       git = await gitP(VERSIONF_BASE)
     } catch(e) {
-      console.error('failed: ', e)
+      console.error(`failed cloning git remote ${remote}:`, e)
     }
   } else {
     // check if git data already exists, don't clone the whole repo again
@@ -44,6 +44,7 @@ const gitPullClone = async () => {
 
     try {
       git = await gitP(VERSIONF_BASE)
+      await git.clean("f", ["-fd"])
       await git.reset('hard')
       await git.pull()
     } catch (e) {
