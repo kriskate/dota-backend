@@ -28,7 +28,7 @@ export const checkIfDataNeedsUpdate = async () => {
 
   /// create temp folder and store new data in it
   if(!fs.existsSync(newDataF)) {
-    logger.log('debug', `creating new version folder: ${newDataF}`)
+    logger.debug(`creating new version folder: ${newDataF}`)
     await fs.mkdirAsync(newDataF)
   }
   
@@ -44,7 +44,7 @@ export const checkIfDataNeedsUpdate = async () => {
   for (let key of keys) {
     // create the new data files
     if(!fs.existsSync(newDataF_raw)) {
-      logger.log('debug', `creating new version folder: ${newDataF_raw}`)
+      logger.debug(`creating new version folder: ${newDataF_raw}`)
       await fs.mkdirAsync(newDataF_raw)
     }
     await createFile(key, newDataF_raw, allData[key])
@@ -56,7 +56,7 @@ export const checkIfDataNeedsUpdate = async () => {
 
   if(!arr_diff.length > 0) {
     // remove the new data because a ** condition has been met
-    logger.log('debug', `discarding new version folder ${newDataF}. Everything is the same.`)
+    logger.debug(`discarding new version folder ${newDataF}. Everything is the same.`)
     try {
       await rimraf(newDataF)
     } catch(e) {

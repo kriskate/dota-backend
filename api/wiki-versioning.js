@@ -47,5 +47,5 @@ export const initializeVersionSystem = async () => {
     }
   })
 
-  logger.log('debug', `current WIKI version is: ${currentWikiVersion}`)
+  logger.debug(`current WIKI version is: ${currentWikiVersion}`)
 }

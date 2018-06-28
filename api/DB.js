@@ -44,6 +44,7 @@ const gitPullClone = async () => {
 
     try {
       git = await gitP(VERSIONF_BASE)
+      logger.debug(`git reset`, remote)
       await git.clean("f", ["-fd"])
       await git.reset('hard')
       await git.pull()

@@ -43,7 +43,7 @@ export const checkSize = async (fileName, oldDataF, newDataF) => {
     
     if(!oldStat || !newStat) throw new Error('stats are not defined')
 
-    logger.log('debug', `comparing ${fileName} size (${newStat.size}) to old file size (${oldStat.size}); ${oldStat.size !== newStat.size ? '!!! they are different' : 'they are the same.'}`)
+    logger.debug(`comparing ${fileName} size (${newStat.size}) to old file size (${oldStat.size}); ${oldStat.size !== newStat.size ? '!!! they are different' : 'they are the same.'}`)
     return oldStat.size !== newStat.size
     
   } catch(e) {
