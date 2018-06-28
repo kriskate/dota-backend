@@ -10,7 +10,7 @@ import simplevdf from 'simple-vdf'
 
 import { prod, localAPI } from './runtime-vars'
 import { version } from '../package.json'
-
+import { data_url } from "../data/constants"
 
 
 /* --- PROMISES --- */
@@ -25,8 +25,12 @@ export const rimraf = Promise.promisify(rimraf_i)
 export const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
 
-export const fetchJSON = (url) => fetch(url).then(res => res.json()).then(res => res)
-export const fetchTXT = (url) => fetch(url).then(res => res.text()).then(res => simplevdf.parse(res))
+export const fetchJSON = async (url) => localAPI
+  ? JSON.parse(fs_i.readFileSync(`./api-test/raw/${url}.json`))
+  : fetch(data_url[url]).then(res => res.json()).then(res => res)
+export const fetchTXT = async (url) => localAPI
+  ? JSON.parse(fs_i.readFileSync(`./api-test/raw/${url}.json`))
+  : fetch(data_url[url]).then(res => res.text()).then(res => simplevdf.parse(res))
 
 /* --- end PROMISES --- */
 
