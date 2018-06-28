@@ -74,8 +74,10 @@ export const colors = {
   piercesNo: '#e74c3c',
   
   ability_property: '#bdc3c7',
-
+  
   aghs: '#3498db',
+  
+  info: '#9b99d2',
 }
 export const addColor = (text, color='#bdc3c7') => `<font color="${color}">${text}</font>`
 

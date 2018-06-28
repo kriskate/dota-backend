@@ -4,6 +4,7 @@ import { VERSIONF_BASE, VERSIONF_PREFIX, VERSIONF_BASE_RAW, currentWikiVersion, 
 import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
 import { generateDotaTips } from '../data/tips_utils'
+import { generatePatchNotes } from '../data/patch_notes_utils'
 import { getRawData, createFile, checkSize } from './wiki_utils'
 
 
@@ -86,49 +87,26 @@ export const checkIfDataNeedsUpdate = async () => {
 /* data formatted as needed in the React Native APP */
 const gatherData = async (data, newDataF) => {
   logger.info('--- generating data files')
-  let heroes = await getHeroes(data, newDataF)
-  let items = await getItems(data, newDataF)
-  let tips = await getDotatips(data, newDataF)
 
-  if(!heroes || !items || !tips) return null
-  else return { heroes, items, tips }
+  let heroes = await generateData(generateHeroes, 'heroes', data, newDataF)
+  let items = await generateData(generateItems, 'items', data, newDataF)
+  let tips = await generateData(generateDotaTips, 'tips', data, newDataF)
+
+  let patch_notes = await generateData(generatePatchNotes, 'patch_notes', data, newDataF)
+
+  if(!heroes || !items || !tips || !patch_notes) return null
+  else return { heroes, items, tips, patch_notes }
 }
 
+async function generateData (generator, filename, data, newDataF) {
 
-
-const getHeroes = async (data, newDataF) => {
   try {
-    const heroes = generateHeroes(data)
-    await createFile('heroes', newDataF, heroes)
+    const generatedData = generator(data)
+    await createFile(filename, newDataF, generatedData)
 
-    return heroes
+    return generatedData
   } catch(e) {
-    logger.error('error: while generating heroes.json', e)
-    return null
-  }
-}
-
-const getItems = async (data, newDataF) => {
-  try {
-    const items = generateItems(data)
-    await createFile('items', newDataF, items)
-
-    return items
-  } catch(e) {
-    logger.error('error: while generating items.json', e)
-    return null
-  }
-}
-
-
-const getDotatips = async (data, newDataF) => {
-  try {
-    const tips = generateDotaTips(data)
-    await createFile('tips', newDataF, tips)
-
-    return tips
-  } catch(e) {
-    logger.error('error: could not gather tips', e)
+    logger.error(`error: while generating ${filename}.json`, e)
     return null
   }
 }
