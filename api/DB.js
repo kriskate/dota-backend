@@ -79,7 +79,7 @@ const pushToGit = async () => {
 
   try {
     await git.add('./*')
-    await git.commit(`Pushing new data: wiki v${currentWikiVersion} for dota patch v${currentDotaVersion}`, , { '--author': user })
+    await git.commit(`Pushing new data: wiki v${currentWikiVersion} for dota patch v${currentDotaVersion}`, { '--author': user })
     await git.push([pushRemote, 'origin', 'master'])
 
     logger.log('silly', 'git push succeeded')
