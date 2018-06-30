@@ -72,14 +72,23 @@ import { logger, delay, accessLogger } from '../utils/utils'
   
   /* --- API server --- */
   logger.info('setting up express server')
+  
   const port = 8080
   const app = new express()
 
-  app.get('/test1234', (req, res) => res.send(200))
+  app.get('/health', (req, res) => {
+    res.status(200).send({
+      memory: process.memoryUsage(),      
+      uptime: process.uptime(),
+      version: require('../package.json').version,
+    })
+  })
+
+
   app.get('/currentWikiVersion', (req, res) => {
     accessLogger.info('currentWikiVersion accessed')
     
-    res.send({currentWikiVersion, currentWikiVersionDate, currentDotaVersion})
+    res.status(200).send({currentWikiVersion, currentWikiVersionDate, currentDotaVersion})
   })
 
   /* get generated files */
@@ -93,7 +102,7 @@ import { logger, delay, accessLogger } from '../utils/utils'
     // let key = serviceAccount.private_key_id
     // key = key.substring(0,key.length/2)
 
-    if(['heroes', 'items', 'tips'].includes(data)) {
+    if(['heroes', 'items', 'tips', 'patch_notes'].includes(data)) {
       const cf = `${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
 
       res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
