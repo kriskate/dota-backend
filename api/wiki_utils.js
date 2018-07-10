@@ -1,4 +1,5 @@
 import { logger, fetchJSON, fs, fetchTXT } from "../utils/utils"
+import { currentDotaVersion, currentDotaVersionDate, currentWikiVersion, currentWikiVersionDate } from "./wiki-versioning";
 
 export const getRawData = async () => {
   try {
@@ -22,6 +23,18 @@ export const getRawData = async () => {
   }
 }
 
+export const gatherInfoData = (newVersionDate) => ({
+  currentDotaVersion,
+  currentDotaVersionDate,
+
+  // these two would only take the new data after all files are generated, including info.json
+  // so we need to pre-populate them in case the new version stays
+  currentWikiVersion: currentWikiVersion+1,
+  currentWikiVersionDate: newVersionDate,
+
+  // back-end version
+  app_version: require('../package.json').version
+})
 
 export const createFile = async (fileName, folder, data) => {
   try {

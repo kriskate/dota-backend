@@ -10,8 +10,11 @@ export const VERSIONF_PREFIX = 'v_'
 
 export let currentWikiVersion = 0
 export let currentWikiVersionDate = timestamp()
+
 export let currentDotaVersion = 0
 export const setCurrentDotaVersion = (version) => currentDotaVersion = version
+export let currentDotaVersionDate = 0
+export const setCurrentDotaVersionDate = (date) => currentDotaVersionDate = date
 
 export const incrementWikiVersion = (versionDate) => { 
   currentWikiVersion++

@@ -6,7 +6,7 @@ import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
 import { generateDotaTips } from '../data/tips_utils'
 import { generatePatchNotes } from '../data/patch_notes_utils'
-import { getRawData, createFile, checkSize } from './wiki_utils'
+import { getRawData, createFile, checkSize, gatherInfoData } from './wiki_utils'
 
 
 
@@ -65,7 +65,7 @@ export const checkIfDataNeedsUpdate = async () => {
     return false
   } else {
     // generate the new data files and finally increment the wiki version
-    const parsedData = await gatherData(allData, newDataF)
+    const parsedData = await gatherData(allData, newDataF, versionDate)
     
     if(!parsedData) {
       logger.warn(`discarding new version folder ${newDataF} because new data could not be generated`)
@@ -86,7 +86,7 @@ export const checkIfDataNeedsUpdate = async () => {
 
 
 /* data formatted as needed in the React Native APP */
-const gatherData = async (data, newDataF) => {
+const gatherData = async (data, newDataF, versionDate) => {
   logger.info('--- generating data files')
 
   let heroes = await generateData(generateHeroes, 'heroes', data, newDataF)
@@ -94,9 +94,11 @@ const gatherData = async (data, newDataF) => {
   let tips = await generateData(generateDotaTips, 'tips', data, newDataF)
 
   let patch_notes = await generateData(generatePatchNotes, 'patch_notes', data, newDataF)
+  
+  let info = await generateData(gatherInfoData, 'info', versionDate, newDataF)
 
-  if(!heroes || !items || !tips || !patch_notes) return null
-  else return { heroes, items, tips, patch_notes }
+  if(!heroes || !items || !tips || !patch_notes || !info) return null
+  else return { heroes, items, tips, patch_notes, info }
 }
 
 async function generateData (generator, filename, data, newDataF) {

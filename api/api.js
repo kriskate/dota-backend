@@ -97,18 +97,13 @@ import { logger, delay, accessLogger } from '../utils/utils'
 
     // to-do implement authorisation
 
-    // in order to not pass this whole key to the request (url)
-    // we'll only send half of it
-    // let key = serviceAccount.private_key_id
-    // key = key.substring(0,key.length/2)
+    // const { app_key } = require(../..//secrets/app.json')
 
-    if(['heroes', 'items', 'tips', 'patch_notes'].includes(data)) {
+    if(['heroes', 'items', 'tips', 'patch_notes', 'info'].includes(data)) {
       const cf = `${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
 
       res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
-    }
-    
-    res.send('Refine your query terms')
+    } else res.send('Refine your query terms')
     
   })
 
