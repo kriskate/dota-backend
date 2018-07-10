@@ -65,15 +65,6 @@ if(prod) {
 
 
 
-export const accessLogger = new (Winston.Logger)({
-  transports: [
-    new (Winston.transports.DailyRotateFile)({
-      filename: './logs-access/json', prepend: true,
-    })
-  ]
-})
-
-
 /* - console override - just making sure everything's covered - */
 if(prod) {
   ['info', 'warn', 'error'].forEach(key => {

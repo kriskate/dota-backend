@@ -1,7 +1,6 @@
 import * as admin from "firebase-admin"
 
 // will use the same token file for both front and back ends
-import * as serviceAccount from '../..//secrets/service-account.json'
 import { user, pass, repo, reponame } from '../../secrets/dota-bot-git-credentials.json'
 import { prod } from '../utils/runtime-vars'
 import { logger, fs, rimraf } from '../utils/utils'

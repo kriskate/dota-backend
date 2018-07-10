@@ -4,11 +4,10 @@ import schedule from 'node-schedule'
 
 import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
-import * as userParser from './user'
 
 import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
 import { prod } from '../utils/runtime-vars'
-import { logger, delay, accessLogger } from '../utils/utils'
+import { logger, delay } from '../utils/utils'
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
@@ -85,10 +84,8 @@ import { logger, delay, accessLogger } from '../utils/utils'
   })
 
 
-  app.get('/currentWikiVersion', (req, res) => {
-    accessLogger.info('currentWikiVersion accessed')
-    
-    res.status(200).send({currentWikiVersion, currentWikiVersionDate, currentDotaVersion})
+  app.get('/currentWikiVersion', (req, res) => {    
+    res.status(200).send({currentWikiVersion, currentWikiVersionDate})
   })
 
   /* get generated files */
