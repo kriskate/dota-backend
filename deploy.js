@@ -1,12 +1,28 @@
-const bump = require('npm-bump')
-const run = (what) => require('child_process').execSync(what, {stdio:[0,1,2]})
+const execSync = require('child_process').execSync
+const run = (what) => execSync(what, {stdio:[0,1,2]})
+
+
+if(execSync('git status -s').length) throw new Error('Make sure to commit everything before releasing')
+
 
 /* VERSION BUMP */
 // major, minor or patch
-bump(process.env.RELEASE_TYPE || 'minor')
-const version = require('./package.json').version
+const fs = require('fs')
+const semver = require('semver')
 
-/* Gcloud deployment */
+const PJcontent = require('./package.json')
+const version = semver.inc(PJcontent.version, process.env.RELEASE_TYPE || 'patch')
+PJcontent.version = version
+
+fs.writeFileSync('package.json', `${ JSON.stringify(PJcontent, null, 2) }\n`);
+
+run('git add .')
+run(`git commit -m "Released version ${version}"`)
+run(`git tag ${version}`)
+
+
+
+/* Gcloud DEPLOYMENT */
 /* prerequisites:
 1. create cluster through GC UI
 2. set `gcloud credentials` for kubernetes accordingly (https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app)
@@ -21,13 +37,9 @@ run('kubectl expose deployment dota-data-container --type=LoadBalancer --port 80
 run('echo "\n---- STEP 1 - BUILD\n"')
 run('node build')
 
-run('echo "\n---- STEP 2 - PUSH\n')
+run('echo "\n---- STEP 2 - PUSH\n"')
 run(`gcloud docker -- push gcr.io/pocket-dota/dota-data-background-runner:${version}`)
 
 /* roll out a new version */
 run('echo "\n---- STEP 3 - DEPLOY\n"')
 run(`kubectl set image deployment/dota-data-container dota-data-container=gcr.io/pocket-dota/dota-data-background-runner:${version}`)
-
-
-//"docker-push": "gcloud docker -- push gcr.io/pocket-dota/dota-data-background-runner",
-//"docker-deploy": "kubectl run dota-data-container --image=gcr.io/pocket-dota/dota-data-background-runner --port 8080",

@@ -11,7 +11,6 @@
     "docker-local-clean": "docker system prune",
     "docker-explore": "docker run --rm -it --entrypoint=/bin/bash gcr.io/pocket-dota/dota-data-background-runner",
     "debug-skip": "SKIP=heroes,items,tips npm start",
-    "test-api-populate": "node api-test/testAPI",
     "test-api": "TEST_API=true npm start",
     "start-prod": "NODE_ENV=production node server",
     "start": "NODE_ENV=development node server"
@@ -28,8 +27,8 @@
     "firebase-admin": "^4.0.3",
     "isomorphic-fetch": "^2.2.1",
     "node-schedule": "^1.2.5",
-    "npm-bump": "^0.0.25",
     "rimraf": "^2.6.2",
+    "semver": "^5.5.0",
     "simple-git": "^1.96.0",
     "simple-vdf": "^1.1.1",
     "util-promisifyall": "^1.0.2",
