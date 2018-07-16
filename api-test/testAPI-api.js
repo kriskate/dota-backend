@@ -1,6 +1,6 @@
 // gets a new copy of the data to be parsed, strips and pushes it to api-test/raw
 
-import { createFile, getRawData } from "./api/wiki_utils"
+import { createFile, getRawData } from "../api/wiki_utils"
 
 const tfld = 'api-test/raw', aa = 'ancient_apparition', blink = 'blink', tip = 'dota_tip_advanced_1', r_blank = 'rest_are_blank'
 
@@ -21,8 +21,8 @@ const rules = {
 
 
 function strip(data, name) {
-  console.log(name)
-  
+  //console.log(name)
+
   if(rules[name]) {
     let root = name == 'npc_dota' ? root = data.lang.Tokens : data[rules[name].f]
     

@@ -7,7 +7,7 @@
   "license": "Apache License Version 2.0",
   "scripts": {
     "debug-skip": "SKIP=heroes,items,tips npm start",
-    "test-api-populate": "node testAPI",
+    "test-api-populate": "node api-test/testAPI",
     "test-api": "TEST_API=true npm start",
     "start-prod": "NODE_ENV=production node server",
     "start": "NODE_ENV=development node server"
