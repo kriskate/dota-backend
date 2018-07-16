@@ -1,10 +1,16 @@
 const execSync = require('child_process').execSync
 const run = (what) => execSync(what, {stdio:[0,1,2]})
+let cstep = 0
+
+const step = (msg) => {
+  cstep++
+  run(`echo -e "\\033[1;35m\n---- STEP ${cstep} - ${msg}\n\\033[0m"`)
+}
 
 
 if(execSync('git status -s').length) throw new Error('Make sure to commit everything before releasing')
 
-
+step('version bump')
 /* VERSION BUMP */
 // major, minor or patch
 const fs = require('fs')
@@ -34,12 +40,12 @@ run(`kubectl run dota-data-container --image=gcr.io/pocket-dota/dota-data-backgr
 run('kubectl expose deployment dota-data-container --type=LoadBalancer --port 80 --target-port 8080')
 */
 
-run('echo "\n---- STEP 1 - BUILD\n"')
+step('BUILD')
 run('node build')
 
-run('echo "\n---- STEP 2 - PUSH\n"')
+step('PUSH')
 run(`gcloud docker -- push gcr.io/pocket-dota/dota-data-background-runner:${version}`)
 
 /* roll out a new version */
-run('echo "\n---- STEP 3 - DEPLOY\n"')
+step('DEPLOY')
 run(`kubectl set image deployment/dota-data-container dota-data-container=gcr.io/pocket-dota/dota-data-background-runner:${version}`)
