@@ -67,11 +67,11 @@ if(prod) {
 
 
 /* - console override - just making sure everything's covered - */
-if(prod) {
-  ['info', 'warn', 'error'].forEach(key => {
-    console[key] = () => logger[key].apply(logger, arguments)
-  })
-} else {
+//if(prod) {
+//  ['info', 'warn', 'error'].forEach(key => {
+//    console[key] = () => logger[key].apply(logger, arguments)
+//  })
+//} else {
   logger.add(Winston.transports.Console)
-}
+//}
 /* --- end LOGGERS --- */
