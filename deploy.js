@@ -3,7 +3,7 @@ const run = (what) => require('child_process').execSync(what, {stdio:[0,1,2]})
 
 /* VERSION BUMP */
 // major, minor or patch
-//bump(process.env.RELEASE_TYPE || 'minor')
+bump(process.env.RELEASE_TYPE || 'minor')
 const version = require('./package.json').version
 
 /* Gcloud deployment */
