@@ -1,10 +1,10 @@
 import * as admin from "firebase-admin"
 
 // will use the same token file for both front and back ends
-import { user, pass, repo, reponame } from '../../secrets/dota-bot-git-credentials.json'
+import { user, email, pass, repo, reponame } from '../secrets/dota-bot-git-credentials.json'
 import { prod } from '../utils/runtime-vars'
 import { logger, fs, rimraf } from '../utils/utils'
-import { currentWikiVersion, VERSIONF_BASE, currentDotaVersion } from './wiki-versioning'
+import { currentWikiVersion, VERSIONF_BASE, currentDotaVersion, currentWikiVersionDate } from './wiki-versioning'
 
 import gitP from 'simple-git/promise'
 
@@ -34,6 +34,8 @@ const gitPullClone = async () => {
 
       await gitP().silent(true).clone(pushRemote, VERSIONF_BASE)
       git = await gitP(VERSIONF_BASE)
+      await git.addConfig('user.name', user)
+      await git.addConfig('user.email', email)
     } catch(e) {
       console.error(`failed cloning git remote ${remote}:`, e)
     }
@@ -78,8 +80,8 @@ const pushToGit = async () => {
 
   try {
     await git.add('./*')
-    await git.commit(`Pushing new data: wiki v${currentWikiVersion} for dota patch v${currentDotaVersion}`, { '--author': user })
-    await git.push([pushRemote, 'origin', 'master'])
+    await git.commit(`Pushing new data: wiki v${currentWikiVersion} for dota patch v${currentDotaVersion}. Wiki date: ${currentWikiVersionDate}`)
+    await git.push('origin', 'master')
 
     logger.log('silly', 'git push succeeded')
   } catch(e) {
