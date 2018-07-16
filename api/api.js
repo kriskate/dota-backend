@@ -52,12 +52,9 @@ import { logger, delay } from '../utils/utils'
   
 
   if(prod) {
-    logger.info('setting cron job for data updates - everyday at 00:00')
+    logger.info('setting cron job for data updates - every 4 hours')
     try {
-      const rule = new schedule.RecurrenceRule()
-      rule.hour = 0
-      rule.minute = 0
-      const runner = schedule.scheduleJob(rule, updater)
+      const runner = schedule.scheduleJob('0 */4 * * *', updater)
     } catch(e) {
       logger.error('failed to set cronjob', e)
     }
