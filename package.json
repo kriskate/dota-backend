@@ -1,6 +1,6 @@
 {
   "name": "dota-backend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Dota heroes and items as JSON data",
   "main": "server.js",
   "author": "kristi.stanescu@gmail.com",
