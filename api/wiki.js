@@ -78,6 +78,8 @@ export const checkIfDataNeedsUpdate = async () => {
     } else {
       logger.info(`new version data stays because: ${arr_diff}`)
       incrementWikiVersion(versionDate)
+      await createFile('info', VERSIONF_BASE, parsedData.info);
+
       return parsedData
     }
   } 
