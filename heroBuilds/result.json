@@ -1,0 +1,814 @@
+{
+  "abaddon": [
+    {
+      "name": "Abaddon",
+      "id": "159698040"
+    }
+  ],
+  "alchemist": [
+    {
+      "name": "Alchemist (Core/Physical)",
+      "id": "129111538"
+    },
+    {
+      "name": "Alchemist (Core/Radiance)",
+      "id": "356791078"
+    }
+  ],
+  "ancient_apparition": [
+    {
+      "name": "Ancient Apparition",
+      "id": "232946791"
+    }
+  ],
+  "antimage": [
+    {
+      "name": "Anti-Mage",
+      "id": "128960249"
+    }
+  ],
+  "arc_warden": [
+    {
+      "name": "Arc Warden",
+      "id": "576975639"
+    }
+  ],
+  "axe": [
+    {
+      "name": "Axe (Jungle)",
+      "id": "251941747"
+    }
+  ],
+  "bane": [
+    {
+      "name": "Bane",
+      "id": "128876778"
+    }
+  ],
+  "batrider": [
+    {
+      "name": "Batrider",
+      "id": "129332354"
+    }
+  ],
+  "beastmaster": [
+    {
+      "name": "Beastmaster",
+      "id": "129134687"
+    }
+  ],
+  "bloodseeker": [
+    {
+      "name": "Bloodseeker (Radiance)",
+      "id": "319092835"
+    },
+    {
+      "name": "Bloodseeker (Physical)",
+      "id": "128754907"
+    }
+  ],
+  "bounty_hunter": [
+    {
+      "name": "Bounty Hunter",
+      "id": "128751287"
+    }
+  ],
+  "brewmaster": [
+    {
+      "name": "Brewmaster (Offlane)",
+      "id": "129109889"
+    },
+    {
+      "name": "Brewmaster (Core)",
+      "id": "359580647"
+    }
+  ],
+  "bristleback": [
+    {
+      "name": "Bristleback",
+      "id": "134962374"
+    }
+  ],
+  "broodmother": [
+    {
+      "name": "Broodmother",
+      "id": "128757681"
+    }
+  ],
+  "centaur_warrunner": [
+    {
+      "name": "Centaur Warrunner",
+      "id": "128735861"
+    }
+  ],
+  "chaos_knight": [
+    {
+      "name": "Chaos Knight",
+      "id": "128918471"
+    }
+  ],
+  "chen": [
+    {
+      "name": "Chen",
+      "id": "129081331"
+    }
+  ],
+  "clinkz": [
+    {
+      "name": "Clinkz",
+      "id": "129056935"
+    }
+  ],
+  "clockwerk": [
+    {
+      "name": "Clockwerk",
+      "id": "128732275"
+    }
+  ],
+  "crystal_maiden": [
+    {
+      "name": "Crystal Maiden",
+      "id": "128851981"
+    }
+  ],
+  "dark_seer": [
+    {
+      "name": "Dark Seer",
+      "id": "129331714"
+    }
+  ],
+  "dark_willow": [
+    {
+      "name": "Dark Willow (Roamer)",
+      "id": "1187546268"
+    },
+    {
+      "name": "Dark Willow (Core)",
+      "id": "1187563935"
+    }
+  ],
+  "dazzle": [
+    {
+      "name": "Dazzle",
+      "id": "128730475"
+    }
+  ],
+  "death_prophet": [
+    {
+      "name": "Death Prophet",
+      "id": "129323738"
+    }
+  ],
+  "disruptor": [
+    {
+      "name": "Disruptor",
+      "id": "128871463"
+    }
+  ],
+  "doom": [
+    {
+      "name": "Doom (Jungle)",
+      "id": "143243384"
+    },
+    {
+      "name": "Doom (Offlane)",
+      "id": "129098268"
+    }
+  ],
+  "dragon_knight": [
+    {
+      "name": "Dragon Knight",
+      "id": "286904891"
+    }
+  ],
+  "drow_ranger": [
+    {
+      "name": "Drow Ranger",
+      "id": "128743885"
+    }
+  ],
+  "earthshaker": [
+    {
+      "name": "Earthshaker",
+      "id": "129137630"
+    }
+  ],
+  "earth_spirit": [
+    {
+      "name": "Earth Spirit",
+      "id": "319111870"
+    }
+  ],
+  "elder_titan": [
+    {
+      "name": "Elder Titan (Offlane)",
+      "id": "261777247"
+    },
+    {
+      "name": "Elder Titan (Core)",
+      "id": "143016376"
+    }
+  ],
+  "ember_spirit": [
+    {
+      "name": "Ember Spirit (Core/Physical)",
+      "id": "195052251"
+    },
+    {
+      "name": "Ember Spirit (Core/Magic)",
+      "id": "251934276"
+    }
+  ],
+  "enchantress": [
+    {
+      "name": "Enchantress",
+      "id": "128858659"
+    }
+  ],
+  "enigma": [
+    {
+      "name": "Enigma",
+      "id": "128887479"
+    }
+  ],
+  "faceless_void": [
+    {
+      "name": "Faceless Void",
+      "id": "128922664"
+    }
+  ],
+  "gyrocopter": [
+    {
+      "name": "Gyrocopter (Core)",
+      "id": "129399377"
+    },
+    {
+      "name": "Gyrocopter (Roamer)",
+      "id": "319106719"
+    }
+  ],
+  "huskar": [
+    {
+      "name": "Huskar",
+      "id": "129119115"
+    }
+  ],
+  "invoker": [
+    {
+      "name": "Invoker (Quas/Wex)",
+      "id": "688715106"
+    },
+    {
+      "name": "Invoker (Quas/Exort)",
+      "id": "129334727"
+    }
+  ],
+  "io": [
+    {
+      "name": "IO",
+      "id": "128734250"
+    }
+  ],
+  "jakiro": [
+    {
+      "name": "Jakiro",
+      "id": "128862386"
+    }
+  ],
+  "juggernaut": [
+    {
+      "name": "Juggernaut",
+      "id": "129083818"
+    }
+  ],
+  "keeper_of_the_light": [
+    {
+      "name": "Keeper of the Light",
+      "id": "128873254"
+    }
+  ],
+  "kunkka": [
+    {
+      "name": "Kunkka (Core)",
+      "id": "129060054"
+    },
+    {
+      "name": "Kunkka (Support)",
+      "id": "301735208"
+    }
+  ],
+  "legion_commander": [
+    {
+      "name": "Legion Commander (Core)",
+      "id": "203428546"
+    },
+    {
+      "name": "Legion Commander (Jungle)",
+      "id": "203428541"
+    }
+  ],
+  "leshrac": [
+    {
+      "name": "Leshrac (Support)",
+      "id": "128895761"
+    },
+    {
+      "name": "Leshrac (Core)",
+      "id": "319085962"
+    }
+  ],
+  "lich": [
+    {
+      "name": "Lich",
+      "id": "128882317"
+    }
+  ],
+  "lifestealer": [
+    {
+      "name": "Lifestealer (Core)",
+      "id": "232367327"
+    },
+    {
+      "name": "Lifestealer (Jungle)",
+      "id": "128728638"
+    }
+  ],
+  "lina": [
+    {
+      "name": "Lina (Support)",
+      "id": "129067853"
+    },
+    {
+      "name": "Lina (Core)",
+      "id": "381725812"
+    }
+  ],
+  "lion": [
+    {
+      "name": "Lion",
+      "id": "128929132"
+    }
+  ],
+  "lone_druid": [
+    {
+      "name": "Lone Druid (Core/Range)",
+      "id": "129399862"
+    },
+    {
+      "name": "Lone Druid (Core/Radiance)",
+      "id": "176984007"
+    }
+  ],
+  "luna": [
+    {
+      "name": "Luna",
+      "id": "129063701"
+    }
+  ],
+  "lycan": [
+    {
+      "name": "Lycan (Core/Carry)",
+      "id": "286891439"
+    },
+    {
+      "name": "Lycan (Core/Pusher)",
+      "id": "128917369"
+    }
+  ],
+  "magnus": [
+    {
+      "name": "Magnus",
+      "id": "128945163"
+    }
+  ],
+  "medusa": [
+    {
+      "name": "Medusa",
+      "id": "129403206"
+    }
+  ],
+  "meepo": [
+    {
+      "name": "Meepo",
+      "id": "129402256"
+    }
+  ],
+  "mirana": [
+    {
+      "name": "Mirana",
+      "id": "129381491"
+    }
+  ],
+  "monkey_king": [
+    {
+      "name": "Monkey King (Core)",
+      "id": "817380197"
+    },
+    {
+      "name": "Monkey King (Roamer)",
+      "id": "817387228"
+    }
+  ],
+  "morphling": [
+    {
+      "name": "Morphling",
+      "id": "129076227"
+    }
+  ],
+  "naga_siren": [
+    {
+      "name": "Naga Siren (Support)",
+      "id": "269700420"
+    },
+    {
+      "name": "Naga Siren (Core)",
+      "id": "129402805"
+    }
+  ],
+  "nature's_prophet": [
+    {
+      "name": "Nature's Prophet (Core)",
+      "id": "128925332"
+    }
+  ],
+  "necrophos": [
+    {
+      "name": "Necrophos",
+      "id": "129193377"
+    }
+  ],
+  "night_stalker": [
+    {
+      "name": "Night Stalker",
+      "id": "128741319"
+    }
+  ],
+  "nyx_assassin": [
+    {
+      "name": "Nyx Assassin (Support)",
+      "id": "251982939"
+    },
+    {
+      "name": "Nyx Assassin (Offlane)",
+      "id": "128932114"
+    }
+  ],
+  "ogre_magi": [
+    {
+      "name": "Ogre Magi",
+      "id": "128866569"
+    }
+  ],
+  "omniknight": [
+    {
+      "name": "Omniknight",
+      "id": "129130896"
+    }
+  ],
+  "siractionslacks": [
+    {
+      "name": "SirActionSlacks",
+      "id": "895968997"
+    }
+  ],
+  "oracle": [
+    {
+      "name": "Oracle",
+      "id": "344511398"
+    }
+  ],
+  "outworld_devourer": [
+    {
+      "name": "Outworld Devourer",
+      "id": "129332786"
+    }
+  ],
+  "pangolier": [
+    {
+      "name": "Pangolier",
+      "id": "1187551178"
+    }
+  ],
+  "phantom_assassin": [
+    {
+      "name": "Phantom Assassin",
+      "id": "128920907"
+    }
+  ],
+  "phantom_lancer": [
+    {
+      "name": "Phantom Lancer",
+      "id": "129093311"
+    }
+  ],
+  "phoenix": [
+    {
+      "name": "Phoenix (Support)",
+      "id": "222264754"
+    },
+    {
+      "name": "Phoenix (Offlane)",
+      "id": "222262678"
+    }
+  ],
+  "puck": [
+    {
+      "name": "Puck",
+      "id": "128855291"
+    }
+  ],
+  "pudge": [
+    {
+      "name": "Pudge",
+      "id": "128906539"
+    }
+  ],
+  "pugna": [
+    {
+      "name": "Pugna",
+      "id": "128899869"
+    }
+  ],
+  "queen_of_pain": [
+    {
+      "name": "Queen of Pain",
+      "id": "129204328"
+    }
+  ],
+  "razor": [
+    {
+      "name": "Razor",
+      "id": "128756420"
+    }
+  ],
+  "riki": [
+    {
+      "name": "Riki",
+      "id": "128745244"
+    }
+  ],
+  "rubick": [
+    {
+      "name": "Rubick",
+      "id": "128927319"
+    }
+  ],
+  "sand_king": [
+    {
+      "name": "Sand King",
+      "id": "129100110"
+    }
+  ],
+  "shadow_demon": [
+    {
+      "name": "Shadow Demon",
+      "id": "128937771"
+    }
+  ],
+  "shadow_fiend": [
+    {
+      "name": "Shadow Fiend",
+      "id": "129081035"
+    }
+  ],
+  "shadow_shaman": [
+    {
+      "name": "Shadow Shaman",
+      "id": "129085778"
+    }
+  ],
+  "silencer": [
+    {
+      "name": "Silencer (Support)",
+      "id": "129072324"
+    },
+    {
+      "name": "Silencer (Core)",
+      "id": "334021836"
+    }
+  ],
+  "skywrath_mage": [
+    {
+      "name": "Skywrath Mage (Support)",
+      "id": "140111731"
+    },
+    {
+      "name": "Skywrath Mage (Core)",
+      "id": "286895078"
+    }
+  ],
+  "slardar": [
+    {
+      "name": "Slardar",
+      "id": "129102427"
+    }
+  ],
+  "slark": [
+    {
+      "name": "Slark",
+      "id": "128956358"
+    }
+  ],
+  "sniper": [
+    {
+      "name": "Sniper",
+      "id": "319109248"
+    }
+  ],
+  "spectre": [
+    {
+      "name": "Spectre",
+      "id": "129400942"
+    }
+  ],
+  "spirit_breaker": [
+    {
+      "name": "Spirit Breaker",
+      "id": "128972272"
+    }
+  ],
+  "storm_spirit": [
+    {
+      "name": "Storm Spirit",
+      "id": "129143802"
+    }
+  ],
+  "sven": [
+    {
+      "name": "Sven",
+      "id": "129079469"
+    }
+  ],
+  "techies": [
+    {
+      "name": "Techies",
+      "id": "309919893"
+    }
+  ],
+  "templar_assassin": [
+    {
+      "name": "Templar Assassin",
+      "id": "128748151"
+    }
+  ],
+  "terrorblade": [
+    {
+      "name": "Terrorblade",
+      "id": "222265746"
+    }
+  ],
+  "tidehunter": [
+    {
+      "name": "Tidehunter",
+      "id": "128912519"
+    }
+  ],
+  "timbersaw": [
+    {
+      "name": "Timbersaw",
+      "id": "129105276"
+    }
+  ],
+  "tinker": [
+    {
+      "name": "Tinker",
+      "id": "129157199"
+    }
+  ],
+  "tiny": [
+    {
+      "name": "Tiny (Core)",
+      "id": "161358226"
+    },
+    {
+      "name": "Tiny (Offlane)",
+      "id": "129064094"
+    }
+  ],
+  "treant_protector": [
+    {
+      "name": "Treant Protector",
+      "id": "129107725"
+    }
+  ],
+  "troll_warlord": [
+    {
+      "name": "Troll Warlord",
+      "id": "128753951"
+    }
+  ],
+  "tusk": [
+    {
+      "name": "Tusk",
+      "id": "129069615"
+    }
+  ],
+  "underlord": [
+    {
+      "name": "Underlord (Core)",
+      "id": "750406868"
+    },
+    {
+      "name": "Underlord (Offlane)",
+      "id": "750410650"
+    }
+  ],
+  "undying": [
+    {
+      "name": "Undying",
+      "id": "128742802"
+    }
+  ],
+  "ursa": [
+    {
+      "name": "Ursa (Jungle)",
+      "id": "128752632"
+    },
+    {
+      "name": "Ursa (Core)",
+      "id": "254615876"
+    }
+  ],
+  "vengeful_spirit": [
+    {
+      "name": "Vengeful Spirit (Support)",
+      "id": "129062086"
+    },
+    {
+      "name": "Vengeful Spirit (Core)",
+      "id": "898788847"
+    }
+  ],
+  "venomancer": [
+    {
+      "name": "Venomancer",
+      "id": "129096483"
+    }
+  ],
+  "viper": [
+    {
+      "name": "Viper",
+      "id": "129400259"
+    }
+  ],
+  "visage": [
+    {
+      "name": "Visage",
+      "id": "128903691"
+    }
+  ],
+  "warlock": [
+    {
+      "name": "Warlock (Support)",
+      "id": "128891336"
+    },
+    {
+      "name": "Warlock (Core)",
+      "id": "319101948"
+    }
+  ],
+  "weaver": [
+    {
+      "name": "Weaver (Core)",
+      "id": "301732264"
+    },
+    {
+      "name": "Weaver (Support)",
+      "id": "129400559"
+    }
+  ],
+  "windranger": [
+    {
+      "name": "Windranger (Offlane)",
+      "id": "129149991"
+    },
+    {
+      "name": "Windranger (Core)",
+      "id": "434659379"
+    }
+  ],
+  "winter_wyvern": [
+    {
+      "name": "Winter Wyvern",
+      "id": "391458050"
+    }
+  ],
+  "witch_doctor": [
+    {
+      "name": "Witch Doctor",
+      "id": "129191918"
+    }
+  ],
+  "wraith_king": [
+    {
+      "name": "Wraith King",
+      "id": "128914193"
+    }
+  ],
+  "zeus": [
+    {
+      "name": "Zeus",
+      "id": "129065509"
+    }
+  ]
+}
