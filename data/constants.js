@@ -36,10 +36,12 @@ export const images = {
   npc_img_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/flash3/images/items/$ID.png',
 }
 
+const lang = 'english'
 export const data_url = {
   // game version and release dates
   odota_gameversion: 'https://raw.githubusercontent.com/odota/dotaconstants/master/json/patch.json',
-  npc_patch_notes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/panorama/localization/patchnotes/patchnotes_english.txt',
+  npc_patch_notes: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/patchnotes/patchnotes_${lang}.txt`,
+  // npc_patch_notes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/panorama/localization/patchnotes/patchnotes_english.txt',
   
   /* dotabuff API - game files */
   npc_activeHeroes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/activelist.json',
