@@ -48,4 +48,4 @@ run(`gcloud docker -- push gcr.io/pocket-dota/dota-data-background-runner:${vers
 
 /* roll out a new version */
 step('DEPLOY')
-run(`kubectl set image deployment/dota-data-container dota-data-container=gcr.io/pocket-dota/dota-data-background-runner:${version}`)
+run(`kubectl set image deployment/dota-container dota-container=gcr.io/pocket-dota/dota-data-background-runner:${version}`)
