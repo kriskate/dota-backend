@@ -12,9 +12,6 @@ export default ({ tag, name, bio, hype, img_small, img_full, img_vert, popular_i
   return {
     // dota api - heropickerdata
     tag, name, bio, hype,
-
-    // dota2.com images
-    img_small, img_full, img_vert,
     
     popular_items,
     
