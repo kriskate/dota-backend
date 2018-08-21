@@ -50,7 +50,7 @@ export const checkIfDataNeedsUpdate = async () => {
     await createFile(key, newDataF_raw, allData[key])
     
     // ** check if new data files sizes are different from ** existing data files
-    oldDataFExists && await checkSize(key, `${oldDataF}/${VERSIONF_BASE_RAW}`, newDataF_raw) && arr_diff.push(`file ${key} has a different size or is missing`)
+    oldDataFExists && await checkSize(key, `${oldDataF}/${VERSIONF_BASE_RAW}`, newDataF_raw) && arr_diff.push(`file ${key} has a different size`)
     
   }
 
