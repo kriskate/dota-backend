@@ -85,6 +85,7 @@ export const generateItems = ({ dota2com_items, npc_items }) => {
         tag, ...dota2com_item,
 
         name: dota2com_item.dname,
+        description: dota2com_item.desc,
         category,
         bonuses,
 
