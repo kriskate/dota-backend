@@ -57,12 +57,15 @@ const wiki_v = info.currentWikiVersion
 const wiki_vDate = info.currentWikiVersionDate
 const lastWikiFolder = `v_${wiki_v}_${wiki_vDate}`
 
-run(`rm -rf ${lastWikiFolder}`, VERSIONF_BASE)
-
-run('git add .', VERSIONF_BASE)
-run(`git commit -m "Removed wiki v_${wiki_v} for new app version: ${version}"`, VERSIONF_BASE)
-console.log(`pushing removed v_${wiki_v}`)
-run('git push --all', VERSIONF_BASE)
+try {
+  run(`rm -rf ${lastWikiFolder}`, VERSIONF_BASE)
+  run('git add .', VERSIONF_BASE)
+  run(`git commit -m "Removed wiki v_${wiki_v} for new app version: ${version}"`, VERSIONF_BASE)
+  console.log(`pushing removed v_${wiki_v}`)
+  run('git push --all', VERSIONF_BASE)
+} catch(e) {
+  // fails if nothing to commit; for instance, if we ran deploy but a step below this one failed
+}
 
 
 
