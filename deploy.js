@@ -3,7 +3,7 @@ const run = (what, cd) => execSync(what, {cwd: process.cwd ? cd : '', stdio:[0,1
 
 let cstep = 0
 
-const step = (msg) => {
+const STEP = (msg) => {
   cstep++
   run(`echo -e "\\033[1;35m\n---- STEP ${cstep} - ${msg}\n\\033[0m"`)
 }
@@ -13,7 +13,7 @@ if(execSync('git status -s').length) throw new Error('Make sure to commit everyt
 
 
 
-step('VERSION BUMP')
+STEP('VERSION BUMP')
 /* VERSION BUMP */
 // major, minor or patch
 const fs = require('fs')
@@ -43,12 +43,12 @@ run(`kubectl run dota-data-container --image=gcr.io/pocket-dota/dota-data-backgr
 run('kubectl expose deployment dota-data-container --type=LoadBalancer --port 80 --target-port 8080')
 */
 
-step('BUILD')
+STEP('BUILD')
 run('node build')
 
-step('PUSH')
+STEP('PUSH')
 run(`gcloud docker -- push gcr.io/pocket-dota/dota-data-background-runner:${version}`)
 
 /* roll out a new version */
-step('DEPLOY')
+STEP('DEPLOY')
 run(`kubectl set image deployment/dota-container dota-container=gcr.io/pocket-dota/dota-data-background-runner:${version}`)
