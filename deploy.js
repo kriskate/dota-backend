@@ -55,7 +55,7 @@ run(`rm -rf ${lastWikiFolder}`, VERSIONF_BASE)
 run('git add .', VERSIONF_BASE)
 run(`git commit -m "Removed wiki v_${wiki_v} for new app version: ${version}"`, VERSIONF_BASE)
 console.log(`pushing removed v_${wiki_v}`)
-run('git push -all', VERSIONF_BASE)
+run('git push --all', VERSIONF_BASE)
 
 
 
