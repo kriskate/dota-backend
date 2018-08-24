@@ -1,3 +1,10 @@
+/* make sure that:
+* you have git installed an you're authenticated
+* docker is running
+* secrets/dota-bot-git-credentials.json exists
+*/
+
+
 const execSync = require('child_process').execSync
 const run = (what, cd) => execSync(what, {cwd: process.cwd ? cd : '', stdio:[0,1,2]})
 
