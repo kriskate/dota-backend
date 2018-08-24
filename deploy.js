@@ -11,7 +11,9 @@ const step = (msg) => {
 
 if(execSync('git status -s').length) throw new Error('Make sure to commit everything before releasing')
 
-step('version bump')
+
+
+step('VERSION BUMP')
 /* VERSION BUMP */
 // major, minor or patch
 const fs = require('fs')
