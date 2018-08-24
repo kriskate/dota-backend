@@ -1,5 +1,6 @@
 const execSync = require('child_process').execSync
-const run = (what) => execSync(what, {stdio:[0,1,2]})
+const run = (what, cd) => execSync(what, {cwd: process.cwd ? cd : '', stdio:[0,1,2]})
+
 let cstep = 0
 
 const step = (msg) => {
