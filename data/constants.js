@@ -59,9 +59,8 @@ export const data_url = {
   
   // hero_chatwheel: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/hero_chat_wheel_${lang}.txt`,
   
-  
-  // to-do: npc_itemBuilds: 'https://github.com/dotabuff/d2vpkr/tree/master/dota/itembuilds',
   // npc_units: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/npc_units.json',
+  npc_itembuild: herotag => `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/itembuilds/default_${herotag}.txt`,
 
   /* dota2.com API - items */
   dota2com_items: 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english',

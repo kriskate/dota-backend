@@ -14,12 +14,12 @@ export const Talent = ({tag, name, description, position }) => ({
 })
 
 
-export default ({ tag, name, bio, hype, img_small, img_full, img_vert, popular_items }) => {
+export default ({ tag, name, bio, hype, item_builds }) => {
   return {
     // dota api - heropickerdata
     tag, name, bio, hype,
     
-    popular_items,
+    item_builds,
     
     // abilities and talents
     abilities: [], 

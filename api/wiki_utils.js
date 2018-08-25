@@ -11,7 +11,7 @@ export const getRawData = async () => {
 
       npc_heroes: await fetchJSON('npc_heroes'),
       npc_abilities: await fetchJSON('npc_abilities'),
-      npc_popular_items: await fetchTXT('npc_popular_items'),
+
       npc_items: await fetchJSON('npc_items'),
       npc_dota: await fetchJSON('npc_dota'),
       
@@ -36,13 +36,13 @@ export const gatherInfoData = (newVersionDate) => ({
   app_version: require('../package.json').version
 })
 
-export const createFile = async (fileName, folder, data) => {
+export const createFile = async (fileName, folder, data, ext='json', stringify=true) => {
   try {
-    await fs.writeFileAsync(`${folder}/${fileName}.json`, JSON.stringify(data), 'utf8')
+    await fs.writeFileAsync(`${folder}/${fileName}.${ext}`, stringify ? JSON.stringify(data) : data, 'utf8')
 
-    logger.log('silly', `created file: ${fileName}.json`)
+    logger.log('silly', `created file: ${fileName}.${ext}`)
   } catch(e) {
-    logger.error(`error while creating file: ${fileName}.json`, e)
+    logger.error(`error while creating file: ${fileName}.${ext}`, e)
   }
 }
 

@@ -108,7 +108,7 @@ async function generateData (generator, filename, data, newDataF) {
   if(skip && skip.includes(filename)) return {}
 
   try {
-    const generatedData = generator(data)
+    const generatedData = await generator(data)
     await createFile(filename, newDataF, generatedData)
 
     return generatedData
