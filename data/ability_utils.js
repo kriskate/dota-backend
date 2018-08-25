@@ -1,4 +1,4 @@
-import { AbilityConstants, images, addColor, colors } from './constants'
+import { AbilityConstants, addColor, colors } from './constants'
 import { Ability, Talent } from './model_hero'
 
 
@@ -104,7 +104,6 @@ const getAbilityData = (ability_tag, npc_abilities, localization_abilities) => {
     
     let new_ability = new Ability({
       tag: ability_tag,
-      img: images.base_abilities.replace('$ID', ability_tag)
     })
 
 

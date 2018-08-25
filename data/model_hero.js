@@ -1,10 +1,10 @@
 export const Ability = ({
-  tag, img, name, affects, description,
+  tag, name, affects, description,
   notes, attrib, cooldown, manacost,
   lore, IsGrantedByScepter, HasScepterUpgrade
 }) => {
   return {
-    tag, img, name, affects, description,
+    tag, name, affects, description,
     notes, attrib, cooldown, manacost,
     lore, IsGrantedByScepter, HasScepterUpgrade
   }
