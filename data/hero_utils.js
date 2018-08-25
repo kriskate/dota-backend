@@ -6,7 +6,7 @@ import model_itembuilds from './model_itembuilds';
 
 export const generateHeroes = async ({ 
   npc_activeHeroes, npc_heroes, npc_abilities, npc_dota, 
-  localization_dota, localization_hero_lore,
+  localization_dota, localization_hero_lore, localization_abilities,
 }) => {
   npc_heroes = npc_heroes.DOTAHeroes
   npc_dota = npc_dota.lang.Tokens
@@ -14,6 +14,7 @@ export const generateHeroes = async ({
   npc_activeHeroes = npc_activeHeroes.whitelist
   localization_dota = localization_dota.lang.Tokens
   localization_hero_lore = localization_hero_lore.hero_lore
+  localization_abilities = localization_abilities.lang.Tokens
 
   const heroes = []
   await Promise.all(
@@ -39,7 +40,7 @@ export const generateHeroes = async ({
     Object.keys(hero.attributes).forEach(attribute => hero.attributes[attribute] = npc_hero[attribute] || hero.attributes[attribute])
 
     // get abilities and talents
-    const abilities = generateAbilitiesAndTalents(tag, npc_hero, npc_abilities, npc_dota)
+    const abilities = generateAbilitiesAndTalents(tag, npc_hero, npc_abilities, localization_abilities)
     Object.keys(abilities).forEach(ability => {
       if(ability.length > 0) hero[ability] = abilities[ability]
     })

@@ -31,7 +31,7 @@ const specialAbilities = {
 }
 
 /* generates abilities, special abilities and talents */
-export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, npc_dota) => {
+export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, localization_abilities) => {
 
   const abilities = [], abilities_aghs = [], abilities_special = [], abilities_hidden = [], talents = []
 
@@ -51,7 +51,7 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
       if (parseInt(raw_tag.split('Ability')[1]) < talentStartsAt) {
         const npc_ability = npc_abilities[ability_tag]
 
-        const new_ability = getAbilityData(ability_tag, npc_abilities, npc_dota)
+        const new_ability = getAbilityData(ability_tag, npc_abilities, localization_abilities)
 
         if (hero_tag == 'invoker' && specialAbilities[hero_tag].includes(ability_tag))
           abilities_special.push(new_ability)
@@ -66,9 +66,9 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
 
         let talent = new Talent({
           tag: ability_tag,
-          name: npc_dota[`${AbilityConstants.DOTA_PREFIX}${ability_tag}`],
+          name: localization_abilities[`${AbilityConstants.DOTA_PREFIX}${ability_tag}`],
           position: idx % 2 !== 0 ? 'left' : 'right',
-          description: npc_dota[`${AbilityConstants.DOTA_PREFIX}${ability_tag}_Description`] || '',
+          description: localization_abilities[`${AbilityConstants.DOTA_PREFIX}${ability_tag}_Description`],
         })
         talents.push(talent)
       }
@@ -76,19 +76,19 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
 
   switch (hero_tag) {
     case 'phoenix':
-      abilities_hidden.push(getAbilityData(specialAbilities.phoenix, npc_abilities, npc_dota))
+      abilities_hidden.push(getAbilityData(specialAbilities.phoenix, npc_abilities, localization_abilities))
     break
     case 'morphling':
-      abilities_special.push(getAbilityData(specialAbilities.morphling, npc_abilities, npc_dota))
+      abilities_special.push(getAbilityData(specialAbilities.morphling, npc_abilities, localization_abilities))
     break
     case 'brewmaster':
       specialAbilities.brewmaster.forEach(ability => {
-        abilities_special.push(getAbilityData(ability, npc_abilities, npc_dota))
+        abilities_special.push(getAbilityData(ability, npc_abilities, localization_abilities))
       })
     break
     case 'lone_druid':
       specialAbilities.lone_druid.bear.forEach(ability => {
-        abilities_special.push(getAbilityData(ability, npc_abilities, npc_dota))
+        abilities_special.push(getAbilityData(ability, npc_abilities, localization_abilities))
       })
     break
   }
@@ -98,7 +98,7 @@ export const generateAbilitiesAndTalents = (hero_tag, npc_hero, npc_abilities, n
 
 
 
-const getAbilityData = (ability_tag, npc_abilities, npc_dota) => {
+const getAbilityData = (ability_tag, npc_abilities, localization_abilities) => {
     // ability is spell
     const npc_ability = npc_abilities[ability_tag]
     
@@ -108,7 +108,7 @@ const getAbilityData = (ability_tag, npc_abilities, npc_dota) => {
     })
 
 
-    const abilityKeys = getAbilityKeys(ability_tag, npc_ability, npc_dota)
+    const abilityKeys = getAbilityKeys(ability_tag, npc_ability, localization_abilities)
 
     // name
     new_ability.name = abilityKeys.name
@@ -158,34 +158,34 @@ const getAbilityData = (ability_tag, npc_abilities, npc_dota) => {
 }
 
 // to-do: refactor this to take properties from within the ability (npc_abilities)
-// instead of parsing npc_dota for each ability
-const getAbilityKeys = (ability_tag, npc_ability, npc_dota) => {
+// instead of parsing localization_abilities for each ability
+const getAbilityKeys = (ability_tag, npc_ability, localization_abilities) => {
   let name, description, aghanim, lore, notes = [], special = []
 
   if(ability_tag == specialAbilities.lone_druid.aghsFor)
-    aghanim = npc_dota[`${AbilityConstants.DOTA_PREFIX}${specialAbilities.lone_druid.aghsIn}_aghanim_description`]
+    aghanim = localization_abilities[`${AbilityConstants.DOTA_PREFIX}${specialAbilities.lone_druid.aghsIn}_aghanim_description`]
 
-  Object.keys(npc_dota).forEach(key => {
+  Object.keys(localization_abilities).forEach(key => {
     const isKeyForAbility = new RegExp(`${AbilityConstants.DOTA_PREFIX}${ability_tag}`).test(key)
     if (!isKeyForAbility) return
 
     // name
-    if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}`) name = npc_dota[key]
+    if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}`) name = localization_abilities[key]
     // notes
-    else if (key.includes(`${AbilityConstants.DOTA_PREFIX}${ability_tag}_Note`)) notes.push(npc_dota[key])
+    else if (key.includes(`${AbilityConstants.DOTA_PREFIX}${ability_tag}_Note`)) notes.push(localization_abilities[key])
     // lore
-    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_Lore`) lore = npc_dota[key]
-    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_lore`) lore = npc_dota[key]
+    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_Lore`) lore = localization_abilities[key]
+    else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_lore`) lore = localization_abilities[key]
     // aghs
     else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_aghanim_description`) 
-      aghanim = replaceWithAbilitySpecial(npc_dota[key], npc_ability, ability_tag)
+      aghanim = replaceWithAbilitySpecial(localization_abilities[key], npc_ability, ability_tag)
     // description
     else if (key == `${AbilityConstants.DOTA_PREFIX}${ability_tag}_Description`) 
-      description = replaceWithAbilitySpecial(npc_dota[key], npc_ability, ability_tag)
+      description = replaceWithAbilitySpecial(localization_abilities[key], npc_ability, ability_tag)
     // special
     else {
       let ability_special_value = getAbilitySpecialValue(npc_ability, ability_tag, key)
-      if(ability_special_value !== null) special.push(`${npc_dota[key]} ${ability_special_value}`)
+      if(ability_special_value !== null) special.push(`${localization_abilities[key]} ${ability_special_value}`)
     }
   })
   return { name, description, aghanim, lore, notes, special }
