@@ -6,7 +6,7 @@ export const generateDotaTips = ({ localization_dota }) => {
     Object.keys(localization_dota).forEach(key => {
       if(key.substring(0,9) === 'dota_tip_') {
         let cat = key.split('_')[2]
-        if(['browse', 'customize', 'suggested'].includes(cat)) return
+        if(['browse', 'customize', 'suggested', 'lore'].includes(cat)) return
 
         if(!tips) tips = {}
         
