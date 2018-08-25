@@ -51,14 +51,14 @@ export const data_url = {
   npc_items: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/items.json',
   npc_dota: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/dota_english.json',
 
-  localization_abilities: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/abilities_${lang}.json`,
-  localization_dota: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/dota_${lang}.json`, // only provides npc_dota_hero_antimage_hype
-  localization_hero_lore: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/hero_lore_${lang}.txt`,
-  localization_patch_notes: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/patchnotes/patchnotes_${lang}.txt`,
+  localization_abilities: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/abilities_english.json`,
+  localization_dota: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/dota_english.json`, // only provides npc_dota_hero_antimage_hype
+  localization_hero_lore: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/hero_lore_english.txt`,
+  localization_patch_notes: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/patchnotes/patchnotes_english.txt`,
 
   // hero_chatwheel: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/hero_chat_wheel_${lang}.txt`,
   
-  npc_itembuild: herotag => `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/itembuilds/default_${herotag}.txt`,
+  npc_itembuild: herotag => `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/itembuilds/default_english.txt`,
 
   /* dota2.com API - items */
   dota2com_items: 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english',
