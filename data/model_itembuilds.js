@@ -13,7 +13,6 @@ export default data => {
   const r_items = /item_.+?"/g;
   Object.keys(itemBuilds).forEach(moment => {
     try{
-
       const r_moment = new RegExp(moment +'(.|\n)+?}', 'g');
       const moment_items = data.match(r_moment)[0];
       const items = moment_items.match(r_items);

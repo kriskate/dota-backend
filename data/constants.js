@@ -58,7 +58,7 @@ export const data_url = {
 
   // hero_chatwheel: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/hero_chat_wheel_${lang}.txt`,
   
-  npc_itembuild: herotag => `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/itembuilds/default_english.txt`,
+  npc_itembuild: herotag => `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/itembuilds/default_${herotag}.txt`,
 
   /* dota2.com API - items */
   dota2com_items: 'http://www.dota2.com/jsfeed/heropediadata?feeds=itemdata&l=english',
