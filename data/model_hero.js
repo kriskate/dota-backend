@@ -29,7 +29,7 @@ export default ({ tag, name, bio, hype, item_builds }) => {
     /* abilities_special: [], abilities_aghs: [], abilities_hidden: [], */ 
     talents: [],
 
-    // raw properties taken from npc_dota
+    // raw properties taken from localization_dota
     attributes: {
       // game files - npc_heroes - the default values are taken from npc_dota_hero_base
       AttributePrimary: "DOTA_ATTRIBUTE_STRENGTH",

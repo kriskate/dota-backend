@@ -16,7 +16,6 @@ export const getRawData = async () => {
       npc_abilities: await fetchJSON('npc_abilities'),
 
       npc_items: await fetchJSON('npc_items'),
-      npc_dota: await fetchJSON('npc_dota'),
       
       dota2com_items: await fetchJSON('dota2com_items'),
     }

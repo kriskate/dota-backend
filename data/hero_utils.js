@@ -5,11 +5,10 @@ import { logger, fetchRawTXT } from '../utils/utils';
 import model_itembuilds from './model_itembuilds';
 
 export const generateHeroes = async ({ 
-  npc_activeHeroes, npc_heroes, npc_abilities, npc_dota, 
+  npc_activeHeroes, npc_heroes, npc_abilities,
   localization_dota, localization_hero_lore, localization_abilities,
 }) => {
   npc_heroes = npc_heroes.DOTAHeroes
-  npc_dota = npc_dota.lang.Tokens
   npc_abilities = npc_abilities.DOTAAbilities
   npc_activeHeroes = npc_activeHeroes.whitelist
   localization_dota = localization_dota.lang.Tokens
@@ -28,7 +27,7 @@ export const generateHeroes = async ({
     const item_builds = await getItemBuilds(tag)
     const hero = new model_hero({
       tag,
-      name: npc_dota[npc_tag],
+      name: localization_dota[npc_tag],
       bio: localization_hero_lore[`${npc_tag}_bio`],
       hype: localization_dota[`${npc_tag}_hype`],
       item_builds,
