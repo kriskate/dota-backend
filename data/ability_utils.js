@@ -141,10 +141,11 @@ const getAbilityData = (ability_tag, npc_abilities, npc_dota) => {
     new_ability.attrib = abilityKeys.special.join('<br/>')
 
     // cooldown and manacost
-    new_ability.cmb = `
-      ${!npc_ability.AbilityManaCost ? '' : `<img src=${images.mana} width=\"16\" height=\"16\" border=\"0\" /> ${npc_ability.AbilityManaCost} <br/>`}
-      ${!npc_ability.AbilityCooldown ? '' : `<img src=${images.cooldown} width=\"16\" height=\"16\" border=\"0\" />${npc_ability.AbilityCooldown}<br/>`}
-    `.replace(/\s+/g, ' ')
+    const weird_dota_0s = ["0.0 0.0 0.0 0.0", "0 0 0 0", "0.0", "0"]
+    if(!weird_dota_0s.includes(npc_ability.AbilityManaCost))
+      new_ability.manacost = npc_ability.AbilityManaCost
+    if(!weird_dota_0s.includes(npc_ability.AbilityCooldown))
+      new_ability.cooldown = npc_ability.AbilityCooldown
 
     // lore
     new_ability.lore = abilityKeys.lore

@@ -1,6 +1,12 @@
-export const Ability = ({ tag, img, name, affects, description, notes, attrib, cmb, lore, IsGrantedByScepter, HasScepterUpgrade }) => {
+export const Ability = ({
+  tag, img, name, affects, description,
+  notes, attrib, cooldown, manacost,
+  lore, IsGrantedByScepter, HasScepterUpgrade
+}) => {
   return {
-    tag, name, img, affects, description, notes, attrib, cmb, lore, IsGrantedByScepter, HasScepterUpgrade,
+    tag, img, name, affects, description,
+    notes, attrib, cooldown, manacost,
+    lore, IsGrantedByScepter, HasScepterUpgrade
   }
 }
 export const Talent = ({tag, name, description, position }) => ({ 
