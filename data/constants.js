@@ -40,7 +40,6 @@ const lang = 'english'
 export const data_url = {
   // game version and release dates
   odota_gameversion: 'https://raw.githubusercontent.com/odota/dotaconstants/master/json/patch.json',
-  npc_patch_notes: `https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/resource/localization/patchnotes/patchnotes_${lang}.txt`,
   
   /* dotabuff API - game files */
   npc_activeHeroes: 'https://raw.githubusercontent.com/dotabuff/d2vpkr/master/dota/scripts/npc/activelist.json',

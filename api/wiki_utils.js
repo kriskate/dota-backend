@@ -5,7 +5,7 @@ export const getRawData = async () => {
   try {
     return {
       odota_gameversion: await fetchJSON('odota_gameversion'),
-      npc_patch_notes: await fetchTXT('npc_patch_notes'),
+      localization_patch_notes: await fetchTXT('localization_patch_notes'),
 
       npc_activeHeroes: await fetchJSON('npc_activeHeroes'),
 

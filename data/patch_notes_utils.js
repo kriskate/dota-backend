@@ -3,15 +3,15 @@ import { colors, addColor } from "./constants"
 import { setCurrentDotaVersionDate, setCurrentDotaVersion } from '../api/wiki-versioning'
 
 const DOTA_HERO = 'npc_dota_hero_'
-export const generatePatchNotes = ({ npc_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items }) => {
-  npc_patch_notes = npc_patch_notes.patch
+export const generatePatchNotes = ({ localization_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items }) => {
+  localization_patch_notes = localization_patch_notes.patch
   npc_activeHeroes = npc_activeHeroes.whitelist
   npc_abilities = npc_abilities.DOTAAbilities
   npc_items = npc_items.DOTAAbilities
 
   let patch_notes = {}
 
-  Object.keys(npc_patch_notes).forEach((patch, idx, arr) => {
+  Object.keys(localization_patch_notes).forEach((patch, idx, arr) => {
     const _patchContent = patch.split('DOTA_Patch_')[1]
     const version = _patchContent.split('_')[0] + '.' + _patchContent.split('_')[1]
     if(idx == arr.length-1) setCurrentDotaVersion(version)
@@ -30,7 +30,7 @@ export const generatePatchNotes = ({ npc_patch_notes, odota_gameversion, npc_act
     
     // remove version
     const cname = _patchContent.split('_').splice(2).join('_')
-    const change = npc_patch_notes[patch]
+    const change = localization_patch_notes[patch]
     
 
     let hero_name = which(npc_activeHeroes, cname, 'hero')
