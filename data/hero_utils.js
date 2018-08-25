@@ -1,7 +1,7 @@
 import { images, HeroConstants } from './constants'
 import { generateAbilitiesAndTalents } from './ability_utils'
 import model_hero from '../data/model_hero'
-
+import { logger } from '../utils/utils';
 
 export const generateHeroes = ({ npc_heroes, npc_abilities, npc_dota, npc_popular_items }) => {
   npc_heroes = npc_heroes.DOTAHeroes
