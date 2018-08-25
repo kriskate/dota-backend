@@ -156,6 +156,7 @@ export const AbilityConstants = {
 
 export const ItemConstants = {
   DOTA_PREFIX: 'item_',
+  NPC_ITEM_PREFIX: 'DOTA_Tooltip_Ability_item_',
   DOTA_ITEM_DISASSEMBLE_ALWAYS: "Yes",
   DOTA_ITEM_DISASSEMBLE_NEVER: "No",
 }

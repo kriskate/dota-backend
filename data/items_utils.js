@@ -78,18 +78,19 @@ export const generateItems = ({ dota2com_items, npc_items }) => {
       const npc_tag = `${ItemConstants.DOTA_PREFIX}${tag}`
       const npc_item = npc_items[npc_tag]
       const dota2com_item = dota2com_items[tag]
+      
+      const { attrib, dname, desc, notes, lore, } = dota2com_item
+      const { ItemCost, AbilityManaCost, AbilityCooldown, ItemRequirements, } = npc_item
 
       const bonuses = new model_item_bonuses(getBonuses(npc_item.AbilitySpecial))
       const npc = new model_item_npc(npc_item)
       const newItem = new model_item({
-        tag, ...dota2com_item,
-
-        name: dota2com_item.dname,
-        description: dota2com_item.desc,
-        category,
-        bonuses,
-
+        tag,
+        name: dname, description: desc, notes, lore,
+        cost: ItemCost, manacost: AbilityManaCost, cooldown: AbilityCooldown, attrib,
+        category, components: ItemRequirements,
         npc,
+        bonuses,
       })
 
       items.push(newItem)
