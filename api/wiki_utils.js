@@ -1,10 +1,13 @@
-import { logger, fetchJSON, fs, fetchTXT } from "../utils/utils"
+import { logger, fetchJSON, fs, fetchTXT, fetchHeroLore } from "../utils/utils"
 import { currentDotaVersion, currentDotaVersionDate, currentWikiVersion, currentWikiVersionDate } from "./wiki-versioning";
 
 export const getRawData = async () => {
   try {
     return {
       odota_gameversion: await fetchJSON('odota_gameversion'),
+      localization_abilities: await fetchJSON('localization_abilities'),
+      localization_dota: await fetchJSON('localization_dota'),
+      localization_hero_lore: await fetchHeroLore('localization_hero_lore'),
       localization_patch_notes: await fetchTXT('localization_patch_notes'),
 
       npc_activeHeroes: await fetchJSON('npc_activeHeroes'),

@@ -31,6 +31,8 @@ export const fetchJSON = async (url) => localAPI
 export const fetchTXT = async (url) => localAPI
   ? JSON.parse(fs_i.readFileSync(`./api-test/raw/${url}.json`))
   : fetch(data_url[url]).then(res => res.text()).then(res => simplevdf.parse(res))
+export const fetchHeroLore = async (url) =>
+  fetch(data_url[url]).then(res => res.text()).then(res => simplevdf.parse(res.replace(/\r?\n?[^\r\n]*$/, "")))
 export const fetchRawTXT = async (url) => 
   fetch(url).then(res => res.text()).then(res => res)
 
