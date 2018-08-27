@@ -31,7 +31,7 @@ const itemCategories = {
   ],
   Caster: [
     'glimmer_cape', 'veil_of_discord', 'aether_lens', 'force_staff', 'necronomicon', 'solar_crest',
-    'dagon', 'cyclone', 'rod_of_atos', 'orchid', 'ultimate_scepter', 'null_talisman',
+    'dagon', 'cyclone', 'rod_of_atos', 'orchid', 'ultimate_scepter', 'nullifier',
     'refresher', 'sheepstick', 'octarine_core',
   ],
   Weapons: [
