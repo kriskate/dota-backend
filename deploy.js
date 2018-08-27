@@ -58,7 +58,7 @@ const wiki_vDate = info.currentWikiVersionDate
 const lastWikiFolder = `v_${wiki_v}_${wiki_vDate}`
 
 try {
-  run(`rm -rf ${lastWikiFolder}`, VERSIONF_BASE)
+  run(`rm -rf ${VERSIONF_BASE}/${lastWikiFolder}`)
   run('git add .', VERSIONF_BASE)
   run(`git commit -m "Removed wiki v_${wiki_v} for new app version: ${version}"`, VERSIONF_BASE)
   console.log(`pushing removed v_${wiki_v}`)
