@@ -28,16 +28,16 @@ export default (item) => {
   const { 
     tag,
     name, description, notes, lore,
-    cost, mc, cd, attrib,
     category, components,
+    cost, manacost, cooldown, attrib,
     npc,
     bonuses,
   } = item;
   return {
     tag,
     name, description, notes, lore,
-    cost, mc, cd, attrib,
     category, components,
+    cost, manacost, cooldown, attrib,
     npc,
     bonuses,
   }
