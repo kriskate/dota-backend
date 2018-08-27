@@ -6,7 +6,7 @@
 
 
 const execSync = require('child_process').execSync
-const run = (what, cd) => execSync(what, {cwd: process.cwd ? cd : '', stdio:[0,1,2]})
+const run = (what, cd) => execSync(what, {cwd: cd ? cd : process.cwd, stdio:[0,1,2]})
 
 let cstep = 0
 
@@ -47,7 +47,7 @@ const VERSIONF_BASE = 'versioned_data'
 try {
   run(`git clone ${repo} ${VERSIONF_BASE}`)
 } catch(e) {
-  // console.log('folder already exists', e)
+  console.warn('!!!!  PLEASE REMOVE version_folder, as git reset --hard doesn\'t work properly if operation failed before')
 }
 run(`git reset --hard`, VERSIONF_BASE)
 run(`git pull`, VERSIONF_BASE)
