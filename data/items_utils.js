@@ -35,14 +35,14 @@ const itemCategories = {
     'refresher', 'sheepstick', 'octarine_core',
   ],
   Weapons: [
-    'hood_of_defiance', 'vanguard', 'blade_mail', 'soul_booster', 'crimson_guard', 'aeon_disk',
-    'black_king_bar', 'lotus_orb', 'shivas_guard', 'hurricane_pike', 'sphere', 'bloodstone',
-    'manta', 'heart', 'assault',
-  ],
-  Armor: [
     'lesser_crit', 'armlet', 'meteor_hammer', 'invis_sword', 'basher', 'bfury',
     'monkey_king_bar', 'ethereal_blade', 'radiance', 'greater_crit', 'butterfly', 'silver_edge',
     'rapier', 'abyssal_blade', 'bloodthorn'
+  ],
+  Armor: [
+    'hood_of_defiance', 'vanguard', 'blade_mail', 'soul_booster', 'crimson_guard', 'aeon_disk',
+    'black_king_bar', 'lotus_orb', 'shivas_guard', 'hurricane_pike', 'sphere', 'bloodstone',
+    'manta', 'heart', 'assault',
   ],
   Artifacts: [
     'dragon_lance', 'sange', 'yasha', 'kaya', 'mask_of_madness', 'helm_of_the_dominator', 'echo_sabre',
