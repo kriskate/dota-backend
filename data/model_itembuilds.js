@@ -9,6 +9,7 @@ export default data => {
     DOTA_Item_Build_Mid_Items: [],
     DOTA_Item_Build_Late_Items: [],
     DOTA_Item_Build_Other_Items: [],
+    DOTA_Item_Build_Luxury: [],
   }
   const r_items = /item_.+?"/g;
   Object.keys(itemBuilds).forEach(moment => {
