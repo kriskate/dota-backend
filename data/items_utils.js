@@ -81,6 +81,14 @@ export const generateItems = ({ dota2com_items, npc_items }) => {
       
       const { attrib, dname, desc, notes, lore, } = dota2com_item
       const { ItemCost, AbilityManaCost, AbilityCooldown, ItemRequirements, } = npc_item
+      
+      const recipe = npc_items['item_recipe_' + tag]
+      let recipeCost, components
+      if(recipe) {
+        recipeCost = recipe.ItemCost == "0" ? '' : recipe.ItemCost
+        components = recipe.ItemRequirements
+      } else components = ItemRequirements
+      if(components) components = components[0].split(';')
 
       const bonuses = new model_item_bonuses(getBonuses(npc_item.AbilitySpecial))
       const npc = new model_item_npc(npc_item)
@@ -88,7 +96,7 @@ export const generateItems = ({ dota2com_items, npc_items }) => {
         tag,
         name: dname, description: desc, notes, lore,
         cost: ItemCost, manacost: AbilityManaCost, cooldown: AbilityCooldown, attrib,
-        category, components: ItemRequirements,
+        category, components, recipeCost,
         npc,
         bonuses,
       })
