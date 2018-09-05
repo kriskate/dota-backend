@@ -39,36 +39,6 @@ run(`git tag ${version}`)
 
 
 
-/* in order to generate a new wiki when rolling an update, we have to remove the last wiki version */
-STEP('REMOVE LAST WIKI')
-
-const repo = 'https://github.com/kriskate/dota-data.git'
-const VERSIONF_BASE = 'versioned_data'
-try {
-  run(`git clone ${repo} ${VERSIONF_BASE}`)
-} catch(e) {
-  console.warn('!!!!  PLEASE REMOVE version_folder, as git reset --hard doesn\'t work properly if operation failed before')
-}
-run(`git reset --hard`, VERSIONF_BASE)
-run(`git pull`, VERSIONF_BASE)
-
-const info = require('./versioned_data/info.json')
-const wiki_v = info.currentWikiVersion
-const wiki_vDate = info.currentWikiVersionDate
-const lastWikiFolder = `v_${wiki_v}_${wiki_vDate}`
-
-try {
-  run(`rm -rf ${VERSIONF_BASE}/${lastWikiFolder}`)
-  run('git add .', VERSIONF_BASE)
-  run(`git commit -m "Removed wiki v_${wiki_v} for new app version: ${version}"`, VERSIONF_BASE)
-  console.log(`pushing removed v_${wiki_v}`)
-  run('git push --all', VERSIONF_BASE)
-} catch(e) {
-  // fails if nothing to commit; for instance, if we ran deploy but a step below this one failed
-}
-
-
-
 
 /* Gcloud DEPLOYMENT */
 /* prerequisites:
