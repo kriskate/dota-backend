@@ -6,7 +6,7 @@ import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
 import { generateDotaTips } from '../data/tips_utils'
 import { generatePatchNotes } from '../data/patch_notes_utils'
-import { getRawData, createFile, checkSize, gatherInfoData } from './wiki_utils'
+import { getRawData, createFile, checkSize, gatherInfoData, compareAppVersion } from './wiki_utils'
 
 
 
@@ -40,7 +40,14 @@ export const checkIfDataNeedsUpdate = async () => {
   if(!fs.existsSync(oldDataF)) {
     arr_diff.push(`old version folder does not exist ${oldDataF}`)
     oldDataFExists = false
+  } else {
+    const oldInfo = JSON.parse(fs.readFileSync(`${oldDataF}/info.json`, 'utf8'));
+    const old_version = oldInfo.app_version
+
+    if(!compareAppVersion(old_version))
+      arr_diff.push(`the current info has been generated with an older app version (${old_version})`)
   }
+
   for (let key of keys) {
     // create the new data files
     if(!fs.existsSync(newDataF_raw)) {

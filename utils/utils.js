@@ -15,7 +15,7 @@ import { data_url } from "../data/constants"
 
 /* --- PROMISES --- */
 
-const fs_needed = 'readdir stat access writeFile unlink mkdir rmdir'.split(' ')
+const fs_needed = 'readdir stat access writeFile unlink mkdir rmdir readFileSync'.split(' ')
 export const fs = Promise.promisifyAll(fs_i, {
   filter: (name) => fs_needed.includes(name)
 })

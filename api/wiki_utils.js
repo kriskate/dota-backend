@@ -65,3 +65,6 @@ export const checkSize = async (fileName, oldDataF, newDataF) => {
     return true
   }
 }
+
+export const compareAppVersion = old_version => old_version == require('../package.json').version;
+
