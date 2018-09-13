@@ -1,5 +1,3 @@
-import * as admin from "firebase-admin"
-
 // will use the same token file for both front and back ends
 import { user, email, pass, repo, reponame } from '../secrets/dota-bot-git-credentials.json'
 import { prod } from '../utils/runtime-vars'

@@ -1,6 +1,9 @@
 // production environment
 export const prod = process.env.NODE_ENV === 'production'
 
+// just api
+export const justApi = process.env.JUST_API
+
 // development environment
 export const dev = process.env.NODE_ENV === 'development'
 
