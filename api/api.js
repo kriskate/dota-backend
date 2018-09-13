@@ -104,6 +104,13 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
   })
 
 
+  /* WEBSITE */
+  app.use(express.static(path.join(__dirname, '../website')));
+
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../website', 'index.html'));
+  })
+
   /* SUBSCRIBERS */
   logger.info('setting up subscribers');
   await initializeSubscribers();
