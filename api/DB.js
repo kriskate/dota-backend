@@ -1,9 +1,7 @@
-import { prod } from '../utils/runtime-vars'
-import { logger } from '../utils/utils'
-import { current } from './wiki-versioning'
+import { prod } from '../utils/runtime-vars';
+import { logger } from '../utils/utils';
 
-import * as admin from "firebase-admin"
-import model_dota, { model_current } from '../data/models/model_wiki';
+import * as admin from "firebase-admin";
 
 
 let wiki;
@@ -36,17 +34,24 @@ export const getCurrentInfo = async () => {
 }
 
 export const getCurrentWiki = async () => {
-  const snapshot = await wikiData.orderByChild('info')
-    .equalTo(await getCurrentInfo()).once('value');
+  const child = versionFolder(await getCurrentInfo())
 
-  return await snapshot.val();
+  return (await wikiData.child(child).once('value')).val();
 }
 
-export const updateDB = async (wikiData) => {
+export const updateDB = async (newData) => {
   if(!prod) return;
 
-  const data = model_dota({ wikiData });
-  
-  await wiki.push(data);
-  await current.set({ ...data.current });
+  const currentInfo = await getCurrentWiki();
+  if(newData.current.wikiVersion == currentInfo.wikiVersion) {
+    throw new Error(`-- DB - tried to set same wiki version: ${currentInfo.wikiVersion}`);
+  }
+
+  const newVersion = await wikiData.child(versionFolder(newData.current));
+
+  await newVersion.set({ ...newData });
+  await wikiCurrent.set({ ...newData.current });
 }
+
+
+const versionFolder = ({ wikiVersion, wikiVersionDate }) => `v_${wikiVersion}_${wikiVersionDate}`;
