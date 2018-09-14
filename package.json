@@ -6,12 +6,6 @@
   "author": "kristi.stanescu@gmail.com",
   "license": "Apache-2.0",
   "scripts": {
-    "docker-deploy-major": "RELEASE_TYPE=major node deploy",
-    "docker-deploy-minor": "RELEASE_TYPE=minor node deploy",
-    "docker-deploy-patch": "RELEASE_TYPE=patch node deploy",
-    "docker-local": "node deploy-local",
-    "docker-local-clean": "docker system prune",
-    "docker-explore": "docker run --rm -it --entrypoint=/bin/bash gcr.io/pocket-dota/dota-data-background-runner",
     "deploy-major": "RELEASE_TYPE=major node deploy",
     "deploy-minor": "RELEASE_TYPE=minor node deploy",
     "deploy-patch": "RELEASE_TYPE=patch node deploy",
