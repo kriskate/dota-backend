@@ -36,12 +36,12 @@ export const checkIfDataNeedsUpdate = async () => {
   logger.debug('checking current wiki raw/ json size');
   const currentWiki = await getCurrentWiki();
   
+  const raw_keys = Object.keys(rawData);
   if(!currentWiki.raw) {
     arr_diff.push(`* old data does not contain any raw data`)
   } else if(arr_diff.length < 1) {
-    const keys = Object.keys(rawData);
-    for(let i = 0; i < keys.length; i++) {
-      const key = keys[i];
+    for(let i = 0; i < raw_keys.length; i++) {
+      const key = raw_keys[i];
       if(!currentWiki.raw[key]) {
         arr_diff.push(`* old data does not have key ${key}`);
         break;
@@ -62,6 +62,8 @@ export const checkIfDataNeedsUpdate = async () => {
     
     if(parsedData) {
       logger.info(`new version data stays because: ${arr_diff.join(' AND ')}`);
+      parsedData.raw = {}
+      raw_keys.forEach(key => parsedData.raw[key] = JSON.stringify(rawData[key]))
       return parsedData
     } else {
       logger.warn(`discarding new version because new data could not be generated`);
