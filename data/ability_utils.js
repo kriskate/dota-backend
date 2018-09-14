@@ -1,5 +1,5 @@
 import { AbilityConstants, addColor, colors } from './constants'
-import { Ability, Talent } from './model_hero'
+import { Ability, Talent } from './models/model_hero'
 
 
 // excluded abilities do not have enough data to be relevant as actual abilities

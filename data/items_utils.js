@@ -1,4 +1,4 @@
-import model_item, { model_item_bonuses, model_item_npc } from '../data/model_item'
+import model_item, { model_item_bonuses, model_item_npc } from './models/model_item'
 import { ItemConstants } from '../data/constants'
 
 

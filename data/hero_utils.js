@@ -1,8 +1,8 @@
 import { HeroConstants, data_url } from './constants'
 import { generateAbilitiesAndTalents } from './ability_utils'
-import model_hero from '../data/model_hero'
+import model_hero from './models/model_hero'
 import { logger, fetchRawTXT } from '../utils/utils';
-import model_itembuilds from './model_itembuilds';
+import model_itembuilds from './models/model_itembuilds';
 
 export const generateHeroes = async ({ 
   npc_activeHeroes, npc_heroes, npc_abilities,
