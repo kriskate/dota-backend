@@ -4,6 +4,9 @@ import { logger } from '../utils/utils';
 import * as admin from "firebase-admin";
 
 
+let db;
+export const getDB = () => db;
+
 let wiki;
 let wikiData;
 let wikiCurrent;
@@ -20,7 +23,7 @@ export const initDB = async () => {
   });
   
   
-  var db = await admin.database();
+  db = await admin.database();
   wiki = await db.ref("/wiki");
   wikiData = await db.ref('/wiki/data');
   wikiCurrent = await db.ref('/wiki/current');
@@ -44,7 +47,7 @@ export const updateDB = async (newData) => {
   
   logger.debug(`updating db. new wikiVersion: ${newData.current.wikiVersion}.`);
 
-  const currentInfo = await getCurrentWiki();
+  const currentInfo = await getCurrentInfo();
   if(newData.current.wikiVersion == currentInfo.wikiVersion) {
     throw new Error(`-- DB - tried to set same wiki version: ${currentInfo.wikiVersion}`);
   }

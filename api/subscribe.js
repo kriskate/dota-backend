@@ -1,17 +1,12 @@
 import * as admin from "firebase-admin"
+import { getDB, initDB } from "./DB";
+import { justEndpoints } from "../utils/runtime-vars";
 
 let subscribers;
 export const initializeSubscribers = async () => {
-  const serviceAccount = require('../secrets/pocket-dota-backend-firebase-adminsdk-fr9td-c143d27641.json');
-  
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://pocket-dota-backend.firebaseio.com"
-  });
-  
-  
-  var db = admin.database();
-  subscribers = db.ref("/subscribers");
+  if(justEndpoints || !getDB()) await initDB();
+
+  subscribers = await getDB().ref("/subscribers");
 }
 
 export const subscribeTexts = {
