@@ -43,8 +43,10 @@ export const fetchRawTXT = async (url) =>
 
 /* --- MISC --- */
 
-export const timestamp = () => new Date().toISOString()
-
+export const timestamp = () => {
+  const a = new Date();
+  return `${a.getFullYear()}-${(a.getMonth()+1)}-${a.getDate().toString()}_${a.getHours()}-${a.getMinutes()}-${a.getSeconds()}`
+}
 /* --- end MISC --- */
 
 
