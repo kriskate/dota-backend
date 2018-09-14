@@ -41,16 +41,20 @@ export const getCurrentWiki = async () => {
 
 export const updateDB = async (newData) => {
   if(!prod) return;
+  
+  logger.debug(`updating db. new wikiVersion: ${newData.current.wikiVersion}.`);
 
   const currentInfo = await getCurrentWiki();
   if(newData.current.wikiVersion == currentInfo.wikiVersion) {
     throw new Error(`-- DB - tried to set same wiki version: ${currentInfo.wikiVersion}`);
   }
-
+  
   const newVersion = await wikiData.child(versionFolder(newData.current));
-
+  
   await newVersion.set({ ...newData });
   await wikiCurrent.set({ ...newData.current });
+
+  logger.debug(`   - updated. Replaced wiki version ${currentInfo.wikiVersion}`);
 }
 
 

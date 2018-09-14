@@ -6,13 +6,15 @@ import schedule from 'node-schedule'
 import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 
-import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
+import { initializeVersionSystem, getCurrent } from './wiki-versioning'
 import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
 import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from './subscribe';
 
+
 // setup - async because we want all the engines running before we start the express server
 (async () => {
+
   logger.info('-------        APP INIT        -------')
 
   /* --- INIT --- */
@@ -34,6 +36,8 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
 
   /* --- end INIT --- */
 
+
+
   /* --- DATABASE --- */
 
   /* get new data and update if required */
@@ -42,10 +46,13 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
     let data = null
 
     try{
-      data = await checkIfDataNeedsUpdate()
+      data = await checkIfDataNeedsUpdate();
       if(data) {
-        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, wiki version date ${currentWikiVersionDate}, dota version: ${currentDotaVersion}`)
+        const { wikiVersion, wikiVersionDate, dotaVersion } = data.current;
+        logger.info(`... updating database; new wiki version: ${wikiVersion}, wiki version date ${wikiVersionDate}, dota version: ${dotaVersion}`)
         await DB.updateDB(data)
+        logger.info('... re-initializing versioning system')
+        await initializeVersionSystem(data.current)
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
     } catch(e) {
