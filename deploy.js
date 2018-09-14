@@ -26,4 +26,4 @@ run(`git tag ${version}`)
 
 
 STEP('GCLOUD DEPLOY')
-run('gcloud app deploy')
+run('gcloud app deploy --verbosity=debug')
