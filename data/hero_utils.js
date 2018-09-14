@@ -12,7 +12,7 @@ export const generateHeroes = async ({
   npc_abilities = npc_abilities.DOTAAbilities
   npc_activeHeroes = npc_activeHeroes.whitelist
   localization_dota = localization_dota.lang.Tokens
-  localization_hero_lore = localization_hero_lore.hero_lore
+  localization_hero_lore = localization_hero_lore.lang.Tokens
   localization_abilities = localization_abilities.lang.Tokens
 
   const heroes = []
