@@ -7,7 +7,7 @@ import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 
 import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
-import { prod, justApi } from '../utils/runtime-vars'
+import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
 import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from './subscribe';
 
@@ -16,7 +16,7 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
   logger.info('-------        APP INIT        -------')
 
   /* --- INIT --- */
-  if(!justApi) {
+  if(!justEndpoints) {
   // create VERSIONF_BASE folder and dump git data into it
   logger.info(`--- initializing git data folder: ${VERSIONF_BASE}`)
   await DB.initDB()
