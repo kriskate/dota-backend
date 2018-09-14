@@ -19,7 +19,7 @@
     "test-api": "TEST_API=true npm start",
     "start-prod": "NODE_ENV=production node server",
     "start-just-api": "JUST_API=true npm start",
-    "start": "NODE_ENV=development node server"
+    "start": "JUST_API=true node server"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
