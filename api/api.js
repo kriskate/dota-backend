@@ -91,8 +91,8 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
   })
 
 
-  app.get('/currentWikiVersion', (req, res) => {    
-    res.status(200).send({currentWikiVersion, currentWikiVersionDate})
+  app.get('/current', (req, res) => {    
+    res.status(200).send(getLocalWiki().current);
   })
 
   /* get generated files */
@@ -103,11 +103,10 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
 
     // const { app_key } = require(../..//secrets/app.json')
 
-    if(['heroes', 'items', 'tips', 'patch_notes', 'info'].includes(data)) {
-      const cf = `${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
-
-      res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
-    } else res.send('Refine your query terms')
+    if(['heroes', 'items', 'tips', 'patch_notes'].includes(data)) {
+      const r = JSON.parse(getLocalWiki()[data])
+      res.status(200).send(r);
+    } else res.status(404).send('Refine your query terms');
     
   })
 
