@@ -1,6 +1,6 @@
 import { logger, fetchJSON, fetchTXT, fetchHeroLore, timestamp } from "../utils/utils"
 import { model_current } from "../data/models/model_wiki";
-import { current, getCurrent } from "./wiki-versioning";
+import { getLocalWiki } from "./wiki-versioning";
 
 export const getRawData = async () => {
   try {
@@ -31,6 +31,6 @@ export const generateInfo = (data, { dotaVersion, dotaVersionDate }) =>
     appVersion: require('../package.json').version,
     dotaVersion,
     dotaVersionDate,
-    wikiVersion: getCurrent().wikiVersion+1,
+    wikiVersion: getLocalWiki().current.wikiVersion+1,
     wikiVersionDate: timestamp(),
   })

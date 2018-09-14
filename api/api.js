@@ -6,7 +6,7 @@ import schedule from 'node-schedule'
 import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 
-import { initializeVersionSystem, getCurrent } from './wiki-versioning'
+import { initializeVersionSystem, getLocalWiki } from './wiki-versioning'
 import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
 import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from './subscribe';
@@ -52,7 +52,7 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
         logger.info(`... updating database; new wiki version: ${wikiVersion}, wiki version date ${wikiVersionDate}, dota version: ${dotaVersion}`)
         await DB.updateDB(data)
         logger.info('... re-initializing versioning system')
-        await initializeVersionSystem(data.current)
+        await initializeVersionSystem(data)
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
     } catch(e) {

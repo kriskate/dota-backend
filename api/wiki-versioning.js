@@ -1,16 +1,16 @@
 import { logger } from '../utils/utils'
-import { getCurrentInfo } from './DB';
-import { model_current } from '../data/models/model_wiki';
+import { getCurrentInfo, getCurrentWiki } from './DB';
+import model_wiki, { model_current } from '../data/models/model_wiki';
 
 
-let current = model_current({});
-export const getCurrent = () => current;
+let localWiki = model_wiki({});
+export const getLocalWiki = () => localWiki;
 
 
 /* only called once, when the service starts */
-export const initializeVersionSystem = async (newInfo) => {
-  if(newInfo) current = newInfo;
-  else current = await getCurrentInfo();
+export const initializeVersionSystem = async (newWiki) => {
+  if(newWiki) localWiki = newWiki;
+  else localWiki = await getCurrentWiki();
 
-  logger.debug(`current WIKI version is: ${current.wikiVersion}`);
+  logger.debug(`current WIKI version is: ${localWiki.current.wikiVersion}`);
 }

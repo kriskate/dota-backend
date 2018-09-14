@@ -1,6 +1,6 @@
 import { skip } from '../utils/runtime-vars'
 import { fs, logger, rimraf, timestamp } from '../utils/utils'
-import { getCurrent, initializeVersionSystem } from './wiki-versioning'
+import { initializeVersionSystem, getLocalWiki } from './wiki-versioning'
 
 import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
@@ -22,7 +22,7 @@ export const checkIfDataNeedsUpdate = async () => {
   
   
   logger.debug('getting current info');
-  const currentInfo = getCurrent();
+  const currentInfo = getLocalWiki().current;
   const arr_diff = []
 
 
