@@ -6,7 +6,7 @@ import schedule from 'node-schedule'
 import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 
-import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
+import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
 import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
 import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from './subscribe';
@@ -18,7 +18,7 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
   /* --- INIT --- */
   if(!justEndpoints) {
   // create VERSIONF_BASE folder and dump git data into it
-  logger.info(`--- initializing git data folder: ${VERSIONF_BASE}`)
+  logger.info(`--- initializing DATABASE`)
   await DB.initDB()
 
 
@@ -40,11 +40,12 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
   const updater = async () => {
     logger.info('... checking if database needs update')
     let data = null
+
     try{
       data = await checkIfDataNeedsUpdate()
       if(data) {
-        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, current wiki version date ${currentWikiVersionDate}, dota version: ${currentDotaVersion}`)
-        await DB.updateDB()
+        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, wiki version date ${currentWikiVersionDate}, dota version: ${currentDotaVersion}`)
+        await DB.updateDB(data)
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
     } catch(e) {
