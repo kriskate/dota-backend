@@ -8,7 +8,6 @@ import { generateDotaTips } from '../data/tips_utils'
 import { generatePatchNotes } from '../data/patch_notes_utils'
 import { generateInfo, getRawData } from './wiki_utils'
 import { model_current } from '../data/models/model_wiki';
-import { getCurrentWiki } from './DB';
 
 
 
@@ -22,19 +21,18 @@ export const checkIfDataNeedsUpdate = async () => {
   
   
   logger.debug('getting current info');
-  const currentInfo = getLocalWiki().current;
+  const currentWiki = getLocalWiki();
   const arr_diff = []
 
 
   logger.debug('checking app version');
   const appVersion = require('../package.json').version;
-  if(currentInfo.appVersion !== appVersion) {
-    arr_diff.push(`* the current info has been generated with an older app version (${currentInfo.appVersion} vs ${appVersion})`);
+  if(currentWiki.current.appVersion !== appVersion) {
+    arr_diff.push(`* the current info has been generated with an older app version (${currentWiki.current.appVersion} vs ${appVersion})`);
   }
 
 
   logger.debug('checking current wiki raw/ json size');
-  const currentWiki = await getCurrentWiki();
   
   const raw_keys = Object.keys(rawData);
   if(!currentWiki.raw) {
