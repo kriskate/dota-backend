@@ -14,7 +14,7 @@
     "start-prod": "NODE_ENV=production node server",
     "start-dev": "NODE_ENV=development node server",
     "start-just-endpoints": "JUST_ENDPOINTS=true node server",
-    "start": "npm run start-just-endpoints"
+    "start": "npm run start-prod"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
