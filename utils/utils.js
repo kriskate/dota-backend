@@ -58,7 +58,7 @@ export const logger = new Winston.Logger({
 })
 
 
-logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
+// logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
 // if(prod) {
 //   logger.add(LoggingWinston, {
 //     keyFilename: '../secrets/pocket-dota-logging.json',

@@ -7,8 +7,6 @@ import * as admin from "firebase-admin";
 let db;
 export const getDB = () => db;
 
-let wiki;
-let wikiData;
 let wikiCurrent;
 
 
@@ -24,14 +22,11 @@ export const initDB = async () => {
   
   
   db = await admin.database();
-  wiki = await db.ref("/wiki");
-  wikiData = await db.ref('/wiki/data');
-  wikiCurrent = await db.ref('/wiki/current');
 }
 
 
 export const getCurrentInfo = async () => {
-  const snapshot = await wikiCurrent.once("value");
+  const snapshot = await db.ref('/wiki/current').once("value");
 
   return snapshot.val();
 }
@@ -39,7 +34,7 @@ export const getCurrentInfo = async () => {
 export const getCurrentWiki = async () => {
   const child = versionFolder(await getCurrentInfo())
 
-  return (await wikiData.child(child).once('value')).val();
+  return (await db.ref(`/wiki/data/${child}`).once('value')).val();
 }
 
 export const updateDB = async (newData) => {
@@ -52,7 +47,8 @@ export const updateDB = async (newData) => {
     throw new Error(`-- DB - tried to set same wiki version: ${currentInfo.wikiVersion}`);
   }
   
-  const newVersion = await wikiData.child(versionFolder(newData.current));
+  const child = versionFolder(newData.current);
+  const newVersion = await db.ref(`/wiki/data/${child}`);
   
   await newVersion.set({ ...newData });
   await wikiCurrent.set({ ...newData.current });
