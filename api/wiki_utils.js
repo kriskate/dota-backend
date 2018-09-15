@@ -1,5 +1,6 @@
-import { logger, fetchJSON, fs, fetchTXT, fetchHeroLore } from "../utils/utils"
-import { currentDotaVersion, currentDotaVersionDate, currentWikiVersion, currentWikiVersionDate } from "./wiki-versioning";
+import { logger, fetchJSON, fetchTXT, fetchHeroLore, timestamp } from "../utils/utils"
+import { model_current } from "../data/models/model_wiki";
+import { getLocalWiki } from "./wiki-versioning";
 
 export const getRawData = async () => {
   try {
@@ -25,46 +26,11 @@ export const getRawData = async () => {
   }
 }
 
-export const gatherInfoData = (newVersionDate) => ({
-  currentDotaVersion,
-  currentDotaVersionDate,
-
-  // these two would only take the new data after all files are generated, including info.json
-  // so we need to pre-populate them in case the new version stays
-  currentWikiVersion: currentWikiVersion+1,
-  currentWikiVersionDate: newVersionDate,
-
-  // back-end version
-  app_version: require('../package.json').version
-})
-
-export const createFile = async (fileName, folder, data, ext='json', stringify=true) => {
-  try {
-    await fs.writeFileAsync(`${folder}/${fileName}.${ext}`, stringify ? JSON.stringify(data) : data, 'utf8')
-
-    logger.log('silly', `created file: ${fileName}.${ext}`)
-  } catch(e) {
-    logger.error(`error while creating file: ${fileName}.${ext}`, e)
-  }
-}
-
-export const checkSize = async (fileName, oldDataF, newDataF) => {
-  try {
-    if(!fs.existsSync(`${oldDataF}/${fileName}.json`)) throw new Error(`file ${fileName} does not exist`)
-    
-    let oldStat = await fs.statAsync(`${oldDataF}/${fileName}.json`)
-    let newStat = await fs.statAsync(`${newDataF}/${fileName}.json`)
-    
-    if(!oldStat || !newStat) throw new Error('stats are not defined')
-
-    logger.debug(`comparing ${fileName} size (${newStat.size}) to old file size (${oldStat.size}); ${oldStat.size !== newStat.size ? '!!! they are different' : 'they are the same.'}`)
-    return oldStat.size !== newStat.size
-    
-  } catch(e) {
-    logger.warn(`error while retrieving stats for old or new data; old: ${oldDataF}, new: ${newDataF}`, e)
-    return true
-  }
-}
-
-export const compareAppVersion = old_version => old_version == require('../package.json').version;
-
+export const generateInfo = (data, { dotaVersion, dotaVersionDate }) => 
+  model_current({
+    appVersion: require('../package.json').version,
+    dotaVersion,
+    dotaVersionDate,
+    wikiVersion: getLocalWiki().current.wikiVersion+1,
+    wikiVersionDate: timestamp(),
+  })
