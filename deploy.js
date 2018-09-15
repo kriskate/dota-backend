@@ -25,5 +25,8 @@ run(`git commit -m "Released version ${version}"`)
 run(`git tag ${version}`)
 
 
+STEP('GCLOUD SET PROJECT')
+run('gcloud config set project pocket-dota-backend')
+
 STEP('GCLOUD DEPLOY')
 run('gcloud app deploy --verbosity=debug')
