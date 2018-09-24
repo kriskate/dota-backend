@@ -10,11 +10,11 @@
     "deploy-minor": "RELEASE_TYPE=minor node deploy",
     "deploy-patch": "RELEASE_TYPE=patch node deploy",
     "debug-skip": "SKIP=generateHeroes,generateItems,generateDotaTips yarn start-dev",
-    "test-api": "TEST_API=true npm start",
+    "test-api": "TEST_API=true npm run start-dev",
     "start-prod": "NODE_ENV=production node server",
     "start-dev": "NODE_ENV=development node server",
     "start-just-endpoints": "JUST_ENDPOINTS=true node server",
-    "start": "npm run start-prod"
+    "start": "npm run start-just-endpoints"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",

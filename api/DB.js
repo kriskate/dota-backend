@@ -48,7 +48,8 @@ export const updateDB = async (newData) => {
   }
   
   const child = versionFolder(newData.current);
-  const newVersion = await db.ref(`/wiki/data/${child}`);
+  const newVersion = await (await db.ref(`/wiki/data`)).child(child);
+
   
   await newVersion.set({ ...newData });
   await wikiCurrent.set({ ...newData.current });
