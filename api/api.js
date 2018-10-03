@@ -6,7 +6,7 @@ import schedule from 'node-schedule'
 import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 
-import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
+import { initializeVersionSystem, current, VERSIONF_BASE, getVersionFolder } from './wiki-versioning'
 import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
 
@@ -42,7 +42,7 @@ import { logger, delay } from '../utils/utils'
     try{
       data = await checkIfDataNeedsUpdate()
       if(data) {
-        logger.info(`... updating database; new wiki version: ${currentWikiVersion}, current wiki version date ${currentWikiVersionDate}, dota version: ${currentDotaVersion}`)
+        logger.info(`... updating database; new wiki version: ${current().wikiVersion}, current wiki version date ${current().wikiVersionDate}, dota version: ${current().dotaVersion}`)
         await DB.updateDB()
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
@@ -83,7 +83,7 @@ import { logger, delay } from '../utils/utils'
 
 
   app.get('/currentWikiVersion', (req, res) => {    
-    res.status(200).send({currentWikiVersion, currentWikiVersionDate})
+    res.status(200).send(current());
   })
 
   /* get generated files */
@@ -95,9 +95,9 @@ import { logger, delay } from '../utils/utils'
     // const { app_key } = require(../..//secrets/app.json')
 
     if(['heroes', 'items', 'tips', 'patch_notes', 'info'].includes(data)) {
-      const cf = `${VERSIONF_PREFIX}${currentWikiVersion}_${currentWikiVersionDate}`
+      const cf = getVersionFolder();
 
-      res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
+      res.sendFile(path.join(__dirname, '..', cf, `${data}.json`))
     } else res.send('Refine your query terms')
     
   })

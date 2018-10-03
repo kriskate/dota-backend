@@ -2,7 +2,7 @@
 import { user, email, pass, repo, reponame } from '../secrets/dota-bot-git-credentials.json'
 import { prod } from '../utils/runtime-vars'
 import { logger, fs, rimraf } from '../utils/utils'
-import { currentWikiVersion, VERSIONF_BASE, currentDotaVersion, currentWikiVersionDate } from './wiki-versioning'
+import { VERSIONF_BASE, current } from './wiki-versioning'
 
 import gitP from 'simple-git/promise'
 
@@ -78,7 +78,7 @@ const pushToGit = async () => {
 
   try {
     await git.add('./*')
-    await git.commit(`New data: v${currentWikiVersion} for dota patch v${currentDotaVersion}`)
+    await git.commit(`New data: v${current().wikiVersion} for dota patch v${current().dotaVersion}`)
     await git.push('origin', 'master')
 
     logger.log('silly', 'git push succeeded')
