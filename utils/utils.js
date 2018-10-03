@@ -77,13 +77,19 @@ logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepen
 // }
 
 
-
+const config = Winston.config;
 /* - console override - just making sure everything's covered - */
 //if(prod) {
 //  ['info', 'warn', 'error'].forEach(key => {
 //    console[key] = () => logger[key].apply(logger, arguments)
 //  })
 //} else {
-  logger.add(Winston.transports.Console)
+  logger.add(Winston.transports.Console, 
+    {
+      colorize: true,
+      timestamp: () => '[' + (new Date()).toISOString().slice(0, 19).replace('T', ' ') + ']'
+    },
+
+  )
 //}
 /* --- end LOGGERS --- */
