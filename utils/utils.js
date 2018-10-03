@@ -43,13 +43,12 @@ export const fetchRawTXT = async (url) =>
 
 /* --- MISC --- */
 
-
-export const zero = (what) => ('0' + what).slice(-2);
-
 export const timestamp = (d) => {
+  const zero = (what) => ('0' + what).slice(-2);
+  
   const date = d ? new Date(d) : new Date();
   return (
-    date.getFullYear() + '-' + zero(date.getMonth()+1) + '-' + zero(date.getDate()) +  '__' + 
+    date.getFullYear() + '-' + zero(date.getMonth()+1) + '-' + zero(date.getDate()) +  '_' + 
     zero(date.getHours()) + '-' + zero(date.getMinutes()) + '-' + zero(date.getSeconds())
   )
 }
