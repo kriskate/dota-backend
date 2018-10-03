@@ -4,6 +4,9 @@ import model_hero from './models/model_hero'
 import { logger, fetchRawTXT } from '../utils/utils';
 import model_itembuilds from './models/model_itembuilds';
 
+
+const itembuild_hack_counter_max_retries = 5;
+let itembuild_hack_counter_current = 0;
 export const generateHeroes = async ({ 
   npc_activeHeroes, npc_heroes, npc_abilities,
   localization_dota, localization_hero_lore, localization_abilities,
@@ -24,7 +27,9 @@ export const generateHeroes = async ({
     const npc_hero = npc_heroes[npc_tag]
     const tag = npc_tag.replace('npc_dota_hero_', '')
     
+    itembuild_hack_counter_current = 0;
     const item_builds = await getItemBuilds(tag)
+
     const hero = new model_hero({
       tag,
       name: localization_dota[npc_tag],
@@ -57,7 +62,12 @@ const getItemBuilds = async (tag) => {
     const data = await fetchRawTXT(data_url.npc_itembuild(tag));
     return model_itembuilds(data);
   } catch(e) {
-    logger.warn(`getting current items for hero ${tag} failed`, e)
-    return {}
+    logger.error(`getting current items for hero ${tag} failed; try #${itembuild_hack_counter_current}`, e)
+
+    if(itembuild_hack_counter_current <= itembuild_hack_counter_max_retries) {
+      itembuild_hack_counter_current ++;
+      return await getItemBuilds(tag);
+    }
+    return null
   }
 }
