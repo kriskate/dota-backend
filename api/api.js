@@ -9,7 +9,6 @@ import { checkIfDataNeedsUpdate } from './wiki'
 import { initializeVersionSystem, currentWikiVersion, currentWikiVersionDate, currentDotaVersion, VERSIONF_BASE, VERSIONF_BASE_RAW, VERSIONF_PREFIX } from './wiki-versioning'
 import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
-import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from './subscribe';
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
@@ -101,57 +100,6 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
       res.sendFile(path.join(__dirname, `../${VERSIONF_BASE}/${cf}`, `${data}.json`))
     } else res.send('Refine your query terms')
     
-  })
-
-
-  /* WEBSITE */
-  app.use(express.static(path.join(__dirname, '../website')));
-
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../website', 'index.html'));
-  })
-
-  /* SUBSCRIBERS */
-  logger.info('setting up subscribers');
-  await initializeSubscribers();
-
-  if(!prod) {
-    app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "*");
-
-      next();
-    })
-  }
-
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Origin');
-
-    next();
-  });
-
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
-
-  app.post('/subscribe', async (req, res) => {
-    const { name, email } = req.body;
-
-    const message = await subscribe(name, email);
-
-    if(message === subscribeTexts.subscribed(email)) {
-      res.status(200).send({ status: 'OK', message });
-    } else if (message === subscribeTexts.already_subscribed(email)) {
-      res.status(200).send({ status: 'OK', message });
-    } else {
-      res.status(500).send({ status: 'NOTOK', message });
-    }
-  })
-
-  app.get('/unsubscribe', async (req, res) => {
-    const email = req.query.email;
-
-    const message = await unsubscribe(email);
-    
-    res.status(200).send({ message });
   })
 
 
