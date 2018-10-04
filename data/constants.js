@@ -90,14 +90,7 @@ export const colors = {
 }
 export const addColor = (text, color='#bdc3c7') => `<font color="${color}">${text}</font>`
 
-export const HeroConstants = {
-  DOTA_ATTRIBUTE_AGILITY: 'Agility',
-  DOTA_ATTRIBUTE_STRENGTH: 'Strength',
-  DOTA_ATTRIBUTE_INTELLECT: 'Intelligence',
 
-  DOTA_UNIT_CAP_MELEE_ATTACK: 'Melee',
-  DOTA_UNIT_CAP_RANGED_ATTACK: 'Ranged',
-}
 export const AbilityConstants = {
   DOTA_PREFIX: 'DOTA_Tooltip_ability_',
 
