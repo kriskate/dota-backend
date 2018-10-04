@@ -38,9 +38,6 @@ export const generateHeroes = async ({
       item_builds,
     })
 
-    hero.attributes.AttributePrimary = HeroConstants[hero.AttributePrimary]
-    hero.attributes.AttackCapabilities = HeroConstants[hero.AttackCapabilities]
-
     Object.keys(hero.attributes).forEach(attribute => hero.attributes[attribute] = npc_hero[attribute] || hero.attributes[attribute])
 
     // get abilities and talents
