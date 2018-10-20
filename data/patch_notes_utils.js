@@ -1,14 +1,16 @@
 import { timestamp } from "../utils/utils"
 import { colors, addColor } from "./constants"
 import { setNew } from '../api/wiki-versioning'
+import { JSDOM } from 'jsdom';
 
 const DOTA_HERO = 'npc_dota_hero_'
-export const generatePatchNotes = ({ localization_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items }) => {
+export const generatePatchNotes = async ({ localization_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items }) => {
   localization_patch_notes = localization_patch_notes.patch
   npc_activeHeroes = npc_activeHeroes.whitelist
   npc_abilities = npc_abilities.DOTAAbilities
   npc_items = npc_items.DOTAAbilities
 
+  const gamepedia_versions = await gamepediaVersions(npc_activeHeroes, npc_items);
   let patch_notes = {}
 
   Object.keys(localization_patch_notes).forEach((patch, idx, arr) => {
@@ -19,8 +21,9 @@ export const generatePatchNotes = ({ localization_patch_notes, odota_gameversion
     // removing these versions as they have inconsistencies
     if(['7.06d', '7.06e', '7.07'].includes(version)) return
     
-    let version_date = odota_gameversion.find(p => version == p['name'])
-    version_date = version_date ? version_date['date'] : timestamp()
+    let gamepediaCorrespondant = gamepedia_versions.find(v => v.version == version);
+    let version_date = gamepediaCorrespondant.date;
+    const changes_short = gamepediaCorrespondant.changes_short;
 
     if(idx == arr.length-1) {
       setNew({
@@ -30,7 +33,7 @@ export const generatePatchNotes = ({ localization_patch_notes, odota_gameversion
     }
     
     // add version change; include version_date
-    if(!patch_notes[version]) patch_notes[version] = new _modelPatch(version_date)
+    if(!patch_notes[version]) patch_notes[version] = new _modelPatch(version_date, changes_short);
     const patch_key = patch_notes[version]
 
     
@@ -92,7 +95,7 @@ export const generatePatchNotes = ({ localization_patch_notes, odota_gameversion
 // for things that might have trailing "_#"s
 const nrx = (name) => new RegExp(`${name}_[0-9]+`)
 
-const _modelPatch = (version_date) => ({ version_date, heroes: [], items: [], general: [], })
+const _modelPatch = (version_date, changes_short) => ({ version_date, changes_short, heroes: [], items: [], general: [], })
 const _modelHero = (name) => ({ name, stats: [], abilities: [], talents: [] })
 const _modelItem = (name, description) => ({ name, description: description ? [description] : [] })
 const _modelG = (name, description ) => ({ name, description })
@@ -146,3 +149,100 @@ const getLongest = (arr) =>
 ['Generic_Regeneration_Formula', 'Generic_Regeneration_Formula_Summary_Title']
 
 */
+
+
+
+
+/* gamepedia import */
+
+export const gamepediaVersions = async (npc_activeHeroes, npc_items) => {
+  let headers = new Headers({
+    'Access-Control-Allow-Origin':'*',
+    'Content-Type': 'multipart/form-data'
+  });
+  let opt = {
+      mode: 'no-cors',
+      header: headers,
+  };
+  const content = await (await fetch("https://dota2.gamepedia.com/Game_Versions", opt)).text();
+  const root = new JSDOM(content)
+  const table = root.window.document.querySelector('.wikitable')
+
+  const versions = toArr(table.querySelectorAll('tr'))
+    // all table rows that have 4 columns
+    .filter(tr => tr.querySelectorAll('td').length === 4)
+    // if lower than 7.07b, don't show
+    .filter(tr => {
+      const version = trim(tr.querySelectorAll('td')[0].textContent);
+      return parseFloat(version) >= 7.07 && version != '7.07';
+    })
+    .map(v => {
+      const version = trim(v.querySelectorAll('td')[0].textContent);
+      const changes_short = getChanges(v.querySelectorAll('td')[1], root, npc_activeHeroes, npc_items);
+      const date = trim(v.querySelectorAll('td')[2].textContent);
+
+      if(!version || !changes_short) return undefined
+      else return { version, changes_short, date, }
+    })
+  // console.log(versions)
+  return versions
+}
+
+
+const getChanges = (td, root, npc_activeHeroes, npc_items) => 
+  toArr(td.querySelectorAll('li'))
+    .map(c => {
+      toArr(c.querySelectorAll('a')).map(a => {
+        a.href = mapHref(a);
+        a.href = Object.keys(npc_activeHeroes).includes(`npc_dota_hero_${a.href}`)
+          ? `heroes/${a.href}`
+          : Object.keys(npc_items).includes(`item_${a.href}`) ? `items/${a.href}`
+          : ''
+
+        if(!a.href) a.parentNode.removeChild(a)
+        else {
+          if(a.textContent) {
+            const newA = root.window.document.createElement('span');
+            newA.innerHTML = `<b>${a.textContent}</b>`;
+            a.parentNode.replaceChild(newA, a);
+          } else {
+            const newA = root.window.document.createElement('img');
+            newA.src = a.href;
+            a.parentNode.replaceChild(newA, a);
+          }
+        }
+
+      })
+      return trim(c.innerHTML);
+    })
+
+
+const toArr = (arr) => Array.prototype.slice.call(arr);
+const trim = (str) => str.trim().replace('\n', '');
+
+
+const mapHref = (a) => {
+  const href = a.href.toLowerCase().split('/')[1];
+  if (href.includes('courier')) return 'courier';
+  if (href == 'zeus') return 'zuus';
+  if (href == 'necrophos') return 'necrolyte';
+  if (href == 'treant_protector') return 'treant';
+  if (href == 'vengeful_spirit') return 'vengefulspirit';
+  if (href == 'wraith_king') return 'skeleton_king';
+  if (href == 'io') return 'wisp';
+  if (href == 'nature%27s_prophet') return 'furion';
+  if (href == 'centaur_warrunner') return 'centaur';
+  if (href == 'outworld_devourer') return 'obsidian_destroyer';
+  if (href == 'timbersaw') return 'shredder';
+  if (href == 'windranger') return 'windrunner';
+  if (href == 'doom') return 'doom_bringer';
+  if (href == 'anti-mage') return 'antimage';
+  if (href == 'magnus') return 'magnataur';
+  if (href == 'shadow_fiend') return 'nevermore';
+
+  if (href == 'queen_of_pain') return 'queenofpain';
+  if (href == 'clockwerk') return 'rattletrap';
+  if (href == 'underlord') return 'abyssal_underlord';
+
+  return href;
+}
