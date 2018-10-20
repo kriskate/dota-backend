@@ -1,20 +1,27 @@
 {
   "name": "dota-backend",
-  "version": "4.0.1",
+  "version": "0.1.0",
   "description": "Dota heroes and items as JSON data",
   "main": "server.js",
   "author": "kristi.stanescu@gmail.com",
   "license": "Apache-2.0",
   "scripts": {
+    "docker-deploy-major": "RELEASE_TYPE=major node deploy",
+    "docker-deploy-minor": "RELEASE_TYPE=minor node deploy",
+    "docker-deploy-patch": "RELEASE_TYPE=patch node deploy",
+    "docker-local": "node deploy-local",
+    "docker-local-clean": "docker system prune",
+    "docker-explore": "docker run --rm -it --entrypoint=/bin/bash gcr.io/pocket-dota/dota-data-background-runner",
     "deploy-major": "RELEASE_TYPE=major node deploy",
     "deploy-minor": "RELEASE_TYPE=minor node deploy",
     "deploy-patch": "RELEASE_TYPE=patch node deploy",
-    "debug-skip": "SKIP=generateHeroes,generateItems,generateDotaTips yarn start-dev",
-    "test-api": "TEST_API=true npm run start-dev",
+    "debug-skip": "SKIP=heroes,items,tips node server",
+    "nodemon-start": "NODE_ENV=production nodemon server",
+    "test-api": "TEST_API=true npm start",
     "start-prod": "NODE_ENV=production node server",
     "start-dev": "NODE_ENV=development node server",
     "start-just-endpoints": "JUST_ENDPOINTS=true node server",
-    "start": "npm run start-just-endpoints"
+    "start": "npm run start-prod"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
@@ -28,6 +35,7 @@
     "firebase-admin": "^4.0.3",
     "isomorphic-fetch": "^2.2.1",
     "node-schedule": "^1.2.5",
+    "nodemon": "^1.18.4",
     "rimraf": "^2.6.2",
     "semver": "^5.5.0",
     "simple-git": "^1.96.0",
@@ -36,5 +44,13 @@
     "uuid": "^3.1.0",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.7.2"
+  },
+  "nodemonConfig": {
+    "delay": "60000",
+    "verbose": true,
+    "ignore": [
+      "versioned_data/*",
+      "logs/*"
+    ]
   }
 }

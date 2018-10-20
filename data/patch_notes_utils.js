@@ -1,12 +1,9 @@
 import { timestamp } from "../utils/utils"
 import { colors, addColor } from "./constants"
-
+import { setNew } from '../api/wiki-versioning'
 
 const DOTA_HERO = 'npc_dota_hero_'
-export const generatePatchNotes = (
-  { localization_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items },
-  dotaInfo
-) => {
+export const generatePatchNotes = ({ localization_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items }) => {
   localization_patch_notes = localization_patch_notes.patch
   npc_activeHeroes = npc_activeHeroes.whitelist
   npc_abilities = npc_abilities.DOTAAbilities
@@ -16,8 +13,8 @@ export const generatePatchNotes = (
 
   Object.keys(localization_patch_notes).forEach((patch, idx, arr) => {
     const _patchContent = patch.split('DOTA_Patch_')[1]
-    const version = _patchContent.split('_')[0] + '.' + _patchContent.split('_')[1]
 
+    const version = _patchContent.split('_')[0] + '.' + _patchContent.split('_')[1]
     // to-do (maybe): bottom of page
     // removing these versions as they have inconsistencies
     if(['7.06d', '7.06e', '7.07'].includes(version)) return
@@ -26,8 +23,10 @@ export const generatePatchNotes = (
     version_date = version_date ? version_date['date'] : timestamp()
 
     if(idx == arr.length-1) {
-      dotaInfo.dotaVersion = version;
-      dotaInfo.dotaVersionDate = version_date;
+      setNew({
+        dotaVersion: version,
+        dotaVersionDate: version_date,
+      });
     }
     
     // add version change; include version_date

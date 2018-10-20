@@ -1,105 +1,131 @@
 import { skip } from '../utils/runtime-vars'
 import { fs, logger, rimraf, timestamp } from '../utils/utils'
-import { initializeVersionSystem, getLocalWiki } from './wiki-versioning'
+import { VERSIONF_BASE, current, setCurrent, getNew, setNew, getVersionFolder } from './wiki-versioning'
 
 import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
 import { generateDotaTips } from '../data/tips_utils'
 import { generatePatchNotes } from '../data/patch_notes_utils'
-import { generateInfo, getRawData } from './wiki_utils'
-import { model_current } from '../data/models/model_wiki';
+import { getRawData, createFile, checkSize } from './wiki_utils'
 
 
 
 /* creates a new folder containing the data gathered from the APIs 
  * and keeps it while updating the current version if ** conditions are met
 */
-export const checkIfDataNeedsUpdate = async () => {  
-  logger.debug('gathering raw data');
-  const rawData = await getRawData()
-  if(!rawData) return null
+export const checkIfDataNeedsUpdate = async () => {
+  let allData = null
   
+  /// gather raw data
+  allData = await getRawData()
+  if(!allData) return false
+
+  const newWikiVersion = current().wikiVersion + 1;
+  const newWikiVersionDate = timestamp();
+  const newAppVersion = require('../package.json').version;
+
+  const newDataF = getVersionFolder(newWikiVersionDate, newWikiVersion);
+  const oldDataF = getVersionFolder();
+
+  setNew({
+    appVersion: newAppVersion,
+    // dotaVersion and date are set in patch_notes_utils
+    wikiVersion: newWikiVersion,
+    wikiVersionDate: newWikiVersionDate,
+    wikiVersionFolder: newDataF.replace(VERSIONF_BASE + '/', ''),
+  })
+
   
-  logger.debug('getting current info');
-  const currentWiki = getLocalWiki();
+
+  /// create temp folder and store new data in it
+  if(!fs.existsSync(newDataF)) {
+    logger.debug(`creating new version folder: ${newDataF}`)
+    await fs.mkdirAsync(newDataF)
+  }
+  
+
   const arr_diff = []
-
-
-  logger.debug('checking app version');
-  const appVersion = require('../package.json').version;
-  if(currentWiki.current.appVersion !== appVersion) {
-    arr_diff.push(`* the current info has been generated with an older app version (${currentWiki.current.appVersion} vs ${appVersion})`);
-  }
-
-
-  logger.debug('checking current wiki raw/ json size');
   
-  const raw_keys = Object.keys(rawData);
-  if(!currentWiki.raw) {
-    arr_diff.push(`* old data does not contain any raw data`)
-  } else if(arr_diff.length < 1) {
-    for(let i = 0; i < raw_keys.length; i++) {
-      const key = raw_keys[i];
-      if(!currentWiki.raw[key]) {
-        arr_diff.push(`* old data does not have key ${key}`);
-        break;
-      } else if(JSON.stringify(rawData[key]).length !== currentWiki.raw[key].length) {
-        arr_diff.push(`* key ${key} has a different size`);
-        break;
-      } else continue;
-    }
+  // ** check if the old version data exists
+  let oldDataFExists = true
+  if(!fs.existsSync(oldDataF)) {
+    arr_diff.push(`old version folder does not exist ${oldDataF}`)
+    oldDataFExists = false
+  }
+  
+  // check if app version is the same
+  if(newAppVersion !== current().appVersion) {
+    arr_diff.push(`the current info has been generated with an older app version (${current().appVersion})`)
   }
 
-  if(arr_diff.length < 1) {
-    logger.debug(`discarding new version. Everything is the same.`)
-    return false;
-  } else {
-    logger.info('--- generating data files')
-    
-    const parsedData = await gatherData(rawData);
-    
-    if(parsedData) {
-      logger.info(`new version data stays because: ${arr_diff.join(' AND ')}`);
-      parsedData.raw = {}
-      raw_keys.forEach(key => parsedData.raw[key] = JSON.stringify(rawData[key]))
-      return parsedData
-    } else {
-      logger.warn(`discarding new version because new data could not be generated`);
-      return null
+  // generate the new data files
+  const parsedData = await gatherData(allData, newDataF);
+  if(!parsedData) {
+    logger.warn(`discarding new version folder ${newDataF} because new data could not be generated`)
+    try {
+      await rimraf(newDataF)
+    } catch(e) {
+      logger.error(`error while removing folder ${newDataF}. Next version number might be affected.`, e)
     }
+    return false
+  }
+
+  // ** check if new data files sizes are different from ** existing data files
+  const keys = Object.keys(parsedData);
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    if(oldDataFExists && await checkSize(key, oldDataF, newDataF))
+      arr_diff.push(`file ${key} has a different size`);
+  }
+
+
+  if(!arr_diff.length > 0) {
+    // remove the new data because a ** condition has been met
+    logger.debug(`discarding new version folder ${newDataF}. Everything is the same.`)
+    try {
+      await rimraf(newDataF)
+    } catch(e) {
+      logger.error(`error while removing folder ${newDataF}. Next version number might be affected.`, e)
+    }
+    return false
+  } else {
+      logger.info(`new version data stays because: ${arr_diff}`)
+      await createFile('info', VERSIONF_BASE, parsedData.info);
+      setCurrent(getNew());
+
+      return parsedData
   } 
   
 }
 
 
 /* data formatted as needed in the React Native APP */
-const gatherData = async (data) => {
+const gatherData = async (data, newDataF) => {
+  logger.info('--- generating data files')
 
-  const dotaInfo = {
-    dotaVersion: 0,
-    dotaVersionDate: 0,
-  }
+  let heroes = await generateData(generateHeroes, 'heroes', data, newDataF)
+  let items = await generateData(generateItems, 'items', data, newDataF)
+  let tips = await generateData(generateDotaTips, 'tips', data, newDataF)
 
-  const heroes = JSON.stringify(await generateData(generateHeroes, data));
-  const items = JSON.stringify(await generateData(generateItems, data));
-  const tips = JSON.stringify(await generateData(generateDotaTips, data));
+  let patch_notes = await generateData(generatePatchNotes, 'patch_notes', data, newDataF)
+  
+  let info = await generateData(getNew, 'info', null, newDataF)
 
-  const patch_notes = JSON.stringify(await generateData(generatePatchNotes, data, dotaInfo));
-
-  const current = await generateData(generateInfo, null, dotaInfo)
-
-  if(!heroes || !items || !tips || !patch_notes || !current) return null
-  else return { heroes, items, tips, patch_notes, current }
+  if(!heroes || !items || !tips || !patch_notes || !info) return null
+  else return { heroes, items, tips, patch_notes, info }
 }
 
-async function generateData (generator, data, extra) {
+async function generateData (generator, filename, data, newDataF) {
   // debug individual assets -- reduces compile times
-  if(skip && skip.includes(generator.name)) return {}
+  if(skip && skip.includes(filename)) return {}
 
   try {
-    return await generator(data, extra)
+    const generatedData = await generator(data)
+    await createFile(filename, newDataF, generatedData)
+
+    return generatedData
   } catch(e) {
-    logger.error(`error: while generating ${generator.name}`, e)
+    logger.error(`error: while generating ${filename}.json`, e)
     return null
   }
 }

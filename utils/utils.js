@@ -43,15 +43,16 @@ export const fetchRawTXT = async (url) =>
 
 /* --- MISC --- */
 
-const zero = (what) => ('0' + what).slice(-2);
-
 export const timestamp = (d) => {
+  const zero = (what) => ('0' + what).slice(-2);
+  
   const date = d ? new Date(d) : new Date();
   return (
-    date.getFullYear() + '-' + zero(date.getMonth()+1) + '-' + zero(date.getDate()) +  '__' + 
+    date.getFullYear() + '-' + zero(date.getMonth()+1) + '-' + zero(date.getDate()) +  '_' + 
     zero(date.getHours()) + '-' + zero(date.getMinutes()) + '-' + zero(date.getSeconds())
   )
 }
+
 /* --- end MISC --- */
 
 
@@ -63,7 +64,7 @@ export const logger = new Winston.Logger({
 })
 
 
-// logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
+logger.add(Winston.transports.DailyRotateFile, { filename: './logs/json', prepend: true } )
 // if(prod) {
 //   logger.add(LoggingWinston, {
 //     keyFilename: '../secrets/pocket-dota-logging.json',
@@ -76,13 +77,19 @@ export const logger = new Winston.Logger({
 // }
 
 
-
+const config = Winston.config;
 /* - console override - just making sure everything's covered - */
 //if(prod) {
 //  ['info', 'warn', 'error'].forEach(key => {
 //    console[key] = () => logger[key].apply(logger, arguments)
 //  })
 //} else {
-  logger.add(Winston.transports.Console)
+  logger.add(Winston.transports.Console, 
+    {
+      colorize: true,
+      timestamp: () => '[' + (new Date()).toISOString().slice(0, 19).replace('T', ' ') + ']'
+    },
+
+  )
 //}
 /* --- end LOGGERS --- */

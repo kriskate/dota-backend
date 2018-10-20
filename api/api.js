@@ -6,21 +6,18 @@ import schedule from 'node-schedule'
 import * as DB from './DB'
 import { checkIfDataNeedsUpdate } from './wiki'
 
-import { initializeVersionSystem, getLocalWiki } from './wiki-versioning'
+import { initializeVersionSystem, current, VERSIONF_BASE, getVersionFolder } from './wiki-versioning'
 import { prod, justEndpoints } from '../utils/runtime-vars'
 import { logger, delay } from '../utils/utils'
-import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from './subscribe';
-
 
 // setup - async because we want all the engines running before we start the express server
 (async () => {
-
   logger.info('-------        APP INIT        -------')
 
   /* --- INIT --- */
   if(!justEndpoints) {
   // create VERSIONF_BASE folder and dump git data into it
-  logger.info(`--- initializing DATABASE`)
+  logger.info(`--- initializing git data folder: ${VERSIONF_BASE}`)
   await DB.initDB()
 
 
@@ -36,23 +33,17 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
 
   /* --- end INIT --- */
 
-
-
   /* --- DATABASE --- */
 
   /* get new data and update if required */
   const updater = async () => {
     logger.info('... checking if database needs update')
     let data = null
-
     try{
-      data = await checkIfDataNeedsUpdate();
+      data = await checkIfDataNeedsUpdate()
       if(data) {
-        const { wikiVersion, wikiVersionDate, dotaVersion } = data.current;
-        logger.info(`... updating database; new wiki version: ${wikiVersion}, wiki version date ${wikiVersionDate}, dota version: ${dotaVersion}`)
-        await DB.updateDB(data)
-        logger.info('... re-initializing versioning system')
-        await initializeVersionSystem(data)
+        logger.info(`... updating database; new wiki version: ${current().wikiVersion}, current wiki version date ${current().wikiVersionDate}, dota version: ${current().dotaVersion}`)
+        await DB.updateDB()
         logger.info('DB updated')
       } else logger.info('DB does not need to be updated')
     } catch(e) {
@@ -91,8 +82,8 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
   })
 
 
-  app.get('/current', (req, res) => {
-    res.status(200).send(getLocalWiki().current);
+  app.get('/currentWikiVersion', (req, res) => {    
+    res.status(200).send(current());
   })
 
   /* get generated files */
@@ -103,10 +94,11 @@ import { initializeSubscribers, subscribe, subscribeTexts, unsubscribe } from '.
 
     // const { app_key } = require(../..//secrets/app.json')
 
-    if(['heroes', 'items', 'tips', 'patch_notes'].includes(data)) {
-      const r = JSON.parse(getLocalWiki()[data])
-      res.status(200).send(r);
-    } else res.status(404).send('Refine your query terms');
+    if(['heroes', 'items', 'tips', 'patch_notes', 'info'].includes(data)) {
+      const cf = getVersionFolder();
+
+      res.sendFile(path.join(__dirname, '..', cf, `${data}.json`))
+    } else res.send('Refine your query terms')
     
   })
 
