@@ -73,6 +73,8 @@ import { logger, delay } from '../utils/utils'
   const port = 8080
   const app = new express()
 
+  app.use('/versioned_data', express.static(path.join(__dirname, '..', 'versioned_data')));
+
   app.get('/health', (req, res) => {
     res.status(200).send({
       memory: process.memoryUsage(),      
