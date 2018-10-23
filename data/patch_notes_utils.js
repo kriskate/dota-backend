@@ -192,6 +192,9 @@ export const gamepediaVersions = async (npc_activeHeroes, npc_items) => {
 const getChanges = (td, root, npc_activeHeroes, npc_items) => 
   toArr(td.querySelectorAll('li'))
     .map(c => {
+      toArr(c.querySelectorAll('.image-link')).forEach(span =>
+        span.outerHTML = span.innerHTML
+      );
       toArr(c.querySelectorAll('a')).map(a => {
         a.href = mapHref(a);
         a.href = Object.keys(npc_activeHeroes).includes(`npc_dota_hero_${a.href}`)
@@ -199,18 +202,22 @@ const getChanges = (td, root, npc_activeHeroes, npc_items) =>
           : Object.keys(npc_items).includes(`item_${a.href}`) ? `items/${a.href}`
           : ''
 
-        if(!a.href) a.parentNode.removeChild(a)
-        else {
-          if(a.textContent) {
-            const newA = root.window.document.createElement('span');
-            newA.innerHTML = `<b>${a.textContent}</b>`;
-            a.parentNode.replaceChild(newA, a);
+        // if has text, show text
+        if(a.textContent) {
+          const newA = root.window.document.createElement('b');
+          newA.innerHTML = `${a.textContent}`;
+          a.parentNode.replaceChild(newA, a);
+        } else {
+          // if no href, meaning not a hero / item, remove
+          if(!a.href) {
+            a.parentNode.removeChild(a);
           } else {
             const newA = root.window.document.createElement('img');
             newA.src = a.href;
             a.parentNode.replaceChild(newA, a);
           }
         }
+
 
       })
       return trim(c.innerHTML);
