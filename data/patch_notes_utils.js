@@ -39,8 +39,18 @@ export const generatePatchNotes = async ({ localization_patch_notes, odota_gamev
     
     // remove version
     const cname = _patchContent.split('_').splice(2).join('_')
-    const change = localization_patch_notes[patch]
-    
+    let change = localization_patch_notes[patch]
+
+    // *** SPECIAL CASES *** some patches have weird html inside
+    // 7.11 has <br>, --, <b></b>, <br><br>
+    // 7.13 has <br>, --, <b></b>
+    if(version == '7.07c' && cname == 'General_4') return;
+    if(!change || change == '--') return;
+
+    change = change
+      .replace(/<b>/g, '').replace(/<\/b>/g, '')
+      .replace(/<br><br>/g, '\r\n')
+      .replace(/<br>/g, ' ')
 
     let hero_name = which(npc_activeHeroes, cname, 'hero')
 
@@ -80,11 +90,7 @@ export const generatePatchNotes = async ({ localization_patch_notes, odota_gamev
         pushItem(patch_key.items, item_name, change)
       } else {
         // -other
-        
-        // ['General']
-        // ['General_8_info']
-        const _change = cname.includes('info') ? change : addColor(change, colors.info)
-        patch_key.general.push(new _modelG(cname, _change))
+        patch_key.general.push(new _modelG(cname, change))
       }
     }
   })
