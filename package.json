@@ -15,11 +15,12 @@
     "deploy-major": "RELEASE_TYPE=major node deploy",
     "deploy-minor": "RELEASE_TYPE=minor node deploy",
     "deploy-patch": "RELEASE_TYPE=patch node deploy",
-    "debug-skip": "SKIP=heroes,items,tips node server",
+    "debug-skip": "SKIP=heroes,items,tips NODE_ENV=development node server",
     "nodemon-start": "NODE_ENV=production nodemon server",
     "test-api": "TEST_API=true npm start",
     "start-prod": "NODE_ENV=production node server",
     "start-dev": "NODE_ENV=development node server",
+    "start-dev-push": "NODE_ENV=development FORCE_PUSH=true node server",
     "start-just-endpoints": "JUST_ENDPOINTS=true node server",
     "start": "npm run start-prod"
   },

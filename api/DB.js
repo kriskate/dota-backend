@@ -1,6 +1,6 @@
 // will use the same token file for both front and back ends
 import { user, email, pass, repo, reponame } from '../secrets/dota-bot-git-credentials.json'
-import { prod } from '../utils/runtime-vars'
+import { prod, dev, forcePush } from '../utils/runtime-vars'
 import { logger, fs, rimraf } from '../utils/utils'
 import { VERSIONF_BASE, current } from './wiki-versioning'
 
@@ -20,7 +20,7 @@ export const initDB = async () => {
 
 
 export const updateDB = async () => {
-  if(prod) await pushToGit()
+  if(prod || forcePush) await pushToGit()
 }
 
 
@@ -34,6 +34,8 @@ const gitPullClone = async () => {
       git = await gitP(VERSIONF_BASE)
       await git.addConfig('user.name', user)
       await git.addConfig('user.email', email)
+      if(prod) await git.checkout('master')
+      else await git.checkout('develop')
     } catch(e) {
       console.error(`failed cloning git remote ${remote}:`, e)
     }
@@ -42,10 +44,13 @@ const gitPullClone = async () => {
     logger.info(`${VERSIONF_BASE} folder exists... pulling git data`)
 
     try {
-      git = await gitP(VERSIONF_BASE)
       logger.debug(`git reset`, remote)
+      git = await gitP(VERSIONF_BASE)
       await git.clean("f", ["-fd"])
       await git.reset('hard')
+      if(prod) await git.checkout('master')
+      else await git.checkout('develop')
+      // console.log(await git.status())
       await git.pull()
     } catch (e) {
       logger.error('could not pull git data', e)
@@ -79,7 +84,7 @@ const pushToGit = async () => {
   try {
     await git.add('./*')
     await git.commit(`New data: v${current().wikiVersion} for dota patch v${current().dotaVersion}`)
-    await git.push('origin', 'master')
+    await git.push('origin', prod ? 'master' : 'develop')
 
     logger.log('silly', 'git push succeeded')
   } catch(e) {
