@@ -1,5 +1,11 @@
 const trim = (str) => str.replace(/(\\\")/g, '\"')
 
+const troublesome = {
+  "shadow_fiend": "nevermore",
+  "vengeful_spirit": "vengefulspirit",
+  "witchdoctor": "witch_doctor",
+}
+
 export const generateDotaTips = ({ localization_dota }) => {
   localization_dota = localization_dota.lang.Tokens
 
@@ -12,7 +18,9 @@ export const generateDotaTips = ({ localization_dota }) => {
         
         const content = trim(localization_dota[key]);
         if(cat == 'hero') {
-          const hero = key.replace('dota_tip_hero_', '').split('_').slice(0, -1).join('_')
+          let hero = key.replace('dota_tip_hero_', '').split('_').slice(0, -1).join('_')
+
+          if(troublesome[hero]) hero = troublesome[hero]
           
           if(!tips[cat]) tips[cat] = {}
           if(!tips[cat][hero]) tips[cat][hero] = []
