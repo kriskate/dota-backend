@@ -25,7 +25,7 @@ const itemCategories = {
     'oblivion_staff', 'pers', 'hand_of_midas', 'travel_boots', 'moon_shard',
   ],
   Support: [
-    'ring_of_basilius', 'headdress', 'buckler', 'urn_of_shadows', 'tranquil_boots', 'ring_of_aquila',
+    'ring_of_basilius', 'headdress', 'buckler', 'urn_of_shadows', 'tranquil_boots',
     'medallion_of_courage', 'arcane_boots', 'ancient_janggo', 'vladmir', 'mekansm',
     'spirit_vessel', 'pipe', 'guardian_greaves',
   ],
