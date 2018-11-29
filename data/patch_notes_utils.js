@@ -183,9 +183,10 @@ export const gamepediaVersions = async (npc_activeHeroes, npc_items) => {
       return parseFloat(version) >= 7.07 && version != '7.07';
     })
     .map(v => {
-      const version = trim(v.querySelectorAll('td')[0].textContent);
-      const changes_short = getChanges(v.querySelectorAll('td')[1], root, npc_activeHeroes, npc_items);
-      const date = trim(v.querySelectorAll('td')[2].textContent);
+      const current_v_data = v.querySelectorAll('td');
+      const version = trim(current_v_data[0].textContent);
+      const changes_short = getChanges(current_v_data[1], root, npc_activeHeroes, npc_items);
+      const date = trim(current_v_data[2].textContent);
 
       if(!version || !changes_short) return undefined
       else return { version, changes_short, date, }
@@ -194,10 +195,11 @@ export const gamepediaVersions = async (npc_activeHeroes, npc_items) => {
   return versions
 }
 
-
 const getChanges = (td, root, npc_activeHeroes, npc_items) => 
   toArr(td.querySelectorAll('li'))
     .map(c => {
+      removeInternalULs(c);
+      removeBolds(c);
       toArr(c.querySelectorAll('.image-link')).forEach(span =>
         span.outerHTML = span.innerHTML
       );
@@ -223,13 +225,18 @@ const getChanges = (td, root, npc_activeHeroes, npc_items) =>
             a.parentNode.replaceChild(newA, a);
           }
         }
-
-
       })
+      c.outerHTML = c.innerHTML
       return trim(c.innerHTML);
     })
 
 
+const removeInternalULs = (c) => toArr(c.querySelectorAll('ul')).forEach(ul => ul.parentNode.removeChild(ul));
+const removeBolds = (c) => {
+  const arr_b = toArr(c.querySelectorAll('b'));
+  if(arr_b.length !== 1) return;
+  else c.innerHTML = arr_b[0].innerHTML;
+}
 const toArr = (arr) => Array.prototype.slice.call(arr);
 const trim = (str) => str.trim().replace('\n', '');
 
