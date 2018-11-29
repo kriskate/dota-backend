@@ -46,8 +46,8 @@ const itemCategories = {
   ],
   Artifacts: [
     'dragon_lance', 'sange', 'yasha', 'kaya', 'mask_of_madness', 'helm_of_the_dominator', 'echo_sabre',
-    'maelstrom', 'diffusal_blade', 'heavens_halberd', 'desolator', 'sange_and_yasha', 'skadi',
-    'satanic', 'mjollnir',
+    'maelstrom', 'diffusal_blade', 'heavens_halberd', 'desolator', 'sange_and_yasha', 'yasha_and_kaya', 'kaya_and_sange',
+    'skadi', 'satanic', 'mjollnir',
   ],
   "Secret shop": [
     'energy_booster', 'vitality_booster', 'point_booster', 'platemail', 'talisman_of_evasion' , 'hyperstone',
