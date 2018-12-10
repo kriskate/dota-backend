@@ -9,7 +9,7 @@ const itemCategories = {
   ],
   Attributes: [
     'branches', 'gauntlets', 'slippers', 'mantle', 'circlet', 'belt_of_strength', 'boots_of_elves',
-    'robe', 'ogre_axe', 'blade_of_alacrity', 'staff_of_wizardry',
+    'robe', 'crown', 'ogre_axe', 'blade_of_alacrity', 'staff_of_wizardry',
   ],
   Armaments: [
     'ring_of_protection', 'stout_shield', 'quelling_blade', 'infused_raindrop', 'orb_of_venom',
