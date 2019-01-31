@@ -17,7 +17,7 @@ const itemCategories = {
     'javelin', 'broadsword', 'claymore', 'mithril_hammer',
   ],
   Arcane: [
-    'magic_stick', 'wind_lace', 'ring_of_regen', 'sobi_mask', 'boots', 'gloves', 'cloak',
+    'magic_stick', 'wind_lace', 'ring_of_regen', 'sobi_mask', 'boots', 'gloves', 'cloak', 'ring_of_tarrasque',
     'ring_of_health', 'void_stone', 'gem', 'lifesteal', 'shadow_amulet', 'ghost', 'blink',
   ],
   Common: [
@@ -27,7 +27,7 @@ const itemCategories = {
   Support: [
     'ring_of_basilius', 'headdress', 'buckler', 'urn_of_shadows', 'tranquil_boots',
     'medallion_of_courage', 'arcane_boots', 'ancient_janggo', 'vladmir', 'mekansm',
-    'spirit_vessel', 'pipe', 'guardian_greaves',
+    'spirit_vessel', 'holy_locket', 'pipe', 'guardian_greaves',
   ],
   Caster: [
     'glimmer_cape', 'veil_of_discord', 'aether_lens', 'force_staff', 'necronomicon', 'solar_crest',
