@@ -4,7 +4,7 @@ import { setNew } from '../api/wiki-versioning'
 import { JSDOM } from 'jsdom';
 
 const DOTA_HERO = 'npc_dota_hero_'
-export const generatePatchNotes = async ({ localization_patch_notes, odota_gameversion, npc_activeHeroes, npc_abilities, npc_items }) => {
+export const generatePatchNotes = async ({ localization_patch_notes, npc_activeHeroes, npc_abilities, npc_items }) => {
   localization_patch_notes = localization_patch_notes.patch
   npc_activeHeroes = npc_activeHeroes.whitelist
   npc_abilities = npc_abilities.DOTAAbilities

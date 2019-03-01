@@ -5,7 +5,6 @@ import { createFile, getRawData } from "../api/wiki_utils"
 const tfld = 'api-test/raw', aa = 'ancient_apparition', blink = 'blink', tip = 'dota_tip_advanced_1', r_blank = 'rest_are_blank'
 
 const rules = {
-  odota_gameversion: null,
   npc_patch_notes: null,
 
   npc_activeHeroes: null,
