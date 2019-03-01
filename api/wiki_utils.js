@@ -1,22 +1,22 @@
-import { logger, fetchJSON, fs, fetchTXT, fetchHeroLore } from "../utils/utils"
+import { logger, fs, fetcher, fetcher_TYPES } from "../utils/utils"
 import { current, getNew } from "./wiki-versioning";
 
-export const getRawData = async () => {
+export const getRawData = async (lg) => {
   try {
     return {
-      localization_abilities: await fetchJSON('localization_abilities'),
-      localization_dota: await fetchJSON('localization_dota'),
-      localization_hero_lore: await fetchHeroLore('localization_hero_lore'),
-      localization_patch_notes: await fetchTXT('localization_patch_notes'),
+      localization_abilities: await fetcher(fetcher_TYPES.JSON, 'localization_abilities', lg),
+      localization_dota: await fetcher(fetcher_TYPES.JSON, 'localization_dota', lg),
+      localization_hero_lore: await fetcher(fetcher_TYPES.HeroLore, 'localization_hero_lore', lg),
+      localization_patch_notes: await fetcher(fetcher_TYPES.TXT, 'localization_patch_notes', lg),
 
-      npc_activeHeroes: await fetchJSON('npc_activeHeroes'),
+      npc_activeHeroes: await fetcher(fetcher_TYPES.JSON, 'npc_activeHeroes'),
 
-      npc_heroes: await fetchJSON('npc_heroes'),
-      npc_abilities: await fetchJSON('npc_abilities'),
+      npc_heroes: await fetcher(fetcher_TYPES.JSON, 'npc_heroes'),
+      npc_abilities: await fetcher(fetcher_TYPES.JSON, 'npc_abilities'),
 
-      npc_items: await fetchJSON('npc_items'),
+      npc_items: await fetcher(fetcher_TYPES.JSON, 'npc_items'),
       
-      dota2com_items: await fetchJSON('dota2com_items'),
+      dota2com_items: await fetcher(fetcher_TYPES.JSON, 'dota2com_items', lg),
     }
   } catch (e) {
     logger.error('error while gathering data', e)

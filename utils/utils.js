@@ -25,16 +25,34 @@ export const rimraf = Promise.promisify(rimraf_i)
 export const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))
 
-export const fetchJSON = async (url) => localAPI
-  ? JSON.parse(fs_i.readFileSync(`./api-test/raw/${url}.json`))
-  : fetch(data_url[url]).then(res => res.json()).then(res => res)
-export const fetchTXT = async (url) => localAPI
-  ? JSON.parse(fs_i.readFileSync(`./api-test/raw/${url}.json`))
-  : fetch(data_url[url]).then(res => res.text()).then(res => simplevdf.parse(res))
-export const fetchHeroLore = async (url) =>
-  fetch(data_url[url]).then(res => res.text()).then(res => simplevdf.parse(res.replace(/\r?\n?[^\r\n]*$/, "")))
+const defaultLanguage = "english"
+export const fetcher_TYPES = {
+  JSON: "JSON",
+  TXT: "TXT",
+  HeroLore: "HeroLore",
+}
+export const fetcher = async (TYPE, url, lg=defaultLanguage) => {
+  const _url = isFunction(data_url[url]) ? data_url[url](lg) : data_url[url];
+  const res = await fetch(_url);
+
+  switch(TYPE) {
+    case fetcher_TYPES.JSON:
+      return await res.json();
+    case fetcher_TYPES.TXT:
+      const txt = await res.text();
+      return simplevdf.parse(txt);
+    case fetcher_TYPES.HeroLore:
+      const lore = await res.text();
+      return simplevdf.parse(lore.replace(/\r?\n?[^\r\n]*$/, ""));
+    case fetcher_TYPES.RawTXT:
+      return await res.text();
+  }
+}
+
 export const fetchRawTXT = async (url) => 
   fetch(url).then(res => res.text()).then(res => res)
+
+
 
 /* --- end PROMISES --- */
 
@@ -42,6 +60,8 @@ export const fetchRawTXT = async (url) =>
 
 
 /* --- MISC --- */
+
+export const isFunction = (func) => typeof func === "function";
 
 export const timestamp = (d) => {
   const zero = (what) => ('0' + what).slice(-2);

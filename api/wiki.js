@@ -10,6 +10,15 @@ import { getRawData, createFile, checkSize } from './wiki_utils'
 
 
 
+export const languages = {
+  "de-DE": 'german',
+  "en-US": 'english',
+  "es-ES": 'spanish',
+  "fr-FR": 'french',
+  "ja-JP": 'japanese',
+  "ro-RO": 'romanian',
+  "ru-RU": 'russian',
+}
 /* creates a new folder containing the data gathered from the APIs 
  * and keeps it while updating the current version if ** conditions are met
 */
@@ -17,7 +26,7 @@ export const checkIfDataNeedsUpdate = async () => {
   let allData = null
   
   /// gather raw data
-  allData = await getRawData()
+  allData = await getRawData("english");
   if(!allData) return false
 
   const newWikiVersion = current().wikiVersion + 1;
