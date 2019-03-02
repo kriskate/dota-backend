@@ -2,6 +2,7 @@ import { timestamp } from "../utils/utils"
 import { colors, addColor } from "./constants"
 import { setNew } from '../api/wiki-versioning'
 import { JSDOM } from 'jsdom';
+import { getEnglishPatchNotes } from "../api/wiki_utils";
 
 const DOTA_HERO = 'npc_dota_hero_'
 export const generatePatchNotes = async ({ localization_patch_notes, npc_activeHeroes, npc_abilities, npc_items, language }) => {
@@ -10,10 +11,13 @@ export const generatePatchNotes = async ({ localization_patch_notes, npc_activeH
   npc_abilities = npc_abilities.DOTAAbilities
   npc_items = npc_items.DOTAAbilities
 
+  let englishPatchNotes = await getEnglishPatchNotes();
+  englishPatchNotes = englishPatchNotes.patch;
+
   const gamepedia_versions = await gamepediaVersions(npc_activeHeroes, npc_items);
   let patch_notes = {}
 
-  Object.keys(localization_patch_notes).forEach((patch, idx, arr) => {
+  Object.keys(englishPatchNotes).forEach((patch, idx, arr) => {
     const _patchContent = patch.split('DOTA_Patch_')[1]
 
     const version = _patchContent.split('_')[0] + '.' + _patchContent.split('_')[1]
@@ -39,17 +43,25 @@ export const generatePatchNotes = async ({ localization_patch_notes, npc_activeH
     // remove version
     const cname = _patchContent.split('_').splice(2).join('_')
     let change = localization_patch_notes[patch]
-
     // *** SPECIAL CASES *** some patches have weird html inside
     // 7.11 has <br>, --, <b></b>, <br><br>
     // 7.13 has <br>, --, <b></b>
     if(version == '7.07c' && cname == 'General_4') return;
-    if(!change || change == '--') return;
 
-    change = change
-      .replace(/<b>/g, '').replace(/<\/b>/g, '')
-      .replace(/<br><br>/g, '\r\n')
-      .replace(/<br>/g, ' ')
+    try {
+      change = change_normalizeHTML(change);
+    } catch(e) {
+      // localization_patch_notes does not contain patch
+    }
+
+    if(change_isMalformed(change)) {
+      change = englishPatchNotes[patch];
+
+      change = change_normalizeHTML(change);
+
+      if(change_isMalformed(change)) return;
+    }
+
 
     let hero_name = which(npc_activeHeroes, cname, 'hero')
 
@@ -104,6 +116,12 @@ const _modelPatch = (version_date, changes_short) => ({ version_date, changes_sh
 const _modelHero = (name) => ({ name, stats: [], abilities: [], talents: [] })
 const _modelItem = (name, description) => ({ name, description: description ? [description] : [] })
 const _modelG = (name, description ) => ({ name, description })
+
+const change_isMalformed = (change) => !change || change == " " || change == '--'
+const change_normalizeHTML = (change) => change
+  .replace(/<b>/g, '').replace(/<\/b>/g, '')
+  .replace(/<br><br>/g, '\r\n')
+  .replace(/<br>/g, ' ')
 
 const pop = (str) => {
   let a = str.split('_')

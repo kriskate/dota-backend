@@ -1,6 +1,19 @@
 import { logger, fs, fetcher, fetcher_TYPES } from "../utils/utils"
 import { current, getNew } from "./wiki-versioning";
 
+
+let _englishPatchNotes = null;
+
+export const clearEnglishPatchNotes = () => _englishPatchNotes = null;
+
+export const getEnglishPatchNotes = async () => {
+  if(!_englishPatchNotes) {
+    _englishPatchNotes = await fetcher(fetcher_TYPES.TXT, 'localization_patch_notes', 'english');
+  }
+  return _englishPatchNotes;
+}
+
+
 export const getRawData = async (lg) => {
   try {
     return {

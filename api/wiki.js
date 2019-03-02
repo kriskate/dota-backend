@@ -7,8 +7,8 @@ import PromisePool from 'es6-promise-pool';
 import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
 import { generateDotaTips } from '../data/tips_utils'
-import { generatePatchNotes } from '../data/patch_notes_utils'
-import { getRawData, createFile, checkSize } from './wiki_utils'
+import { generatePatchNotes, clearGamepediaVersions } from '../data/patch_notes_utils'
+import { getRawData, createFile, checkSize, clearEnglishPatchNotes } from './wiki_utils'
 
 
 
@@ -50,6 +50,8 @@ export const checkIfDataNeedsUpdate = async () => {
     await ncp(getTempFolder(""), getVersionFolder(""));
   }
 
+  clearEnglishPatchNotes();
+  clearGamepediaVersions();
   await rimraf(tempFolder);
 
   return needsUpdate
