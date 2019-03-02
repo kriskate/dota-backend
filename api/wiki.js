@@ -65,7 +65,7 @@ const checkAllLanguages = async (needsUpdate) => {
       cLang++;
       return new Promise(async (resolve) => {
         const lang = languages[keys[cLang]];
-        logger.info(`--- checking language ${lang} ${cLang+1}/${keys.length}`)
+        logger.info(`-- checking language ${lang} ${cLang+1}/${keys.length}`)
         if(await checkLanguage(lang)) needsUpdate = true;
         resolve();
       })
@@ -166,7 +166,7 @@ async function generateData (generator, filename, data, newDataF) {
   if(skip && skip.includes(filename)) return {}
 
   try {
-    logger.debug(`- generating data files for - ${filename} `)
+    logger.info(`- generating data files for - ${filename} `)
     const generatedData = await generator(data)
     await createFile(filename, newDataF, generatedData)
 

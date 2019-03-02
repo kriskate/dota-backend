@@ -37,17 +37,17 @@ import { logger, delay } from '../utils/utils'
 
   /* get new data and update if required */
   const updater = async () => {
-    logger.info('... checking if database needs update')
+    logger.info('# checking if database needs update')
     let data = null
     try{
       data = await checkIfDataNeedsUpdate()
       if(data) {
-        logger.info(`... updating database; new wiki version: ${current().wikiVersion}, current wiki version date ${current().wikiVersionDate}, dota version: ${current().dotaVersion}`)
+        logger.info(`# updating database; new wiki version: ${current().wikiVersion}, current wiki version date ${current().wikiVersionDate}, dota version: ${current().dotaVersion}`)
         await DB.updateDB()
         logger.info('DB updated')
-      } else logger.info('DB does not need to be updated')
+      } else logger.info('# DB does not need to be updated')
     } catch(e) {
-      logger.error(`DB could not update with new data -- had new data: ${data !== null}`, e)
+      logger.error(`# DB could not update with new data -- had new data: ${data !== null}`, e)
     }
   }
   
