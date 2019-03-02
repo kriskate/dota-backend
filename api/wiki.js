@@ -13,8 +13,8 @@ import { getRawData, createFile, checkSize } from './wiki_utils'
 
 
 export const languages = {
-  "de-DE": 'german',
   "en-US": 'english',
+  "de-DE": 'german',
   "es-ES": 'spanish',
   "fr-FR": 'french',
   "ja-JP": 'japanese',
