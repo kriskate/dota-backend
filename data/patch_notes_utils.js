@@ -160,7 +160,14 @@ const getLongest = (arr) =>
 
 /* gamepedia import */
 
+let _gamepediaVersions = null;
+
+export const clearGamepediaVersions = () => _gamepediaVersions = null;
+
 export const gamepediaVersions = async (npc_activeHeroes, npc_items) => {
+  if(_gamepediaVersions) {
+    return _gamepediaVersions;
+  }
   let headers = new Headers({
     'Access-Control-Allow-Origin':'*',
     'Content-Type': 'multipart/form-data'
@@ -191,7 +198,9 @@ export const gamepediaVersions = async (npc_activeHeroes, npc_items) => {
       else return { version, changes_short, date, }
     })
   // console.log(versions)
-  return versions
+
+  _gamepediaVersions = versions;
+  return _gamepediaVersions;
 }
 
 const getChanges = (td, root, npc_activeHeroes, npc_items) => 
