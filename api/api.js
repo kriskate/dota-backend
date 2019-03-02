@@ -91,6 +91,7 @@ import { logger, delay } from '../utils/utils'
   /* get generated files */
   app.get('/wiki', async (req, res) => {
     const data = req.query ? req.query.data : null
+    const language = req.query ? req.query.language : 'english'
 
     // to-do implement authorisation
 
@@ -99,7 +100,7 @@ import { logger, delay } from '../utils/utils'
     if(['heroes', 'items', 'tips', 'patch_notes', 'info'].includes(data)) {
       const cf = getVersionFolder();
 
-      res.sendFile(path.join(__dirname, '..', cf, `${data}.json`))
+      res.sendFile(path.join(__dirname, '..', cf, `${language}/${data}.json`))
     } else res.send('Refine your query terms')
     
   })

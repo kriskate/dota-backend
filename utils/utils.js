@@ -6,6 +6,7 @@ import 'winston-daily-rotate-file'
 import Promise from 'bluebird'
 import fs_i from 'fs'
 import rimraf_i from 'rimraf'
+import ncp_i from 'ncp';
 import simplevdf from 'simple-vdf'
 
 import { prod, localAPI } from './runtime-vars'
@@ -15,12 +16,13 @@ import { data_url } from "../data/constants"
 
 /* --- PROMISES --- */
 
-const fs_needed = 'readdir stat access writeFile unlink mkdir rmdir readFileSync'.split(' ')
+const fs_needed = 'readdir copyFile rename stat access writeFile unlink mkdir rmdir readFileSync'.split(' ')
 export const fs = Promise.promisifyAll(fs_i, {
   filter: (name) => fs_needed.includes(name)
 })
 
 export const rimraf = Promise.promisify(rimraf_i)
+export const ncp = Promise.promisify(ncp_i)
 
 export const delay = (duration) =>
   new Promise(resolve => setTimeout(resolve, duration))

@@ -1,6 +1,8 @@
 import { skip } from '../utils/runtime-vars'
-import { fs, logger, rimraf, timestamp } from '../utils/utils'
-import { VERSIONF_BASE, current, setCurrent, getNew, setNew, getVersionFolder } from './wiki-versioning'
+import { fs, logger, ncp, rimraf, timestamp } from '../utils/utils'
+import { VERSIONF_BASE, getVersionFolder, getTempFolder, setVersions, setCurrent, getNew } from './wiki-versioning'
+
+import PromisePool from 'es6-promise-pool';
 
 import { generateItems } from '../data/items_utils'
 import { generateHeroes } from '../data/hero_utils'
@@ -19,36 +21,79 @@ export const languages = {
   "ro-RO": 'romanian',
   "ru-RU": 'russian',
 }
+
+
 /* creates a new folder containing the data gathered from the APIs 
  * and keeps it while updating the current version if ** conditions are met
 */
 export const checkIfDataNeedsUpdate = async () => {
-  let allData = null
+  let needsUpdate = setVersions();
+
+  const tempFolder = getTempFolder("");
+  const versionFolder = getVersionFolder("");
+
+  if(fs.existsSync(tempFolder)) await rimraf(tempFolder);
+  if(!fs.existsSync(tempFolder)) {
+    logger.debug(`creating new version folder: ${tempFolder}`)
+    await fs.mkdirAsync(tempFolder);
+  }
+
+  needsUpdate = await checkAllLanguages();
+
+  logger.debug('wiki needs update:', needsUpdate);
+
+  if(needsUpdate) {
+    const info = await generateData(getNew, 'info', null, tempFolder);
+    await createFile('info', tempFolder, info);
+    setCurrent(getNew());
+
+    await ncp(getTempFolder(""), getVersionFolder(""));
+  }
+
+  await rimraf(tempFolder);
+
+  return needsUpdate
+}
+
+
+const checkAllLanguages = async (needsUpdate) => {
+  const keys = Object.keys(languages);
+  let cLang = -1;
+
+  const promiseProducer = () => {
+    if(cLang < keys.length - 1) {
+      cLang++;
+      return new Promise(async (resolve) => {
+        const lang = languages[keys[cLang]];
+        logger.info(`--- checking language ${lang} ${cLang+1}/${keys.length}`)
+        if(await checkLanguage(lang)) needsUpdate = true;
+        resolve();
+      })
+    }
+    return null;
+  }
   
+  await new PromisePool(promiseProducer, 1).start();
+
+  return needsUpdate;
+}
+
+
+const checkLanguage = async (language) => {
+
+  const newDataF = getTempFolder(language);
+  const oldDataF = getVersionFolder(language);
+
+
   /// gather raw data
-  allData = await getRawData("english");
+  let allData = allData = await getRawData(language);
   if(!allData) return false
 
-  const newWikiVersion = current().wikiVersion + 1;
-  const newWikiVersionDate = timestamp();
-  const newAppVersion = require('../package.json').version;
-
-  const newDataF = getVersionFolder(newWikiVersionDate, newWikiVersion);
-  const oldDataF = getVersionFolder();
-
-  setNew({
-    appVersion: newAppVersion,
-    // dotaVersion and date are set in patch_notes_utils
-    wikiVersion: newWikiVersion,
-    wikiVersionDate: newWikiVersionDate,
-    wikiVersionFolder: newDataF.replace(VERSIONF_BASE + '/', ''),
-  })
-
-  
+  allData.language = language;
 
   /// create temp folder and store new data in it
   if(!fs.existsSync(newDataF)) {
-    logger.debug(`creating new version folder: ${newDataF}`)
+    logger.debug(`creating new language folder: ${newDataF}`)
     await fs.mkdirAsync(newDataF)
   }
   
@@ -61,11 +106,7 @@ export const checkIfDataNeedsUpdate = async () => {
     arr_diff.push(`old version folder does not exist ${oldDataF}`)
     oldDataFExists = false
   }
-  
-  // check if app version is the same
-  if(newAppVersion !== current().appVersion) {
-    arr_diff.push(`the current info has been generated with an older app version (${current().appVersion})`)
-  }
+
 
   // generate the new data files
   const parsedData = await gatherData(allData, newDataF);
@@ -98,11 +139,9 @@ export const checkIfDataNeedsUpdate = async () => {
     }
     return false
   } else {
-      logger.info(`new version data stays because: ${arr_diff}`)
-      await createFile('info', VERSIONF_BASE, parsedData.info);
-      setCurrent(getNew());
+      logger.info(`language ${language} data stays because: ${arr_diff}`)
 
-      return parsedData
+      return true
   } 
   
 }
@@ -110,18 +149,16 @@ export const checkIfDataNeedsUpdate = async () => {
 
 /* data formatted as needed in the React Native APP */
 const gatherData = async (data, newDataF) => {
-  logger.info('--- generating data files')
-
   let heroes = await generateData(generateHeroes, 'heroes', data, newDataF)
   let items = await generateData(generateItems, 'items', data, newDataF)
   let tips = await generateData(generateDotaTips, 'tips', data, newDataF)
 
   let patch_notes = await generateData(generatePatchNotes, 'patch_notes', data, newDataF)
   
-  let info = await generateData(getNew, 'info', null, newDataF)
+  // let info = await generateData(getNew, 'info', null, newDataF)
 
-  if(!heroes || !items || !tips || !patch_notes || !info) return null
-  else return { heroes, items, tips, patch_notes, info }
+  if(!heroes || !items || !tips || !patch_notes) return null
+  else return { heroes, items, tips, patch_notes }
 }
 
 async function generateData (generator, filename, data, newDataF) {
@@ -129,6 +166,7 @@ async function generateData (generator, filename, data, newDataF) {
   if(skip && skip.includes(filename)) return {}
 
   try {
+    logger.debug(`- generating data files for - ${filename} `)
     const generatedData = await generator(data)
     await createFile(filename, newDataF, generatedData)
 

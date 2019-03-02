@@ -4,7 +4,7 @@ import { setNew } from '../api/wiki-versioning'
 import { JSDOM } from 'jsdom';
 
 const DOTA_HERO = 'npc_dota_hero_'
-export const generatePatchNotes = async ({ localization_patch_notes, npc_activeHeroes, npc_abilities, npc_items }) => {
+export const generatePatchNotes = async ({ localization_patch_notes, npc_activeHeroes, npc_abilities, npc_items, language }) => {
   localization_patch_notes = localization_patch_notes.patch
   npc_activeHeroes = npc_activeHeroes.whitelist
   npc_abilities = npc_abilities.DOTAAbilities
@@ -24,8 +24,7 @@ export const generatePatchNotes = async ({ localization_patch_notes, npc_activeH
     let gamepediaCorrespondant = gamepedia_versions.find(v => v.version == version);
     let version_date = gamepediaCorrespondant.date;
     const changes_short = gamepediaCorrespondant.changes_short;
-
-    if(idx == arr.length-1) {
+    if(idx == arr.length-1 && language == "english") {
       setNew({
         dotaVersion: version,
         dotaVersionDate: version_date,
