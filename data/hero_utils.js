@@ -59,7 +59,7 @@ const getItemBuilds = async (tag) => {
     const data = await fetchRawTXT(data_url.npc_itembuild(tag));
     return model_itembuilds(data);
   } catch(e) {
-    logger.error(`getting current items for hero ${tag} failed; try #${itembuild_hack_counter_current}`, e)
+    logger.error(`getting current items for hero ${tag} failed; try #${itembuild_hack_counter_current}`)
 
     if(itembuild_hack_counter_current <= itembuild_hack_counter_max_retries) {
       itembuild_hack_counter_current ++;
