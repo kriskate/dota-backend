@@ -113,7 +113,7 @@ const checkLanguage = async (language) => {
   // generate the new data files
   const parsedData = await gatherData(allData, newDataF);
   if(!parsedData) {
-    logger.warn(`discarding new version folder ${newDataF} because new data could not be generated`)
+    logger.warn(`- discarding new version folder ${newDataF} because new data could not be generated`)
     try {
       await rimraf(newDataF)
     } catch(e) {
@@ -133,7 +133,7 @@ const checkLanguage = async (language) => {
 
   if(!arr_diff.length > 0) {
     // remove the new data because a ** condition has been met
-    logger.debug(`discarding new version folder ${newDataF}. Everything is the same.`)
+    logger.debug(`- discarding new version folder ${newDataF}. Everything is the same.`)
     try {
       await rimraf(newDataF)
     } catch(e) {
@@ -141,7 +141,7 @@ const checkLanguage = async (language) => {
     }
     return false
   } else {
-      logger.info(`language ${language} data stays because: ${arr_diff}`)
+      logger.info(`-- language ${language} data stays because: ${arr_diff}`)
 
       return true
   } 
