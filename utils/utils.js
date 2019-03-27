@@ -63,6 +63,15 @@ export const fetchRawTXT = async (url) =>
 
 /* --- MISC --- */
 
+export const isValidJson = (str) => {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
 export const isFunction = (func) => typeof func === "function";
 
 export const timestamp = (d) => {

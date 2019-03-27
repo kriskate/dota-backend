@@ -1,4 +1,4 @@
-import { logger, fs, fetcher, fetcher_TYPES } from "../utils/utils"
+import { logger, fs, fetcher, fetcher_TYPES, isValidJson } from "../utils/utils"
 import { current, getNew } from "./wiki-versioning";
 
 
@@ -57,9 +57,12 @@ export const checkSize = async (fileName, oldDataF, newDataF) => {
     
     if(!oldStat || !newStat) throw new Error('stats are not defined')
 
+    logger.debug(`ensuring ${fileName} contains valid JSON data`);
+    JSON.parse(fs.readFileSync(`${newDataF}/${fileName}.json`, 'utf8'));
+
     logger.debug(`comparing ${fileName} size (${newStat.size}) to old file size (${oldStat.size}); ${oldStat.size !== newStat.size ? '!!! they are different' : 'they are the same.'}`)
-    return oldStat.size !== newStat.size
     
+    return oldStat.size !== newStat.size
   } catch(e) {
     logger.warn(`error while retrieving stats for old or new data; old: ${oldDataF}, new: ${newDataF}`, e)
     return true
