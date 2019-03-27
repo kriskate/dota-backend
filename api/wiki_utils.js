@@ -58,7 +58,7 @@ export const checkSize = async (fileName, oldDataF, newDataF) => {
     if(!oldStat || !newStat) throw new Error('stats are not defined')
 
     logger.debug(`ensuring ${fileName} contains valid JSON data`);
-    JSON.parse(fs.readFileSync(`${newDataF}/${fileName}.json`, 'utf8'));
+    JSON.parse(await fs.readFileSync(`${newDataF}/${fileName}.json`, 'utf8'));
 
     logger.debug(`comparing ${fileName} size (${newStat.size}) to old file size (${oldStat.size}); ${oldStat.size !== newStat.size ? '!!! they are different' : 'they are the same.'}`)
     

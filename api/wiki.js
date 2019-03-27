@@ -1,6 +1,6 @@
 import { skip } from '../utils/runtime-vars'
 import { fs, logger, ncp, rimraf, timestamp } from '../utils/utils'
-import { VERSIONF_BASE, getVersionFolder, getTempFolder, setVersions, setCurrent, getNew } from './wiki-versioning'
+import { VERSIONF_BASE, getVersionFolder, getTempFolder, setVersions, setCurrent, getNew, current } from './wiki-versioning'
 
 import PromisePool from 'es6-promise-pool';
 
@@ -62,13 +62,14 @@ const checkAllLanguages = async (needsUpdate) => {
   const keys = Object.keys(languages);
   let cLang = -1;
 
+  const forceUpdate = getNew().appVersion !== current().appVersion;
   const promiseProducer = () => {
     if(cLang < keys.length - 1) {
       cLang++;
       return new Promise(async (resolve) => {
         const lang = languages[keys[cLang]];
         logger.info(`-- checking language ${lang} ${cLang+1}/${keys.length}`)
-        if(await checkLanguage(lang)) needsUpdate = true;
+        if(await checkLanguage(lang, forceUpdate)) needsUpdate = true;
         resolve();
       })
     }
@@ -81,7 +82,7 @@ const checkAllLanguages = async (needsUpdate) => {
 }
 
 
-const checkLanguage = async (language) => {
+const checkLanguage = async (language, forceUpdate) => {
 
   const newDataF = getTempFolder(language);
   const oldDataF = getVersionFolder(language);
@@ -130,6 +131,7 @@ const checkLanguage = async (language) => {
       arr_diff.push(`file ${key} has a different size`);
   }
 
+  if(forceUpdate) return true;
 
   if(!arr_diff.length > 0) {
     // remove the new data because a ** condition has been met
