@@ -119,10 +119,15 @@ const getAbilityData = (ability_tag, npc_abilities, localization_abilities) => {
     `.replace(/\s+/g, ' ')
     
     // affects
-    const abillityAffects = getAbilityAffects(npc_ability)
+    const abillityAffects = getAbilityAffects(npc_ability);
+    let abilityType = '';
+    try {
+      abilityType = getAbilityBehavior(npc_ability);
+    } catch(e) {}
+    
     new_ability.affects = `
       ${!npc_ability.IsGrantedByScepter ? '' : addColor(`Requires Aghanim's Scepter to unlock.`)}
-      ABILITY: ${getAbilityBehavior(npc_ability)}<br />
+      ${abilityType ? `ABILITY: ${abilityType}<br />` : ''}
       ${!abillityAffects ? '' 
         : `AFFECTS: ${abillityAffects}<br />`}
       ${!npc_ability.AbilityUnitDamageType || !AbilityConstants.damageType[npc_ability.AbilityUnitDamageType] ? '' 
