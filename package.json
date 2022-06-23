@@ -36,7 +36,7 @@
     "express": "^4.15.4",
     "firebase-admin": "^4.0.3",
     "isomorphic-fetch": "^2.2.1",
-    "jsdom": "^12.2.0",
+    "jsdom": "^16.5.0",
     "ncp": "^2.0.0",
     "node-schedule": "^1.2.5",
     "nodemon": "^1.18.4",
